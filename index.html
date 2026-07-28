@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backend Global · .NET → Vaga Internacional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --bg:#0b0f1a;--bg-2:#121826;--card:#161d2e;--card-2:#1c2436;
+  --border:#252d40;--border-glow:#2f3b57;--border-strong:#3a4460;--text:#f1f4fa;--text-2:#9aa4bd;--text-3:#5e6884;
+  --accent:#5b8cff;--accent-2:#7c5bff;--teal:#28d9b0;--amber:#ffb43d;--pink:#ff5b9c;--green:#3ee08a;
+  --radius:16px;--radius-sm:11px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(124,91,255,.18), transparent 55%),
+    radial-gradient(1000px 500px at 0% 10%, rgba(91,140,255,.14), transparent 50%),
+    var(--bg);
+  color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:2.2rem 1.5rem 4rem}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 28px rgba(91,140,255,.4)}
+.brand h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.brand p{font-size:13px;color:var(--text-2);margin-top:2px}
+.streak{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,rgba(255,180,61,.15),rgba(255,91,156,.12));border:1px solid rgba(255,180,61,.3);padding:10px 16px;border-radius:13px}
+.streak i{color:var(--amber);font-size:18px}
+.streak b{font-size:17px;font-weight:700}
+.streak span{font-size:12px;color:var(--text-2);display:block;line-height:1.2}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:1.6rem}
+.stat{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+.stat:hover{transform:translateY(-3px);border-color:var(--border-glow)}
+.stat .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
+.stat.a .ic{background:rgba(91,140,255,.15);color:var(--accent)}
+.stat.b .ic{background:rgba(40,217,176,.15);color:var(--teal)}
+.stat.c .ic{background:rgba(255,180,61,.15);color:var(--amber)}
+.stat.d .ic{background:rgba(255,91,156,.15);color:var(--pink)}
+.stat .val{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.stat .lbl{font-size:12px;color:var(--text-2);margin-top:6px;font-weight:500}
+.phase-card{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.6rem}
+.phase-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;flex-wrap:wrap;gap:8px}
+.phase-head h3{font-size:16px;font-weight:600}
+.phase-head .pct{font-size:14px;font-weight:700;color:var(--accent)}
+.bar{height:10px;background:var(--bg-2);border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.bar>i{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--teal));width:2%;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.phase-milestones{display:flex;justify-content:space-between;margin-top:1rem;gap:8px}
+.ms{flex:1;text-align:center;padding:10px 6px;border-radius:11px;background:var(--bg-2);border:1px solid var(--border)}
+.ms.active{background:rgba(91,140,255,.12);border-color:rgba(91,140,255,.35)}
+.ms.complete{background:rgba(62,224,138,.1);border-color:rgba(62,224,138,.3)}
+.ms.complete b{color:var(--green)}
+.ms b{font-size:13px;font-weight:700;display:block}
+.ms span{font-size:11px;color:var(--text-3)}
+.sec-title{display:flex;align-items:center;gap:10px;margin:0 0 1rem;font-size:15px;font-weight:600}
+.sec-title i{color:var(--accent)}
+.sec-title .day-badge{margin-left:auto;font-size:11px;font-weight:600;color:var(--teal);background:rgba(40,217,176,.12);padding:5px 11px;border-radius:20px;border:1px solid rgba(40,217,176,.25)}
+.tasks{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:.5rem .3rem;margin-bottom:1.6rem}
+.task{display:flex;align-items:center;gap:14px;padding:1rem 1.2rem;border-radius:13px;cursor:pointer;transition:background .2s;position:relative}
+.task:hover{background:var(--bg-2)}
+.task+.task{border-top:1px solid var(--border)}
+.check{width:26px;height:26px;border-radius:9px;border:2px solid var(--border-glow);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;color:transparent;font-size:12px}
+.task.done .check{background:linear-gradient(135deg,var(--teal),var(--green));border-color:var(--teal);color:#04140f}
+.t-body{flex:1;min-width:0}
+.t-time{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.t-title{font-size:14px;font-weight:600;margin-bottom:2px}
+.task.done .t-title{color:var(--text-3);text-decoration:line-through}
+.task .pts{font-size:11px;font-weight:700;color:var(--amber);flex-shrink:0}
+.week-banner{background:linear-gradient(135deg,rgba(124,91,255,.16),rgba(91,140,255,.1));border:1px solid rgba(124,91,255,.32);border-radius:var(--radius);padding:1.3rem 1.5rem;margin-bottom:1.6rem;display:flex;align-items:center;gap:14px}
+.wk-content{flex:1;min-width:0}
+.wk-arrow{flex-shrink:0;width:40px;height:40px;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.06);border:1px solid rgba(124,91,255,.3);color:var(--accent-2);font-size:15px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.wk-arrow:hover{background:rgba(124,91,255,.18);border-color:var(--accent-2);transform:scale(1.06)}
+.wk-arrow:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.wb-tag{font-size:11px;font-weight:700;color:var(--accent-2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.week-banner h3{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:7px}
+.week-banner h3 span{color:var(--text-3);margin:0 3px}
+.week-banner p{font-size:13px;color:var(--text-2);line-height:1.6}
+.week-banner code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(91,140,255,.16);color:var(--accent);padding:2px 7px;border-radius:6px}
+.week-banner b{color:var(--text);font-weight:600}
+.hexbox{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.5rem;margin-bottom:1.6rem}
+.hex-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:1rem}
+.hex-row label{font-size:13px;font-weight:600;color:var(--text-2)}
+.hex-row select{flex:1;min-width:180px;padding:10px 12px;border-radius:11px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:13px;cursor:pointer}
+.hex-row .hex-gen{flex-shrink:0;background:linear-gradient(135deg,var(--teal),var(--accent));border:none;color:#04140f;font-weight:600}
+.hex-row .hex-gen:hover{transform:translateY(-2px)}
+.hex-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
+.hexchip{font-size:11.5px;color:var(--accent);background:rgba(91,140,255,.12);border:1px solid rgba(91,140,255,.25);padding:5px 11px;border-radius:20px}
+.hex-note{font-size:12.5px;color:var(--text-2);line-height:1.6}
+.hex-note b{color:var(--text);font-weight:600}
+.day-tabs{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.day-tab{flex:1;min-width:60px;padding:11px 8px;border-radius:12px;cursor:pointer;text-align:center;background:var(--card);border:1px solid var(--border);transition:all .2s}
+.day-tab:hover{border-color:var(--border-glow);background:var(--card-2)}
+.day-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none}
+.day-tab b{font-size:13px;font-weight:700;display:block}
+.day-tab span{font-size:10px;color:var(--text-3)}
+.day-tab.active b,.day-tab.active span{color:#fff}
+.day-tab.active span{color:rgba(255,255,255,.8)}
+.day-tab.today{position:relative}
+.day-tab.today::after{content:'';position:absolute;top:7px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.day-tab.complete{border-color:rgba(62,224,138,.4);background:rgba(62,224,138,.08)}
+.day-tab.complete b{color:var(--green)}
+.day-tab.complete span{color:var(--green)}
+.day-tab.complete.active{background:linear-gradient(135deg,var(--teal),var(--green));border:none}
+.day-tab.complete.active b,.day-tab.complete.active span{color:#04140f}
+.day-tab.skipped{opacity:.6}
+.day-tab.skipped span{color:var(--text-3)}
+.steps{list-style:none;margin:8px 0 0;padding:0}
+.steps li{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:4px 0 4px 20px;position:relative}
+.steps li::before{content:'';position:absolute;left:4px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.65}
+.steps li b{color:var(--text);font-weight:600}
+.steps li code{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--bg-2);color:var(--teal);padding:1px 6px;border-radius:5px}
+.task.done .steps{opacity:.5}
+.ptask{display:flex;padding:1rem 1.2rem}
+.ptask .t-title{margin-bottom:2px}
+.day-progress{padding:1rem 1.2rem;display:flex;flex-direction:column;gap:8px}
+.dp-bar{height:7px;background:var(--bg-2);border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.dp-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:20px;transition:width .4s}
+.day-progress span{font-size:12px;color:var(--text-2)}
+.min-btn{margin-top:4px;align-self:flex-start;padding:8px 13px;border-radius:10px;cursor:pointer;background:rgba(255,180,61,.12);border:1px solid rgba(255,180,61,.3);color:var(--amber);font-family:inherit;font-size:12px;font-weight:600}
+.min-btn:hover{background:rgba(255,180,61,.2)}
+.day-done{margin:.4rem;padding:1.1rem 1.3rem;border-radius:13px;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(40,217,176,.16),rgba(62,224,138,.1));border:1px solid rgba(62,224,138,.35)}
+.day-done>i{font-size:26px;color:var(--green)}
+.day-done b{font-size:15px;font-weight:700;display:block}
+.day-done span{font-size:12.5px;color:var(--text-2)}
+.day-done.low{background:linear-gradient(135deg,rgba(255,180,61,.16),rgba(255,91,156,.08));border-color:rgba(255,180,61,.35)}
+.day-done.low>i{color:var(--amber)}
+.day-done.low a{color:var(--accent);cursor:pointer;text-decoration:underline}
+.assess{display:flex;align-items:center;gap:14px;margin-bottom:1.6rem;padding:1.2rem 1.4rem;background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius)}
+.assess.due{background:linear-gradient(135deg,rgba(255,180,61,.15),rgba(91,140,255,.08));border-color:rgba(255,180,61,.35)}
+.assess-ic{width:44px;height:44px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;background:rgba(91,140,255,.15);color:var(--accent)}
+.assess.due .assess-ic{background:rgba(255,180,61,.18);color:var(--amber)}
+.assess-body{flex:1;min-width:0}
+.assess-body b{font-size:14px;font-weight:600;display:block;margin-bottom:3px}
+.assess-body span{font-size:12.5px;color:var(--text-2);line-height:1.5}
+.assess-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.assess-actions .btn{padding:.6rem .9rem;font-size:12.5px}
+.practice{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:1.6rem}
+.pcard{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1rem;text-align:center;cursor:pointer;transition:transform .25s,border-color .25s;position:relative;overflow:hidden}
+.pcard:hover{transform:translateY(-4px)}
+.pcard.p1:hover{border-color:var(--accent)}
+.pcard.p2:hover{border-color:var(--teal)}
+.pcard.p3:hover{border-color:var(--pink)}
+.pcard.p4:hover{border-color:var(--amber)}
+.pcard .pic{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px}
+.pcard.p1 .pic{background:rgba(91,140,255,.15);color:var(--accent)}
+.pcard.p2 .pic{background:rgba(40,217,176,.15);color:var(--teal)}
+.pcard.p3 .pic{background:rgba(255,91,156,.15);color:var(--pink)}
+.pcard.p4 .pic{background:rgba(255,180,61,.15);color:var(--amber)}
+.pcard h4{font-size:14px;font-weight:600;margin-bottom:3px}
+.pcard span{font-size:11px;color:var(--text-2)}
+.cta-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}
+.btn{padding:1rem 1.2rem;border-radius:13px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px}
+.btn:hover{background:var(--card-2);border-color:var(--border-glow);transform:translateY(-2px)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;box-shadow:0 8px 26px rgba(91,140,255,.35);color:#fff}
+.btn.primary:hover{box-shadow:0 12px 32px rgba(91,140,255,.5)}
+.modal-bg{position:fixed;inset:0;background:rgba(6,9,16,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100;padding:1.5rem}
+.modal-bg.show{display:flex}
+.modal{background:linear-gradient(160deg,var(--card),var(--bg-2));border:1px solid var(--border-glow);border-radius:22px;max-width:520px;width:100%;padding:2rem;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:pop .3s cubic-bezier(.4,0,.2,1)}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal .x{position:absolute;top:1.2rem;right:1.2rem;width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);cursor:pointer;font-size:15px}
+.modal .x:hover{background:var(--card);color:var(--text)}
+.modal .m-ic{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:1.1rem}
+.modal h2{font-size:20px;font-weight:700;margin-bottom:.6rem;letter-spacing:-.02em}
+.modal p{font-size:14px;color:var(--text-2);line-height:1.6;margin-bottom:1.3rem}
+.modal .m-list{list-style:none;margin-bottom:1.4rem}
+.modal .m-list li{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);font-size:13.5px;align-items:flex-start}
+.modal .m-list li:last-child{border:none}
+.modal .m-list i{color:var(--teal);margin-top:3px;font-size:13px}
+.modal .m-list b{color:var(--text);font-weight:600}
+.modal .m-list small{color:var(--text-2);display:block;margin-top:2px}
+.footer{text-align:center;margin-top:2.5rem;font-size:12px;color:var(--text-3)}
+.footer b{color:var(--text-2)}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.practice{grid-template-columns:repeat(2,1fr)}.cta-row{grid-template-columns:1fr}.phase-milestones{flex-direction:column}}
+@media(max-width:640px){.assess{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">🌎</div>
+      <div><h1>Backend Global</h1><p>.NET Backend → vaga internacional · Leticia</p></div>
+    </div>
+    <div class="streak">
+      <i class="fa-solid fa-fire"></i>
+      <div><b id="streakNum">0</b><span>de 150 dias estudados</span></div>
+    </div>
+  </div>
+
+  <div id="syncStatus" style="font-size:12px;color:var(--text-3);margin:-0.6rem 0 1.2rem;display:flex;align-items:center;gap:7px"><i class="fa-solid fa-cloud"></i><span>Conectando…</span></div>
+
+  <div class="stats">
+    <div class="stat a"><div class="ic"><i class="fa-solid fa-calendar-week"></i></div><div class="val" id="weekVal">1</div><div class="lbl">semana atual · de 30</div></div>
+    <div class="stat b"><div class="ic"><i class="fa-solid fa-layer-group"></i></div><div class="val" id="realPhase">Fase 1</div><div class="lbl" id="realPhaseName">Revisão + Fundamentos</div></div>
+    <div class="stat c"><div class="ic"><i class="fa-solid fa-bolt"></i></div><div class="val"><span id="xpVal">0</span></div><div class="lbl">XP da semana</div></div>
+    <div class="stat d"><div class="ic"><i class="fa-solid fa-signal"></i></div><div class="val" id="levelVal">Easy</div><div class="lbl">Nível atual</div></div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-head"><h3 id="phaseTitle">Fase 1 · Semanas 1-8 — Revisão + Fundamentos</h3><span class="pct" id="phasePct">3%</span></div>
+    <div class="bar"><i id="barFill"></i></div>
+    <div class="phase-milestones" id="phaseMs"></div>
+  </div>
+
+  <div class="week-banner" id="weekBanner">
+    <button class="wk-arrow" id="wkPrev" onclick="navWeek(-1)" aria-label="Semana anterior"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="wk-content"><div class="wb-tag" id="wkTag"></div><h3 id="wkTitle"></h3><p id="wkDesc"></p></div>
+    <button class="wk-arrow" id="wkNext" onclick="navWeek(1)" aria-label="Próxima semana"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-diagram-project"></i> Prompt semanal · seu hexágono de estudo</div>
+  <div class="hexbox">
+    <div class="hex-row">
+      <label for="vertexSel">Foco</label>
+      <select id="vertexSel"></select>
+      <button class="btn hex-gen" onclick="weeklyPrompt()"><i class="fa-solid fa-wand-magic-sparkles"></i> Gerar prompt de estudo ↗</button>
+    </div>
+    <div class="hex-chips" id="hexChips"></div>
+    <p class="hex-note"><b>Ritual de segunda-feira:</b> antes das tarefas do dia, gere o prompt acima e use como ponto de partida com o Claude/ChatGPT para guiar a prática de hoje.</p>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-list-check"></i> Plano de estudo detalhado<span class="day-badge" id="dayTotal">30 min</span></div>
+  <div class="day-tabs" id="dayTabs"></div>
+  <div id="makeupBar"></div>
+  <div class="tasks" id="taskList"></div>
+
+  <div class="sec-title"><i class="fa-solid fa-fire"></i> Regra de ouro</div>
+  <div class="tasks" style="margin-bottom:1.6rem">
+    <div class="ptask"><div class="t-body">
+      <div class="t-time">Consistência &gt; Intensidade</div>
+      <div class="t-title">30 minutos todo dia útil vale mais que maratonas de fim de semana</div>
+      <ul class="steps">
+        <li>Seu cérebro aprende por <b>repetição espaçada</b>, não por volume concentrado</li>
+        <li>Você já tem <b>experiência real</b> — falta treinar o formato de entrevista</li>
+        <li>30 semanas é tempo suficiente. Bora! 🚀</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-clipboard-check"></i> Checkpoint · a cada 5 semanas</div>
+  <div id="assessCard" class="assess"></div>
+
+  <div class="sec-title"><i class="fa-solid fa-dumbbell"></i> Prática rápida</div>
+  <div class="practice">
+    <div class="pcard p1" onclick="practice('leetcode')"><div class="pic"><i class="fa-solid fa-code"></i></div><h4>LeetCode</h4><span>Problema aleatório</span></div>
+    <div class="pcard p2" onclick="practice('english')"><div class="pic"><i class="fa-solid fa-comments"></i></div><h4>English</h4><span>Explicar em voz alta</span></div>
+    <div class="pcard p3" onclick="practice('interview')"><div class="pic"><i class="fa-solid fa-briefcase"></i></div><h4>Mock Interview</h4><span>Simulação completa</span></div>
+    <div class="pcard p4" onclick="practice('sysdesign')"><div class="pic"><i class="fa-solid fa-sitemap"></i></div><h4>System Design</h4><span>Case da semana</span></div>
+  </div>
+
+  <div class="cta-row">
+    <button class="btn primary" onclick="practice('lesson')"><i class="fa-solid fa-play"></i> Começar estudo de hoje</button>
+    <button class="btn" onclick="openModal('resources')"><i class="fa-solid fa-compass"></i> Recursos</button>
+    <button class="btn" onclick="openModal('progress')"><i class="fa-solid fa-chart-line"></i> Progresso</button>
+  </div>
+
+  <div class="footer"><b>Backend Global</b> · Plano pessoal de 30 semanas · Segunda a sexta, ~30 min/dia</div>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal" id="modalBox"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const PHASES=[
+ {n:1,ini:1,fim:8,nome:'Revisão + Fundamentos',ms:[[3,'OOP e Patterns em inglês'],[6,'Estruturas básicas dominadas'],[8,'Checkpoint Fase 1']]},
+ {n:2,ini:9,fim:16,nome:'Intermediário',ms:[[11,'DFS/BFS de memória'],[14,'Mock interview em texto'],[16,'Checkpoint Fase 2']]},
+ {n:3,ini:17,fim:24,nome:'Avançado',ms:[[21,'System Design — seu ponto forte'],[23,'Graphs avançado'],[24,'Mock interviews completos']]},
+ {n:4,ini:25,fim:30,nome:'Polimento',ms:[[27,'Behavioral STAR pronto'],[29,'CV/GitHub/LinkedIn prontos'],[30,'Aplicação iniciada']]}
+];
+
+const WEEKS=[
+{n:1,ph:1,t:'Setup + Revisão de OOP',foco:'os 4 pilares de OOP',desc:'Você domina isso na prática (em C#) — esta semana é sobre nomear e explicar em inglês, sob pressão.',days:[
+ {label:'Seg',sub:'30 min',tasks:[
+   {time:'15 min · Setup',title:'Configurar o ambiente',xp:15,steps:['Criar conta no LeetCode','Instalar Python (python.org)','Configurar VS Code com extensão Python']},
+   {time:'15 min · Prática',title:'Hello World em Python',xp:15,steps:['Rodar seu primeiro script .py','Comparar sintaxe com C# (print vs Console.WriteLine)','Testar list, dict, set no console interativo']}
+ ]},
+ {label:'Ter',sub:'30 min',tasks:[
+   {time:'30 min · Teoria + vocabulário',title:'Os 4 pilares de OOP em inglês',xp:30,steps:['Ler definição de Encapsulation, Abstraction, Inheritance, Polymorphism em inglês','Anotar vocabulário técnico novo (encapsulate, inherit, override, abstract class...)','Relacionar cada pilar a um exemplo do seu código em C#']}
+ ]},
+ {label:'Qua',sub:'30 min',tasks:[
+   {time:'30 min · Speaking',title:'Praticar explicar em voz alta',xp:30,steps:["Responda em voz alta: \"What is polymorphism?\"",'Grave se possível e ouça depois','Escrever 2-3 frases por pilar, em inglês']}
+ ]},
+ {label:'Qui',sub:'30 min',tasks:[
+   {time:'30 min · SOLID',title:'SOLID principles em inglês',xp:30,steps:['Revisar Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion','Nomear e explicar cada princípio em inglês, com exemplo do seu trabalho']}
+ ]},
+ {label:'Sex',sub:'30 min',tasks:[
+   {time:'30 min · LeetCode',title:'"Two Sum" em Python',xp:30,steps:['Resolver com força bruta primeiro','Depois otimizar com hash map','Comparar mentalmente: como seria em C# com Dictionary<K,V>?']}
+ ]}
+]},
+{n:2,ph:1,t:'Design Patterns em inglês',foco:'Singleton, Factory, Builder, Repository, Observer, Strategy',desc:'Patterns que você já usa no dia a dia — agora nomeados e explicados em inglês.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Creational Patterns — estudo',xp:30,steps:['Revisar Singleton, Factory, Builder','Buscar onde você já usou cada um em .NET']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explicar patterns em inglês',xp:30,steps:["Responda em inglês: \"Why would you use a Factory pattern?\"",'Escrever a explicação de cada pattern em 2-3 frases']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Structural/Behavioral Patterns — estudo',xp:30,steps:['Revisar Repository, Observer, Strategy','Relacionar a exemplos do seu código']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explicar patterns em inglês',xp:30,steps:["Responda em inglês: \"Have you used the Repository pattern? Explain it.\"",'Praticar em voz alta']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'2 Easy de Arrays',xp:30,steps:['Resolver 2 problemas Easy de Arrays em Python','Escrever pseudocódigo em inglês antes de codar']}]}
+]},
+{n:3,ph:1,t:'Async/Await e Concorrência',foco:'thread, task, blocking, race condition',desc:'Formalizar em inglês um conceito que você já domina na prática.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Async/Await — fundamentos',xp:30,steps:['O que é async/await e por que existe?','I/O bound vs CPU bound','Vocabulário: thread, task, blocking, non-blocking']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Vocabulário',title:'Deadlock e race condition',xp:30,steps:['Definições em inglês','Relacionar a um bug real que você já resolveu']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Concurrency vs Parallelism',xp:30,steps:["Escrever resposta em inglês (3-4 frases): \"What's the difference between concurrency and parallelism?\"",'Praticar falar em voz alta']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Strings (1/2)',xp:30,steps:['Resolver "Reverse String"','Resolver "Valid Anagram"']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Strings (2/2)',xp:30,steps:['Resolver "First Unique Character in a String"','Revisar os 3 problemas da semana']}]}
+]},
+{n:4,ph:1,t:'Databases',foco:'ACID, indexing, normalization',desc:'Formalizar seu conhecimento de bancos de dados — e explicá-lo em inglês.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'SQL vs NoSQL',xp:30,steps:['Quando usar cada um?','Vocabulário: ACID (Atomicity, Consistency, Isolation, Durability)']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Vocabulário',title:'Vocabulário de databases',xp:30,steps:['indexing, normalization, foreign key, constraint, transaction — definições em inglês']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explicar indexing em inglês',xp:30,steps:['Como um índice funciona? Por que acelera queries?',"Praticar: \"How does a database index work?\""]}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Hash Maps (1/2)',xp:30,steps:['Resolver "Contains Duplicate"']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Hash Maps (2/2)',xp:30,steps:['Resolver "Group Anagrams" (introdução, pode ficar incompleto)']}]}
+]},
+{n:5,ph:1,t:'Hash Maps / Dictionaries',foco:'hashing, colisões, O(1)',desc:'Estrutura crítica para entrevistas — reconhecer quando usar em vez de força bruta.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Por que Hash Map é O(1) em média?',xp:30,steps:['Entender hashing e complexidade média','Colisões: chaining vs open addressing']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Comparação',title:'Dictionary<K,V> vs dict',xp:30,steps:['Comparar sintaxe C# vs Python (mesma ideia)','Reescrever 2 exemplos do seu código C# em Python']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Group Anagrams"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Two Sum" revisitado',xp:30,steps:['Resolver com hash map (não força bruta)','Comparar complexidade com a solução da Semana 1']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Majority Element"',xp:30,steps:['Resolver no LeetCode','Revisar: quando usar hash map em vez de força bruta?']}]}
+]},
+{n:6,ph:1,t:'Stacks e Queues',foco:'LIFO vs FIFO',desc:'Reconhecer qual estrutura usar olhando o enunciado do problema.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'LIFO vs FIFO',xp:30,steps:['Conceito de Stack (LIFO) e Queue (FIFO)','Vocabulário: push, pop, enqueue, dequeue']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Aplicação real',title:'Onde você já usou isso',xp:30,steps:['Pensar em exemplos de produção (undo/redo, filas de processamento, message queues)','Escrever 2 frases em inglês descrevendo um caso real']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Valid Parentheses"',xp:30,steps:['Resolver no LeetCode (Stack)']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Min Stack"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Implement Queue using Stacks"',xp:30,steps:['Resolver no LeetCode','Revisar: qual estrutura usar olhando o enunciado?']}]}
+]},
+{n:7,ph:1,t:'Linked Lists',foco:'node, pointer, traversal',desc:'Estrutura de ponteiros — menos comum em C# high-level, mas essencial em entrevistas.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Node, pointer, traversal',xp:30,steps:['Conceitos fundamentais','Desenhar no papel uma linked list simples']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Linked List vs Array',xp:30,steps:['Trade-offs de inserção/remoção','Quando cada estrutura é melhor?']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Reverse Linked List"',xp:30,steps:['Resolver sem olhar solução']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Merge Two Sorted Lists"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Middle of the Linked List"',xp:30,steps:['Resolver no LeetCode','Revisar os 3 problemas da semana']}]}
+]},
+{n:8,ph:1,t:'Inglês Técnico Falado + Revisão Geral',foco:'checkpoint da Fase 1',desc:'Consolidar tudo: explique OOP, Patterns, Async e Databases em inglês, com confiança.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Gravação',title:'"Walk me through your backend experience"',xp:30,steps:['Gravar vídeo de 2-3 min em inglês','Revisar gramática']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Refino',title:'Regravar e refinar',xp:30,steps:['Ouvir a gravação de segunda','Regravar corrigindo fluência']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Revisão mista',title:'1 problema de cada categoria',xp:30,steps:['Array, String, Hash, Stack, Linked List — escolha 1 rápido de cada']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Simulado',title:'2 Easy cronometrados',xp:30,steps:['15 min cada','Falar em voz alta em inglês enquanto resolve']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Checkpoint',title:'Revisão geral da Fase 1',xp:30,steps:['O que ficou confuso? Reforçar esses pontos','Checkpoint: explica OOP, Patterns, Async e Databases em inglês com confiança?']}]}
+]},
+{n:9,ph:2,t:'Binary Search',foco:'O(log n)',desc:'Algoritmo muito cobrado — vários problemas Medium escondem binary search dentro.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Como funciona Binary Search',xp:30,steps:['Por que precisa de array ordenado?','Complexidade O(log n)']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Implementação',title:'Implementar do zero',xp:30,steps:['Implementar versão iterativa','Implementar versão recursiva']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Binary Search"',xp:30,steps:['Resolver o problema clássico']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"First Bad Version"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Search in Rotated Sorted Array"',xp:30,steps:['Resolver no LeetCode']}]}
+]},
+{n:10,ph:2,t:'Trees — Fundamentos',foco:'root, leaf, height, depth, traversal',desc:'Estrutura muito cobrada em entrevistas — desenhe no papel enquanto resolve.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Conceitos de árvore',xp:30,steps:['root, leaf, height, depth']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Tipos de traversal',xp:30,steps:['in-order, pre-order, post-order','Desenhar árvores no papel']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Maximum Depth of Binary Tree"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Invert Binary Tree"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Balanced Binary Tree"',xp:30,steps:['Resolver no LeetCode']}]}
+]},
+{n:11,ph:2,t:'Tree Traversal — DFS e BFS',foco:'DFS vs BFS',desc:'Os dois algoritmos mais usados em árvores e grafos.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'DFS',xp:30,steps:['Versão recursiva (mais simples)','Quando usar?']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'BFS',xp:30,steps:['Versão iterativa, usa Queue','Quando usar cada um?']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Binary Tree Level Order Traversal" (BFS)',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Path Sum" (DFS)',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Lowest Common Ancestor"',xp:30,steps:['Resolver no LeetCode','Checkpoint: implementa DFS e BFS de memória?']}]}
+]},
+{n:12,ph:2,t:'Sorting Algorithms',foco:'Merge Sort e Quick Sort',desc:'Raramente você implementa sort do zero, mas precisa entender complexidade para escolher a estrutura certa.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Merge Sort',xp:30,steps:['O(n log n), estável, divide and conquer']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Quick Sort',xp:30,steps:['O(n log n) médio, in-place']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Merge Intervals"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Non-overlapping Intervals"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Sort Colors" (Dutch flag)',xp:30,steps:['Resolver no LeetCode']}]}
+]},
+{n:13,ph:2,t:'Graphs — Fundamentos',foco:'adjacency list vs matrix',desc:'Essencial para backend: dependency graphs, service mesh, comunicação entre microsserviços.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'O que é um grafo',xp:30,steps:['Vértices + arestas','Representação: adjacency list vs adjacency matrix']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Conexão real',title:'Conexão com o seu trabalho',xp:30,steps:['Dependency graphs, service mesh, microservices communication','Escrever 2 frases em inglês relacionando ao seu trabalho']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Number of Islands"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Clone Graph"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Course Schedule" (detectar ciclo)',xp:30,steps:['Resolver no LeetCode','Comparar com dependency resolution real']}]}
+]},
+{n:14,ph:2,t:'Inglês Conversacional + Revisão',foco:'entrevistas reais',desc:'Praticar fluência assistindo entrevistas reais e fazendo um mock interview em texto.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Listening',title:'Entrevista técnica real (1/2)',xp:30,steps:['YouTube, com legendas em inglês','Pausar e tentar prever a resposta']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Listening',title:'Entrevista técnica real (2/2)',xp:30,steps:['Continuar o vídeo','Anotar expressões novas']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Vocabulário',title:'Revisão das expressões',xp:30,steps:['Revisar as expressões anotadas','Escrever frases próprias usando elas']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Mock interview',title:'Mock interview em texto',xp:30,steps:['Simular entrevistador (Claude/ChatGPT) fazendo perguntas técnicas em inglês']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Revisitar 2 Medium já feitos',xp:30,steps:['Tentar resolver sem olhar solução','Comparar abordagem atual vs anterior']}]}
+]},
+{n:15,ph:2,t:'Consolidação + Push para Medium',foco:'elevar o nível de dificuldade',desc:'Cronometrar e resolver Medium com consistência.',days:[
+ {label:'Seg',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Array',xp:25,steps:['Resolver cronometrado (20-25 min)']}]},
+ {label:'Ter',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Tree',xp:25,steps:['Resolver cronometrado']}]},
+ {label:'Qua',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Graph',xp:25,steps:['Resolver cronometrado']}]},
+ {label:'Qui',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Hash',xp:25,steps:['Resolver cronometrado']}]},
+ {label:'Sex',sub:'50 min',tasks:[{time:'50 min · Simulado',title:'2 Medium seguidos',xp:40,steps:['50 min total, sem pausa']}]}
+]},
+{n:16,ph:2,t:'Heaps e Priority Queues',foco:'min-heap vs max-heap',desc:'Estrutura menos comum, mas cobrada. Checkpoint da Fase 2.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Min-heap vs max-heap',xp:30,steps:['Conceito','Por que O(log n) para insert/delete?']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Aplicação real',title:'Aplicações práticas',xp:30,steps:['Onde heaps aparecem em sistemas reais (filas de prioridade, schedulers)']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Kth Largest Element in an Array"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Top K Frequent Elements"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Find Median from Data Stream" (intro)',xp:30,steps:['Tentar resolver — pode ficar difícil, tudo bem','Checkpoint: reconhece qual estrutura usar ao ler o enunciado?']}]}
+]},
+{n:17,ph:3,t:'Dynamic Programming — Introdução',foco:'memoização vs tabulação',desc:'O tópico mais temido, mas com lógica clara: perceber subproblemas repetidos.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Subproblemas sobrepostos',xp:30,steps:['Conceito de subestrutura ótima','Por que DP existe?']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Memoização vs Tabulação',xp:30,steps:['Top-down vs bottom-up']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Climbing Stairs"',xp:30,steps:['Resolver no LeetCode (o clássico para começar)']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Fibonacci com DP',xp:30,steps:['Resolver com memoização e depois com tabulação']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"House Robber"',xp:30,steps:['Resolver no LeetCode','Insight: DP é perceber que você resolve o mesmo subproblema várias vezes']}]}
+]},
+{n:18,ph:3,t:'Dynamic Programming — 2D',foco:'DP com duas dimensões',desc:'Comparar complexidade de brute force vs DP.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Unique Paths"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Coin Change" (1/2)',xp:30,steps:['Entender o problema, tentar força bruta']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Coin Change" (2/2)',xp:30,steps:['Resolver com DP']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Longest Common Subsequence"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Análise',title:'Brute force vs DP',xp:30,steps:['Escrever a complexidade de cada abordagem para os problemas da semana']}]}
+]},
+{n:19,ph:3,t:'Backtracking',foco:'choose → explore → unchoose',desc:'Exploração com retrocesso — combinações, permutações, problemas de decisão.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Padrão choose → explore → unchoose',xp:30,steps:['Conceito','Quando usar (combinações, permutações, decisões)']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Permutations"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Combinations"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Word Search" (1/2)',xp:30,steps:['Entender o problema, desenhar a busca no papel']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Word Search" (2/2)',xp:30,steps:['Resolver no LeetCode']}]}
+]},
+{n:20,ph:3,t:'Sliding Window',foco:'transforma O(n²) em O(n)',desc:'Padrão muito usado — dois ponteiros se movendo juntos numa janela.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Conceito de janela deslizante',xp:30,steps:['Dois ponteiros se movendo juntos','Quando usar (problemas de substring/subarray)']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Longest Substring Without Repeating Characters"',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Minimum Window Substring" (1/2)',xp:30,steps:['Entender o problema; tentar força bruta']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Minimum Window Substring" (2/2)',xp:30,steps:['Resolver com sliding window']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Permutation in String"',xp:30,steps:['Resolver no LeetCode']}]}
+]},
+{n:21,ph:3,t:'System Design — Introdução ⭐ seu ponto forte',foco:'Load Balancer, Cache, CDN, DB, Message Queue',desc:'Aqui sua experiência de 6 anos de backend vale muito — formalizar em inglês.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Componentes básicos',xp:30,steps:['Load Balancer, Cache, CDN, Database, Message Queue','Vocabulário: horizontal scaling, vertical scaling, bottleneck, throughput, latency']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Vocabulário em inglês',xp:30,steps:['Praticar explicar cada componente em inglês, com exemplo do seu trabalho']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a URL Shortener" (1/2)',xp:30,steps:['Estudar o caso','Desenhar a arquitetura no papel']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a URL Shortener" (2/2)',xp:30,steps:['Praticar explicar em inglês (mesmo que só no papel)']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Refazer sem consultar',xp:30,steps:['Refazer o desenho da arquitetura do zero','Explicar em voz alta, sem anotações']}]}
+]},
+{n:22,ph:3,t:'System Design — Databases em Escala',foco:'sharding, replication, CAP Theorem',desc:'Aprofundar o que você já sabe de DB, agora em escala.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Sharding e replication',xp:30,steps:['Conceitos','Read replicas']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Consistency models',xp:30,steps:['Strong vs eventual consistency','CAP Theorem (Consistency, Availability, Partition Tolerance)']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a system with high read traffic" (1/2)',xp:30,steps:['Estudar o caso','Aplicar cache + replicas']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a system with high read traffic" (2/2)',xp:30,steps:['Desenhar a arquitetura completa']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Praticar trade-offs em inglês',xp:30,steps:['Explicar as decisões de design em inglês']}]}
+]},
+{n:23,ph:3,t:'Graphs Avançado',foco:'Dijkstra, Topological Sort',desc:'Algoritmos de grafo mais complexos — parecidos com resolução de dependências reais.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Dijkstra — shortest path',xp:30,steps:['Conceito e quando usar']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Topological Sort',xp:30,steps:['Ordenação com dependências (parecido com resolver dependências de pacotes)']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Network Delay Time" (Dijkstra)',xp:30,steps:['Resolver no LeetCode']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Alien Dictionary" (1/2)',xp:30,steps:['Entender o problema (Topological Sort)']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Alien Dictionary" (2/2)',xp:30,steps:['Resolver no LeetCode']}]}
+]},
+{n:24,ph:3,t:'Mock Interviews Completos',foco:'checkpoint da Fase 3',desc:'Simulação real, juntando tudo: coding, system design e comunicação em inglês.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'25 min + 5 min','title':'1 Medium + explicar em inglês',xp:30,steps:['Resolver (25 min)','Explicar a solução em inglês (5 min)']}]},
+ {label:'Ter',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard cronometrado',xp:35,steps:['Resolver em até 35 min']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Mock',title:'System Design mock',xp:30,steps:['30 min, formato de entrevista real']}]},
+ {label:'Qui',sub:'60 min',tasks:[{time:'60 min · Simulado',title:'2 problemas aleatórios',xp:50,steps:['60 min total, cronometrado']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Revisar gravações',xp:30,steps:['Pontos de melhoria: fluência, clareza, estrutura de resposta','Checkpoint: resolve Hard em ~30-35 min?']}]}
+]},
+{n:25,ph:4,t:'Hard Problems Intensivo',foco:'ganhar confiança em Hard',desc:'Combinando tópicos: DP + Tree, Graph + DP, Backtracking...',days:[
+ {label:'Seg',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — DP + Tree',xp:35,steps:['Resolver combinando tópicos']}]},
+ {label:'Ter',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — Graph + DP',xp:35,steps:['Resolver combinando tópicos']}]},
+ {label:'Qua',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — Backtracking',xp:35,steps:['Resolver']}]},
+ {label:'Qui',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — Sliding Window / Array',xp:35,steps:['Resolver']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Análise',title:'Documentar padrões',xp:30,steps:['Qual foi o padrão usado em cada problema da semana?']}]}
+]},
+{n:26,ph:4,t:'System Design Profundo ⭐',foco:'casos mais complexos, seu diferencial como sênior',desc:'Aplicar seu conhecimento real de .NET/backend em cenários de alta complexidade.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design Instagram / Photo Sharing" (1/2)',xp:30,steps:['Estudar o caso','Trade-offs de storage e CDN para imagens']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design Instagram / Photo Sharing" (2/2)',xp:30,steps:['Feed generation','Desenhar a arquitetura completa']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a Payment System" (1/2)',xp:30,steps:['Estudar o caso','Aplicar seu conhecimento real de .NET/backend']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a Payment System / Message Queue" (2/2)',xp:30,steps:['Completar o design','Trade-offs de consistência']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explicar arquitetura complexa em inglês',xp:30,steps:['Do zero, em 15 min, sem consultar anotações']}]}
+]},
+{n:27,ph:4,t:'Behavioral Interview Prep ⭐ seu diferencial',foco:'método STAR',desc:'6 anos de experiência = muitas histórias boas. Situation, Task, Action, Result.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · STAR',title:'História 1: maior sistema arquitetado',xp:30,steps:['Método STAR (Situation, Task, Action, Result)','Escrever em inglês']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · STAR',title:'História 2: conflito de equipe resolvido',xp:30,steps:['Escrever em inglês usando STAR']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · STAR',title:'História 3: falha em produção',xp:30,steps:['Ownership — como você resolveu','Escrever em inglês']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · STAR',title:'Histórias 4 e 5: decisão técnica difícil + otimização de performance',xp:30,steps:['Trade-offs entre 2 abordagens','Otimização com números/impacto']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Gravação',title:'Gravar todas as histórias',xp:30,steps:['Gravar as 5-6 histórias em inglês','Revisar fluência']}]}
+]},
+{n:28,ph:4,t:'Revisão Geral + Hard Problems',foco:'manter tudo afiado',desc:'Resolver Hard com confiança, sem pânico.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Hard',title:'1 Hard',xp:30,steps:['Resolver']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Hard',title:'1 Hard',xp:30,steps:['Resolver']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Medium',title:'2 Medium aleatórios',xp:30,steps:['Não perder flexibilidade']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Revisitar 1 problema de cada categoria',xp:30,steps:['Array, Tree, Graph, DP, Backtracking']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Checkpoint',title:'Autoavaliação',xp:30,steps:['Resolve Hard com confiança, sem pânico?']}]}
+]},
+{n:29,ph:4,t:'Portfolio e CV',foco:'CV, GitHub, LinkedIn em inglês',desc:'Preparar sua apresentação profissional para o mercado internacional.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · CV',title:'CV em inglês (1/2)',xp:30,steps:['Reescrever experiências com Ação + Resultado',"Ex: \"Reduced API latency by 40% by implementing Redis caching layer\""]}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · CV',title:'CV em inglês (2/2)',xp:30,steps:['Revisar e polir o CV completo']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · GitHub',title:'Atualizar repositórios',xp:30,steps:['Atualizar 2-3 repositórios .NET com README em inglês','Documentar decisões técnicas (por que essa arquitetura? por que esse banco?)']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LinkedIn',title:'Atualizar LinkedIn (1/2)',xp:30,steps:['Atualizar em inglês, destacar arquitetura e impacto, não só lista de tecnologias']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LinkedIn',title:'Atualizar LinkedIn (2/2)',xp:30,steps:['Conectar com recrutadores de tech internacionais']}]}
+]},
+{n:30,ph:4,t:'Final Push + Aplicação',foco:'começar a aplicar',desc:'Últimos ajustes e o início das candidaturas.',days:[
+ {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Mock',title:'Mock interview completo (1/2)',xp:30,steps:['Coding (40 min)']}]},
+ {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Mock',title:'Mock interview completo (2/2)',xp:30,steps:['System design (20 min) + behavioral (15 min)']}]},
+ {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Simulado',title:'3-5 problemas aleatórios',xp:30,steps:['Misturando dificuldades']}]},
+ {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Revisar pontos fracos',xp:30,steps:['Reforçar 1-2 tópicos específicos identificados nos mocks']}]},
+ {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Aplicação',title:'Revisar e começar a aplicar',xp:30,steps:['Revisar CV, GitHub e LinkedIn uma última vez','Começar a aplicar: LinkedIn, Wellfound, empresas que contratam .NET']}]}
+]}
+];
+
+let weekIdx=0;
+let DAYS=WEEKS[weekIdx].days;
+let cur=0;
+
+const DONE_KEY='bg_done_v1';
+let done=new Set(JSON.parse(localStorage.getItem(DONE_KEY)||'[]'));
+let notes=JSON.parse(localStorage.getItem('bg_notes')||'{}');
+let cloudStamp=null;
+const tabsEl=document.getElementById('dayTabs');
+const listEl=document.getElementById('taskList');
+const totalEl=document.getElementById('dayTotal');
+
+function key(di,ti){return WEEKS[weekIdx].n+':'+di+':'+ti}
+function minKey(wi,di){return 'min:'+WEEKS[wi].n+':'+di}
+function skipKey(wi,di){return 'skip:'+WEEKS[wi].n+':'+di}
+function isDayDone(wi,di){
+  if(done.has(minKey(wi,di)))return true;
+  const ds=WEEKS[wi].days;
+  return ds[di].tasks.every((t,ti)=>done.has(WEEKS[wi].n+':'+di+':'+ti));
+}
+function isDayResolved(wi,di){return isDayDone(wi,di)||done.has(skipKey(wi,di))}
+function skippedCount(){let c=0;done.forEach(k=>{if(k.indexOf('skip:')===0)c++});return c}
+function resolvedCount(){let c=0;for(let wi=0;wi<WEEKS.length;wi++){for(let di=0;di<WEEKS[wi].days.length;di++)if(isDayResolved(wi,di))c++;}return c}
+function dayComplete(di){return isDayDone(weekIdx,di)}
+function dayXP(di){let x=0;DAYS[di].tasks.forEach((t,ti)=>{if(done.has(key(di,ti)))x+=t.xp});return x}
+function weekXP(){let x=0;DAYS.forEach((d,di)=>x+=dayXP(di));return x}
+function completedDaysIn(wi){let c=0;WEEKS[wi].days.forEach((d,di)=>{if(isDayDone(wi,di))c++});return c}
+function totalCompleted(){let c=0;for(let i=0;i<WEEKS.length;i++)c+=completedDaysIn(i);return c}
+function curWeekIdx(){
+  for(let wi=0;wi<WEEKS.length;wi++){
+    const ds=WEEKS[wi].days;
+    for(let di=0;di<ds.length;di++) if(!isDayResolved(wi,di)) return wi;
+  }
+  return WEEKS.length-1;
+}
+function nextDayIdx(wi){
+  const ds=WEEKS[wi].days;
+  for(let di=0;di<ds.length;di++){ if(!isDayResolved(wi,di)) return di; }
+  return 0;
+}
+function toggleMin(i){
+  const k=minKey(weekIdx,i);
+  if(done.has(k))done.delete(k);else done.add(k);
+  done.delete(skipKey(weekIdx,i));
+  localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+  renderTabs();renderTasks();updateXP();updateProgress();saveToCloud();
+}
+function toggleSkip(i){
+  const k=skipKey(weekIdx,i);
+  if(done.has(k))done.delete(k);else done.add(k);
+  localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+  weekIdx=curWeekIdx();cur=nextDayIdx(weekIdx);
+  renderWeek();saveToCloud();
+}
+
+let studyWeek=1, liveWeek=0, levelPlain='Easy';
+function levelPair(w){
+  const b=[[8,'Easy',''],[16,'Easy','Medium'],[20,'Medium',''],[24,'Medium','Hard'],[28,'Hard',''],[30,'Hard','Pronto p/ entrevista']];
+  for(const x of b)if(w<=x[0])return[x[1],x[2]];
+  return['Pronto p/ entrevista',''];
+}
+function updateProgress(){
+  liveWeek=curWeekIdx();
+  studyWeek=WEEKS[liveWeek].n;
+  const studied=totalCompleted();
+  const owed=skippedCount();
+  document.getElementById('streakNum').textContent=Math.min(150,studied);
+  document.getElementById('weekVal').textContent=liveWeek+1;
+  const rp=PHASES[WEEKS[liveWeek].ph-1];
+  document.getElementById('realPhase').textContent='Fase '+rp.n;
+  document.getElementById('realPhaseName').textContent=rp.nome;
+  const[la,lz]=levelPair(studyWeek);
+  levelPlain=lz?`${la} → ${lz}`:la;
+  document.getElementById('levelVal').textContent=levelPlain;
+  renderPhase();
+  renderAssess();
+  renderMakeup();
+}
+
+const CHECKPOINTS=[5,10,15,20,25,30];
+function renderAssess(){
+  const el=document.getElementById('assessCard'); if(!el)return;
+  const next=CHECKPOINTS.find(c=>!done.has('assess:'+c))||30;
+  const due=studyWeek>=next && !done.has('assess:'+next);
+  el.className='assess'+(due?' due':'');
+  el.innerHTML=`
+    <div class="assess-ic"><i class="fa-solid ${due?'fa-bell':'fa-flag-checkered'}"></i></div>
+    <div class="assess-body">
+      <b>${due?`Checkpoint pendente — Semana ${next}`:`Próximo checkpoint · Semana ${next}`}</b>
+      <span>Grave uma resposta técnica cronometrada + resolva 1 problema do nível atual sem consulta, para medir progresso real.</span>
+    </div>
+    <div class="assess-actions">
+      <button class="btn" onclick="startAssessment()"><i class="fa-solid fa-play"></i> Rodar teste ↗</button>
+      ${due?`<button class="btn" onclick="markAssess(${next})"><i class="fa-solid fa-check"></i> Marcar feito</button>`:''}
+    </div>`;
+}
+function startAssessment(){
+  const p=`(I'm a senior backend .NET/Azure/SQL developer with 6 years of experience, currently on Week ${studyWeek}/30 of my interview-prep plan, approximate level ${levelPlain}, goal: a backend job abroad.) Run a short checkpoint for me: 1) give me one coding problem matching my current level and ask me to explain my approach out loud in English; 2) ask 3 quick questions covering topics from the last few weeks (grammar/vocab optional); 3) at the end, estimate my readiness and name 2 concrete things to improve. Start now.`;
+  ask(p);
+}
+function markAssess(week){
+  done.add('assess:'+week);
+  localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+  saveToCloud();
+  renderAssess();
+}
+
+function firstSkip(){
+  for(let wi=0;wi<WEEKS.length;wi++){for(let di=0;di<WEEKS[wi].days.length;di++)if(done.has(skipKey(wi,di)))return[wi,di];}
+  return null;
+}
+function gotoMakeup(){ const f=firstSkip(); if(!f)return; weekIdx=f[0];cur=f[1];renderWeek(); }
+function renderMakeup(){
+  const el=document.getElementById('makeupBar'); if(!el)return;
+  const owed=skippedCount();
+  if(owed<=0){el.innerHTML='';return;}
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:.7rem 1rem;margin-bottom:1rem;border-radius:12px;background:rgba(255,180,61,.1);border:1px solid rgba(255,180,61,.3);font-size:12.5px">
+    <i class="fa-solid fa-clock-rotate-left" style="color:var(--amber)"></i>
+    <span style="flex:1;color:var(--text-2)"><b style="color:var(--amber)">${owed} dia${owed>1?'s':''} pendente${owed>1?'s':''}</b> — dias pulados que você ainda deve (fazem parte dos 150). Faça a qualquer momento.</span>
+    <button onclick="gotoMakeup()" style="padding:6px 12px;border-radius:9px;border:1px solid rgba(255,180,61,.4);background:rgba(255,180,61,.14);color:var(--amber);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer">Fazer dia pendente</button>
+  </div>`;
+}
+
+const VERTICES=[
+ 'LeetCode problem-solving — algoritmos & estruturas de dados',
+ 'System Design — escalabilidade, databases, cache, filas',
+ 'Behavioral / STAR — "tell me about a time…" stories',
+ 'C# & .NET real-world mapping — conectar aos seus 6 anos de experiência',
+ 'Technical English — explicando conceitos em voz alta',
+ 'Mock interview — live coding & comunicação'
+];
+(function initHex(){
+  const sel=document.getElementById('vertexSel');
+  if(sel) sel.innerHTML=VERTICES.map((v,i)=>`<option value="${i}">${v}</option>`).join('');
+  const chips=document.getElementById('hexChips');
+  if(chips) chips.innerHTML=VERTICES.map(v=>`<span class="hexchip">${v.split(' — ')[0]}</span>`).join('');
+})();
+function weeklyPrompt(){
+  const W=WEEKS[weekIdx];
+  const P=PHASES[W.ph-1];
+  const v=VERTICES[+(document.getElementById('vertexSel').value||0)];
+  const p=`You are helping a senior backend .NET developer (6 years of experience) prepare for international software engineering interviews.\n\nContext: This week (Week ${W.n} of 30, "${W.t}") the focus is "${W.foco}". Current phase: ${P.n} (${P.nome}).\n\nTask: Based on the vertex "${v}", give me focused practice material for today. If it's a coding topic, give me one problem with hints (not the full solution) and ask me to explain my approach out loud in English. If it's system design or behavioral, act as the interviewer and ask me a question, then give feedback.\n\nAdapt the difficulty to my current phase.`;
+  ask(p);
+}
+function practice(kind){
+  const W=WEEKS[weekIdx];
+  const P=PHASES[W.ph-1];
+  const d=DAYS[cur];
+  const ctx=`(Context: I'm a senior backend .NET developer with 6 years of experience, preparing for an international job. I'm on Week ${studyWeek}/30, Phase ${P.n} (${P.nome}), this week's topic: ${W.t}. Adapt the difficulty to my level.) `;
+  const Pr={
+    leetcode:ctx+"Give me one LeetCode problem (this week's topic if possible) and let me solve it. Don't give the solution — give hints if I'm stuck, and ask me to explain my approach out loud in English.",
+    english:ctx+'Ask me to explain today\'s technical concept in English, then correct my grammar and vocabulary.',
+    interview:ctx+'Simulate a technical interview in English for a backend .NET role: mix live-coding think-aloud, system design and behavioral questions. Start with the first question and give me feedback.',
+    sysdesign:ctx+"Run a system design mock interview in English about this week's case study. Ask clarifying questions and evaluate my trade-off reasoning.",
+    lesson:ctx+`Start today's study session, focused on "${d?d.tasks[0]?.title||W.t:W.t}", adapted to my level.`
+  };
+  ask(Pr[kind]);
+}
+
+function renderWeek(){
+  const W=WEEKS[weekIdx];
+  DAYS=W.days;
+  updateProgress();
+  document.getElementById('wkTag').textContent=(weekIdx===liveWeek?'Semana atual · Semana ':'Semana · Semana ')+W.n;
+  document.getElementById('wkTitle').innerHTML=W.t;
+  document.getElementById('wkDesc').innerHTML=W.desc;
+  document.getElementById('wkPrev').disabled=weekIdx===0;
+  document.getElementById('wkNext').disabled=weekIdx===WEEKS.length-1;
+  renderTabs();renderTasks();updateXP();
+}
+function renderPhase(){
+  const P=PHASES[WEEKS[weekIdx].ph-1];
+  document.getElementById('phaseTitle').textContent=`Fase ${P.n} · Semanas ${P.ini}-${P.fim} — ${P.nome}`;
+  const pct=Math.min(100,Math.max(0,Math.round((studyWeek-P.ini+1)/(P.fim-P.ini+1)*100)));
+  document.getElementById('phasePct').textContent=pct+'%';
+  setTimeout(()=>{document.getElementById('barFill').style.width=pct+'%'},60);
+  document.getElementById('phaseMs').innerHTML=P.ms.map(m=>
+    `<div class="ms${studyWeek>=m[0]?' complete':(studyWeek>=m[0]-2?' active':'')}"><b>Sem ${m[0]}</b><span>${m[1]}</span></div>`
+  ).join('');
+}
+function renderTabs(){
+  tabsEl.innerHTML=DAYS.map((d,i)=>{
+    const ok=dayComplete(i);
+    const sk=done.has(skipKey(weekIdx,i));
+    return `<div class="day-tab${i===cur?' active':''}${(weekIdx===liveWeek&&i===nextDayIdx(weekIdx))?' today':''}${ok?' complete':(sk?' skipped':'')}" onclick="pick(${i})">
+      <b>${d.label}</b><span>${ok?'<i class="fa-solid fa-circle-check"></i> feito':(sk?'<i class="fa-solid fa-forward"></i> pulado':d.sub)}</span>
+    </div>`;
+  }).join('');
+}
+function renderTasks(){
+  const d=DAYS[cur];
+  totalEl.textContent=d.sub;
+  const total=d.tasks.length, doneCount=d.tasks.filter((t,i)=>done.has(key(cur,i))).length;
+  const minLogged=done.has(minKey(weekIdx,cur));
+  const skipped=done.has(skipKey(weekIdx,cur));
+  const complete=isDayDone(weekIdx,cur);
+  listEl.innerHTML=d.tasks.map((t,i)=>{
+    const isDone=done.has(key(cur,i));
+    return `<div class="task${isDone?' done':''}" onclick="toggle(${i})">
+      <div class="check"><i class="fa-solid fa-check"></i></div>
+      <div class="t-body">
+        <div class="t-time">${t.time}</div>
+        <div class="t-title">${t.title}</div>
+        <ul class="steps">${t.steps.map(s=>`<li>${s}</li>`).join('')}</ul>
+      </div>
+      <div class="pts">+${t.xp}</div>
+    </div>`;
+  }).join('') + (skipped
+    ? `<div class="day-done low"><i class="fa-solid fa-forward"></i>
+        <div><b>${d.label}: pulado</b><span>Você ainda deve este dia (parte dos 150). Volte quando quiser. <a onclick="toggleSkip(${cur})">desfazer</a></span></div>
+      </div>`
+    : minLogged
+    ? `<div class="day-done low"><i class="fa-solid fa-battery-quarter"></i>
+        <div><b>${d.label}: mínimo registrado</b><span>Dia de baixa energia — streak protegido. <a onclick="toggleMin(${cur})">desfazer</a></span></div>
+      </div>`
+    : complete
+    ? `<div class="day-done"><i class="fa-solid fa-circle-check"></i>
+        <div><b>${d.label} concluído!</b><span>+${dayXP(cur)} XP</span></div>
+      </div>`
+    : `<div class="day-progress">
+        <div class="dp-bar"><i style="width:${Math.round(doneCount/total*100)}%"></i></div>
+        <span>${doneCount} de ${total} tarefas · ${total-doneCount} restantes</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="min-btn" onclick="toggleMin(${cur})"><i class="fa-solid fa-battery-quarter"></i> Dia de baixa energia? Mínimo de 10 min</button>
+          <button class="min-btn" onclick="toggleSkip(${cur})" style="background:rgba(94,104,132,.14);border-color:var(--border-strong);color:var(--text-2)"><i class="fa-solid fa-forward"></i> Pular este dia (fazer depois)</button>
+        </div>
+      </div>`);
+}
+function pick(i){cur=i;renderTabs();renderTasks()}
+function navWeek(dir){
+  const n=weekIdx+dir;
+  if(n<0||n>=WEEKS.length)return;
+  weekIdx=n;
+  cur=(weekIdx===liveWeek)?nextDayIdx(weekIdx):0;
+  renderWeek();
+}
+function toggle(i){
+  const k=key(cur,i);
+  if(done.has(k))done.delete(k);else done.add(k);
+  done.delete(skipKey(weekIdx,cur));
+  localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+  renderTabs();renderTasks();updateXP();updateProgress();saveToCloud();
+}
+function updateXP(){document.getElementById('xpVal').textContent=weekXP()}
+
+// ===== Supabase sync (mesma infra do app English, tabela/linha diferente) =====
+const SB_URL='https://ysnwsrndphmgdtynwxtu.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlzbndzcm5kcGhtZ2R0eW53eHR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MTIxODEsImV4cCI6MjEwMDQ4ODE4MX0.HzO38CqXLw0JIa0B2uDEzA5CWRSYsuMdbCjRCJgICag';
+const ROW_ID='leticia-dotnet-30w';
+function setStatus(msg,icon,color){
+  const el=document.getElementById('syncStatus');
+  if(!el)return;
+  el.innerHTML=`<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+  el.style.color=color||'var(--text-3)';
+}
+let sb=null;
+try{ if(window.supabase) sb=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ console.warn('supabase init failed',e); }
+if(!sb) setStatus('Cloud off — só este dispositivo','fa-cloud-slash','var(--amber)');
+let saveT=null;
+function saveToCloud(){
+  if(!sb){setStatus('Cloud off — só este dispositivo','fa-cloud-slash','var(--amber)');return;}
+  clearTimeout(saveT);
+  saveT=setTimeout(async()=>{
+    try{
+      const srv=await sb.from('progress').select('done,updated_at').eq('id',ROW_ID).maybeSingle();
+      if(srv.data && srv.data.updated_at && cloudStamp && srv.data.updated_at!==cloudStamp && new Date(srv.data.updated_at)>new Date(cloudStamp)){
+        if(Array.isArray(srv.data.done)) done=new Set([...srv.data.done,...done]);
+        localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+        renderTabs();renderTasks();updateXP();updateProgress();
+        setStatus('Mesclado com outro dispositivo','fa-code-merge','var(--amber)');
+      }
+      const stamp=new Date().toISOString();
+      const payload={id:ROW_ID,done:[...done],notes,updated_at:stamp};
+      let res=await sb.from('progress').upsert(payload);
+      if(res.error){ res=await sb.from('progress').upsert({id:ROW_ID,done:[...done],updated_at:stamp}); }
+      if(res.error)throw res.error;
+      cloudStamp=stamp;
+      setStatus('Salvo · '+new Date().toLocaleTimeString(),'fa-cloud-arrow-up','var(--green)');
+    }catch(e){ console.warn('cloud save failed',e); setStatus('Falha ao salvar — verifique a tabela/policies','fa-triangle-exclamation','var(--amber)'); }
+  },500);
+}
+async function syncFromCloud(){
+  if(!sb)return;
+  setStatus('Sincronizando…','fa-cloud','var(--text-3)');
+  try{
+    let q=await sb.from('progress').select('done,notes,updated_at').eq('id',ROW_ID).maybeSingle();
+    if(q.error) q=await sb.from('progress').select('done,updated_at').eq('id',ROW_ID).maybeSingle();
+    if(q.error)throw q.error;
+    const data=q.data;
+    if(data){
+      if(Array.isArray(data.done)) done=new Set(data.done);
+      if(data.notes && typeof data.notes==='object') notes=data.notes;
+      cloudStamp=data.updated_at||null;
+      localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+      localStorage.setItem('bg_notes',JSON.stringify(notes));
+      weekIdx=curWeekIdx();
+      cur=nextDayIdx(weekIdx);
+      renderWeek();
+      setStatus('Sincronizado · '+new Date().toLocaleTimeString(),'fa-cloud-check','var(--green)');
+    }else{
+      saveToCloud();
+      setStatus('Cloud pronto (novo registro criado)','fa-cloud-check','var(--green)');
+    }
+  }catch(e){ console.warn('cloud sync failed',e); setStatus('Erro de cloud — verifique a tabela/policies','fa-triangle-exclamation','var(--amber)'); }
+}
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) syncFromCloud(); });
+
+weekIdx=curWeekIdx();
+cur=nextDayIdx(weekIdx);
+renderWeek();
+syncFromCloud();
+
+function ask(txt){
+  if(typeof sendPrompt==='function'){sendPrompt(txt)}
+  else{ navigator.clipboard?.writeText(txt); openModal('chat',txt); }
+}
+const modalBg=document.getElementById('modalBg'),modalBox=document.getElementById('modalBox');
+function openModal(type,extra){
+  let html='';
+  if(type==='resources'){
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">🧭</div><h2>Recursos recomendados</h2>
+    <p>Conteúdo técnico selecionado para o seu perfil de dev .NET backend.</p>
+    <ul class="m-list">
+      <li><i class="fa-brands fa-github"></i><div><b>LeetCode.com</b><small>Plataforma principal de exercícios</small></div></li>
+      <li><i class="fa-brands fa-youtube"></i><div><b>Neetcode.io</b><small>Playlists por tópico (YouTube), com padrões explicados</small></div></li>
+      <li><i class="fa-solid fa-laptop-code"></i><div><b>freeCodeCamp</b><small>Crash courses gratuitos de algoritmos e system design</small></div></li>
+      <li><i class="fa-solid fa-sitemap"></i><div><b>System Design Primer (GitHub)</b><small>Referência gratuita e completa de system design</small></div></li>
+      <li><i class="fa-solid fa-layer-group"></i><div><b>Anki</b><small>Deck de vocabulário técnico em inglês</small></div></li>
+      <li><i class="fa-solid fa-comments"></i><div><b>Claude / ChatGPT</b><small>Mock interviews, explicações e feedback em inglês</small></div></li>
+      <li><i class="fa-solid fa-briefcase"></i><div><b>"Software engineer mock interview" (YouTube)</b><small>Entrevistas reais com legendas em inglês</small></div></li>
+    </ul>`;
+  }else if(type==='progress'){
+    const daysDone=DAYS.filter((d,i)=>dayComplete(i)).length;
+    const P=PHASES[WEEKS[liveWeek].ph-1];
+    const nextMs=P.ms.find(m=>studyWeek<m[0])||P.ms[P.ms.length-1];
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">📈</div><h2>Seu progresso</h2>
+    <p><b>${Math.min(150,totalCompleted())} de 150 dias estudados</b> · Semana atual ${liveWeek+1} de ${WEEKS.length} · Fase ${P.n} (${P.nome}). Você deve <b>${skippedCount()}</b> dia(s) pulado(s). Esta semana: <b>${daysDone}/5 feitos</b> · <b>${weekXP()} XP</b>.</p>
+    <ul class="m-list">
+      <li><i class="fa-solid fa-signal"></i><div><b>Nível atual: ${levelPlain}</b><small>Avança automaticamente a cada fase (até "Pronto p/ entrevista" na semana 30)</small></div></li>
+      <li><i class="fa-solid fa-bullseye"></i><div><b>Fase ${P.n}: ${P.nome}</b><small>${P.n===1?'Fundamentos revisados e explicáveis em inglês':P.n===2?'Estruturas intermediárias + Medium com consistência':P.n===3?'DP, Hard e System Design (seu ponto forte)':'CV, GitHub, LinkedIn e aplicação'}</small></div></li>
+      <li><i class="fa-solid fa-flag-checkered"></i><div><b>Próximo marco: Semana ${nextMs[0]}</b><small>${nextMs[1]}</small></div></li>
+      <li><i class="fa-solid fa-forward"></i><div><b>Dias pendentes: ${skippedCount()}</b><small>Dias pulados que você ainda deve — parte dos 150. Volte com as setas (ou "Fazer dia pendente") para zerar</small></div></li>
+    </ul>
+    <button onclick="resetProgress()" style="width:100%;padding:.85rem;border-radius:12px;border:1px solid var(--border-strong);background:transparent;color:var(--text-2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">
+      <i class="fa-solid fa-rotate-left" style="margin-right:7px"></i>Resetar todo o progresso
+    </button>`;
+  }else if(type==='chat'){
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">💬</div><h2>Copiado!</h2>
+    <p>Este prompt foi copiado para a área de transferência. Cole no chat do Claude para começar:</p>
+    <ul class="m-list"><li><i class="fa-solid fa-quote-left"></i><div><b>${extra}</b></div></li></ul>`;
+  }
+  modalBox.innerHTML=html;
+  modalBg.classList.add('show');
+}
+function closeModal(){modalBg.classList.remove('show')}
+function resetProgress(){
+  if(!confirm('Resetar todo o progresso? Isso limpa todos os dias concluídos (localmente e na nuvem).'))return;
+  done=new Set();
+  localStorage.setItem(DONE_KEY,'[]');
+  saveToCloud();
+  weekIdx=0;cur=0;
+  renderWeek();
+  closeModal();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+</script>
+</body>
+</html>
