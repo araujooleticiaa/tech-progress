@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Backend Global · .NET → Vaga Internacional</title>
+<title>Backend Global · .NET → International Job</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -185,82 +185,82 @@ body{
   <div class="top">
     <div class="brand">
       <div class="logo">🌎</div>
-      <div><h1>Backend Global</h1><p>.NET Backend → vaga internacional · Leticia</p></div>
+      <div><h1>Backend Global</h1><p>.NET Backend → international job · Leticia</p></div>
     </div>
     <div class="streak">
       <i class="fa-solid fa-fire"></i>
-      <div><b id="streakNum">0</b><span>de 150 dias estudados</span></div>
+      <div><b id="streakNum">0</b><span>of 150 days studied</span></div>
     </div>
   </div>
 
-  <div id="syncStatus" style="font-size:12px;color:var(--text-3);margin:-0.6rem 0 1.2rem;display:flex;align-items:center;gap:7px"><i class="fa-solid fa-cloud"></i><span>Conectando…</span></div>
+  <div id="syncStatus" style="font-size:12px;color:var(--text-3);margin:-0.6rem 0 1.2rem;display:flex;align-items:center;gap:7px"><i class="fa-solid fa-cloud"></i><span>Connecting…</span></div>
 
   <div class="stats">
-    <div class="stat a"><div class="ic"><i class="fa-solid fa-calendar-week"></i></div><div class="val" id="weekVal">1</div><div class="lbl">semana atual · de 30</div></div>
-    <div class="stat b"><div class="ic"><i class="fa-solid fa-layer-group"></i></div><div class="val" id="realPhase">Fase 1</div><div class="lbl" id="realPhaseName">Revisão + Fundamentos</div></div>
-    <div class="stat c"><div class="ic"><i class="fa-solid fa-bolt"></i></div><div class="val"><span id="xpVal">0</span></div><div class="lbl">XP da semana</div></div>
-    <div class="stat d"><div class="ic"><i class="fa-solid fa-signal"></i></div><div class="val" id="levelVal">Easy</div><div class="lbl">Nível atual</div></div>
+    <div class="stat a"><div class="ic"><i class="fa-solid fa-calendar-week"></i></div><div class="val" id="weekVal">1</div><div class="lbl">current week · of 30</div></div>
+    <div class="stat b"><div class="ic"><i class="fa-solid fa-layer-group"></i></div><div class="val" id="realPhase">Phase 1</div><div class="lbl" id="realPhaseName">Review + Fundamentals</div></div>
+    <div class="stat c"><div class="ic"><i class="fa-solid fa-bolt"></i></div><div class="val"><span id="xpVal">0</span></div><div class="lbl">Weekly XP</div></div>
+    <div class="stat d"><div class="ic"><i class="fa-solid fa-signal"></i></div><div class="val" id="levelVal">Easy</div><div class="lbl">Current level</div></div>
   </div>
 
   <div class="phase-card">
-    <div class="phase-head"><h3 id="phaseTitle">Fase 1 · Semanas 1-8 — Revisão + Fundamentos</h3><span class="pct" id="phasePct">3%</span></div>
+    <div class="phase-head"><h3 id="phaseTitle">Phase 1 · Weeks 1-8 — Review + Fundamentals</h3><span class="pct" id="phasePct">3%</span></div>
     <div class="bar"><i id="barFill"></i></div>
     <div class="phase-milestones" id="phaseMs"></div>
   </div>
 
   <div class="week-banner" id="weekBanner">
-    <button class="wk-arrow" id="wkPrev" onclick="navWeek(-1)" aria-label="Semana anterior"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="wk-arrow" id="wkPrev" onclick="navWeek(-1)" aria-label="Previous week"><i class="fa-solid fa-chevron-left"></i></button>
     <div class="wk-content"><div class="wb-tag" id="wkTag"></div><h3 id="wkTitle"></h3><p id="wkDesc"></p></div>
-    <button class="wk-arrow" id="wkNext" onclick="navWeek(1)" aria-label="Próxima semana"><i class="fa-solid fa-chevron-right"></i></button>
+    <button class="wk-arrow" id="wkNext" onclick="navWeek(1)" aria-label="Next week"><i class="fa-solid fa-chevron-right"></i></button>
   </div>
 
-  <div class="sec-title"><i class="fa-solid fa-diagram-project"></i> Prompt semanal · seu hexágono de estudo</div>
+  <div class="sec-title"><i class="fa-solid fa-diagram-project"></i> Weekly prompt · your study hexagon</div>
   <div class="hexbox">
     <div class="hex-row">
-      <label for="vertexSel">Foco</label>
+      <label for="vertexSel">Focus</label>
       <select id="vertexSel"></select>
-      <button class="btn hex-gen" onclick="weeklyPrompt()"><i class="fa-solid fa-wand-magic-sparkles"></i> Gerar prompt de estudo ↗</button>
+      <button class="btn hex-gen" onclick="weeklyPrompt()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate study prompt ↗</button>
     </div>
     <div class="hex-chips" id="hexChips"></div>
-    <p class="hex-note"><b>Ritual de segunda-feira:</b> antes das tarefas do dia, gere o prompt acima e use como ponto de partida com o Claude/ChatGPT para guiar a prática de hoje.</p>
+    <p class="hex-note"><b>Monday ritual:</b> before today's tasks, generate the prompt above and use it as a starting point with Claude/ChatGPT to guide today's practice.</p>
   </div>
 
-  <div class="sec-title"><i class="fa-solid fa-list-check"></i> Plano de estudo detalhado<span class="day-badge" id="dayTotal">30 min</span></div>
+  <div class="sec-title"><i class="fa-solid fa-list-check"></i> Detailed study plan<span class="day-badge" id="dayTotal">30 min</span></div>
   <div class="day-tabs" id="dayTabs"></div>
   <div id="makeupBar"></div>
   <div class="tasks" id="taskList"></div>
 
-  <div class="sec-title"><i class="fa-solid fa-fire"></i> Regra de ouro</div>
+  <div class="sec-title"><i class="fa-solid fa-fire"></i> Golden rule</div>
   <div class="tasks" style="margin-bottom:1.6rem">
     <div class="ptask"><div class="t-body">
-      <div class="t-time">Consistência &gt; Intensidade</div>
-      <div class="t-title">30 minutos todo dia útil vale mais que maratonas de fim de semana</div>
+      <div class="t-time">Consistency &gt; Intensity</div>
+      <div class="t-title">30 minutes every weekday beats weekend marathons</div>
       <ul class="steps">
-        <li>Seu cérebro aprende por <b>repetição espaçada</b>, não por volume concentrado</li>
-        <li>Você já tem <b>experiência real</b> — falta treinar o formato de entrevista</li>
-        <li>30 semanas é tempo suficiente. Bora! 🚀</li>
+        <li>Your brain learns through <b>spaced repetition</b>, not concentrated volume</li>
+        <li>You already have <b>real experience</b> — you just need to train the interview format</li>
+        <li>30 weeks is plenty of time. Let's go! 🚀</li>
       </ul>
     </div></div>
   </div>
 
-  <div class="sec-title"><i class="fa-solid fa-clipboard-check"></i> Checkpoint · a cada 5 semanas</div>
+  <div class="sec-title"><i class="fa-solid fa-clipboard-check"></i> Checkpoint · every 5 weeks</div>
   <div id="assessCard" class="assess"></div>
 
-  <div class="sec-title"><i class="fa-solid fa-dumbbell"></i> Prática rápida</div>
+  <div class="sec-title"><i class="fa-solid fa-dumbbell"></i> Quick practice</div>
   <div class="practice">
-    <div class="pcard p1" onclick="practice('leetcode')"><div class="pic"><i class="fa-solid fa-code"></i></div><h4>LeetCode</h4><span>Problema aleatório</span></div>
-    <div class="pcard p2" onclick="practice('english')"><div class="pic"><i class="fa-solid fa-comments"></i></div><h4>English</h4><span>Explicar em voz alta</span></div>
-    <div class="pcard p3" onclick="practice('interview')"><div class="pic"><i class="fa-solid fa-briefcase"></i></div><h4>Mock Interview</h4><span>Simulação completa</span></div>
-    <div class="pcard p4" onclick="practice('sysdesign')"><div class="pic"><i class="fa-solid fa-sitemap"></i></div><h4>System Design</h4><span>Case da semana</span></div>
+    <div class="pcard p1" onclick="practice('leetcode')"><div class="pic"><i class="fa-solid fa-code"></i></div><h4>LeetCode</h4><span>Random problem</span></div>
+    <div class="pcard p2" onclick="practice('english')"><div class="pic"><i class="fa-solid fa-comments"></i></div><h4>English</h4><span>Explain out loud</span></div>
+    <div class="pcard p3" onclick="practice('interview')"><div class="pic"><i class="fa-solid fa-briefcase"></i></div><h4>Mock Interview</h4><span>Full simulation</span></div>
+    <div class="pcard p4" onclick="practice('sysdesign')"><div class="pic"><i class="fa-solid fa-sitemap"></i></div><h4>System Design</h4><span>This week's case</span></div>
   </div>
 
   <div class="cta-row">
-    <button class="btn primary" onclick="practice('lesson')"><i class="fa-solid fa-play"></i> Começar estudo de hoje</button>
-    <button class="btn" onclick="openModal('resources')"><i class="fa-solid fa-compass"></i> Recursos</button>
-    <button class="btn" onclick="openModal('progress')"><i class="fa-solid fa-chart-line"></i> Progresso</button>
+    <button class="btn primary" onclick="practice('lesson')"><i class="fa-solid fa-play"></i> Start today's study</button>
+    <button class="btn" onclick="openModal('resources')"><i class="fa-solid fa-compass"></i> Resources</button>
+    <button class="btn" onclick="openModal('progress')"><i class="fa-solid fa-chart-line"></i> Progress</button>
   </div>
 
-  <div class="footer"><b>Backend Global</b> · Plano pessoal de 30 semanas · Segunda a sexta, ~30 min/dia</div>
+  <div class="footer"><b>Backend Global</b> · Personal 30-week plan · Monday to Friday, ~30 min/day</div>
 </div>
 
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal" id="modalBox"></div></div>
@@ -268,233 +268,233 @@ body{
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const PHASES=[
- {n:1,ini:1,fim:8,nome:'Revisão + Fundamentos',ms:[[3,'OOP e Patterns em inglês'],[6,'Estruturas básicas dominadas'],[8,'Checkpoint Fase 1']]},
- {n:2,ini:9,fim:16,nome:'Intermediário',ms:[[11,'DFS/BFS de memória'],[14,'Mock interview em texto'],[16,'Checkpoint Fase 2']]},
- {n:3,ini:17,fim:24,nome:'Avançado',ms:[[21,'System Design — seu ponto forte'],[23,'Graphs avançado'],[24,'Mock interviews completos']]},
- {n:4,ini:25,fim:30,nome:'Polimento',ms:[[27,'Behavioral STAR pronto'],[29,'CV/GitHub/LinkedIn prontos'],[30,'Aplicação iniciada']]}
+ {n:1,ini:1,fim:8,nome:'Review + Fundamentals',ms:[[3,'OOP and Patterns in English'],[6,'Core structures mastered'],[8,'Phase 1 checkpoint']]},
+ {n:2,ini:9,fim:16,nome:'Intermediate',ms:[[11,'DFS/BFS from memory'],[14,'Text-based mock interview'],[16,'Phase 2 checkpoint']]},
+ {n:3,ini:17,fim:24,nome:'Advanced',ms:[[21,'System Design — your strong suit'],[23,'Advanced graphs'],[24,'Full mock interviews']]},
+ {n:4,ini:25,fim:30,nome:'Polish',ms:[[27,'Behavioral STAR ready'],[29,'CV/GitHub/LinkedIn ready'],[30,'Applications started']]}
 ];
 
 const WEEKS=[
-{n:1,ph:1,t:'Setup + Revisão de OOP',foco:'os 4 pilares de OOP',desc:'Você domina isso na prática (em C#) — esta semana é sobre nomear e explicar em inglês, sob pressão.',days:[
- {label:'Seg',sub:'30 min',tasks:[
-   {time:'15 min · Setup',title:'Configurar o ambiente',xp:15,steps:['Criar conta no LeetCode','Instalar Python (python.org)','Configurar VS Code com extensão Python']},
-   {time:'15 min · Prática',title:'Hello World em Python',xp:15,steps:['Rodar seu primeiro script .py','Comparar sintaxe com C# (print vs Console.WriteLine)','Testar list, dict, set no console interativo']}
+{n:1,ph:1,t:'Setup + OOP Review',foco:'the 4 pillars of OOP',desc:'You already master this in practice (in C#) — this week is about naming and explaining it in English, under pressure.',days:[
+ {label:'Mon',sub:'30 min',tasks:[
+   {time:'15 min · Setup',title:'Set up your LeetCode environment',xp:15,steps:['Create a LeetCode account','Select C# as your default language','Open a sample problem and read the C# starter template']},
+   {time:'15 min · Practice',title:'Submit a warm-up solution in C#',xp:15,steps:['Solve a trivial problem just to confirm your C# submission runs on LeetCode','Get familiar with the online judge flow (Run vs Submit)','Note any C# quirks (method signature, the Solution class, etc.)']}
  ]},
- {label:'Ter',sub:'30 min',tasks:[
-   {time:'30 min · Teoria + vocabulário',title:'Os 4 pilares de OOP em inglês',xp:30,steps:['Ler definição de Encapsulation, Abstraction, Inheritance, Polymorphism em inglês','Anotar vocabulário técnico novo (encapsulate, inherit, override, abstract class...)','Relacionar cada pilar a um exemplo do seu código em C#']}
+ {label:'Tue',sub:'30 min',tasks:[
+   {time:'30 min · Theory + vocabulary',title:'The 4 pillars of OOP in English',xp:30,steps:['Read the definition of Encapsulation, Abstraction, Inheritance, Polymorphism in English','Write down new technical vocabulary (encapsulate, inherit, override, abstract class...)','Map each pillar to an example from your own C# code']}
  ]},
- {label:'Qua',sub:'30 min',tasks:[
-   {time:'30 min · Speaking',title:'Praticar explicar em voz alta',xp:30,steps:["Responda em voz alta: \"What is polymorphism?\"",'Grave se possível e ouça depois','Escrever 2-3 frases por pilar, em inglês']}
+ {label:'Wed',sub:'30 min',tasks:[
+   {time:'30 min · Speaking',title:'Practice explaining out loud',xp:30,steps:["Answer out loud: \"What is polymorphism?\"",'Record yourself if possible and listen back','Write 2-3 sentences per pillar, in English']}
  ]},
- {label:'Qui',sub:'30 min',tasks:[
-   {time:'30 min · SOLID',title:'SOLID principles em inglês',xp:30,steps:['Revisar Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion','Nomear e explicar cada princípio em inglês, com exemplo do seu trabalho']}
+ {label:'Thu',sub:'30 min',tasks:[
+   {time:'30 min · SOLID',title:'SOLID principles in English',xp:30,steps:['Review Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion','Name and explain each principle in English, with an example from your work']}
  ]},
- {label:'Sex',sub:'30 min',tasks:[
-   {time:'30 min · LeetCode',title:'"Two Sum" em Python',xp:30,steps:['Resolver com força bruta primeiro','Depois otimizar com hash map','Comparar mentalmente: como seria em C# com Dictionary<K,V>?']}
+ {label:'Fri',sub:'30 min',tasks:[
+   {time:'30 min · LeetCode',title:'"Two Sum" in C#',xp:30,steps:['Solve it with brute force first','Then optimize using a Dictionary<K,V>','Compare the time complexity of both approaches']}
  ]}
 ]},
-{n:2,ph:1,t:'Design Patterns em inglês',foco:'Singleton, Factory, Builder, Repository, Observer, Strategy',desc:'Patterns que você já usa no dia a dia — agora nomeados e explicados em inglês.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Creational Patterns — estudo',xp:30,steps:['Revisar Singleton, Factory, Builder','Buscar onde você já usou cada um em .NET']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explicar patterns em inglês',xp:30,steps:["Responda em inglês: \"Why would you use a Factory pattern?\"",'Escrever a explicação de cada pattern em 2-3 frases']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Structural/Behavioral Patterns — estudo',xp:30,steps:['Revisar Repository, Observer, Strategy','Relacionar a exemplos do seu código']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explicar patterns em inglês',xp:30,steps:["Responda em inglês: \"Have you used the Repository pattern? Explain it.\"",'Praticar em voz alta']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'2 Easy de Arrays',xp:30,steps:['Resolver 2 problemas Easy de Arrays em Python','Escrever pseudocódigo em inglês antes de codar']}]}
+{n:2,ph:1,t:'Design Patterns in English',foco:'Singleton, Factory, Builder, Repository, Observer, Strategy',desc:'Patterns you already use daily — now named and explained in English.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Creational Patterns — study',xp:30,steps:['Review Singleton, Factory, Builder','Find where you\'ve already used each one in .NET']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explain patterns in English',xp:30,steps:["Answer in English: \"Why would you use a Factory pattern?\"",'Write the explanation of each pattern in 2-3 sentences']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Structural/Behavioral Patterns — study',xp:30,steps:['Review Repository, Observer, Strategy','Map them to examples from your own code']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explain patterns in English',xp:30,steps:["Answer in English: \"Have you used the Repository pattern? Explain it.\"",'Practice out loud']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'2 Easy Array problems in C#',xp:30,steps:['Solve 2 Easy Array problems in C#','Write the pseudocode in English before coding']}]}
 ]},
-{n:3,ph:1,t:'Async/Await e Concorrência',foco:'thread, task, blocking, race condition',desc:'Formalizar em inglês um conceito que você já domina na prática.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Async/Await — fundamentos',xp:30,steps:['O que é async/await e por que existe?','I/O bound vs CPU bound','Vocabulário: thread, task, blocking, non-blocking']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Vocabulário',title:'Deadlock e race condition',xp:30,steps:['Definições em inglês','Relacionar a um bug real que você já resolveu']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Concurrency vs Parallelism',xp:30,steps:["Escrever resposta em inglês (3-4 frases): \"What's the difference between concurrency and parallelism?\"",'Praticar falar em voz alta']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Strings (1/2)',xp:30,steps:['Resolver "Reverse String"','Resolver "Valid Anagram"']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Strings (2/2)',xp:30,steps:['Resolver "First Unique Character in a String"','Revisar os 3 problemas da semana']}]}
+{n:3,ph:1,t:'Async/Await and Concurrency',foco:'thread, task, blocking, race condition',desc:'Formalize in English a concept you already master in practice.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Async/Await — fundamentals',xp:30,steps:['What is async/await and why does it exist?','I/O bound vs CPU bound','Vocabulary: thread, task, blocking, non-blocking']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Vocabulary',title:'Deadlock and race condition',xp:30,steps:['Definitions in English','Relate it to a real bug you\'ve already fixed']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Concurrency vs Parallelism',xp:30,steps:["Write an answer in English (3-4 sentences): \"What's the difference between concurrency and parallelism?\"",'Practice saying it out loud']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Strings (1/2)',xp:30,steps:['Solve "Reverse String" in C#','Solve "Valid Anagram" in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Strings (2/2)',xp:30,steps:['Solve "First Unique Character in a String" in C#','Review the 3 problems from this week']}]}
 ]},
-{n:4,ph:1,t:'Databases',foco:'ACID, indexing, normalization',desc:'Formalizar seu conhecimento de bancos de dados — e explicá-lo em inglês.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'SQL vs NoSQL',xp:30,steps:['Quando usar cada um?','Vocabulário: ACID (Atomicity, Consistency, Isolation, Durability)']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Vocabulário',title:'Vocabulário de databases',xp:30,steps:['indexing, normalization, foreign key, constraint, transaction — definições em inglês']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explicar indexing em inglês',xp:30,steps:['Como um índice funciona? Por que acelera queries?',"Praticar: \"How does a database index work?\""]}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Hash Maps (1/2)',xp:30,steps:['Resolver "Contains Duplicate"']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Hash Maps (2/2)',xp:30,steps:['Resolver "Group Anagrams" (introdução, pode ficar incompleto)']}]}
+{n:4,ph:1,t:'Databases',foco:'ACID, indexing, normalization',desc:'Formalize your database knowledge — and explain it in English.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'SQL vs NoSQL',xp:30,steps:['When to use each one?','Vocabulary: ACID (Atomicity, Consistency, Isolation, Durability)']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Vocabulary',title:'Database vocabulary',xp:30,steps:['indexing, normalization, foreign key, constraint, transaction — definitions in English']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explain indexing in English',xp:30,steps:['How does an index work? Why does it speed up queries?',"Practice: \"How does a database index work?\""]}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Hash Maps (1/2)',xp:30,steps:['Solve "Contains Duplicate" in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Hash Maps (2/2)',xp:30,steps:['Solve "Group Anagrams" in C# (intro, ok if incomplete)']}]}
 ]},
-{n:5,ph:1,t:'Hash Maps / Dictionaries',foco:'hashing, colisões, O(1)',desc:'Estrutura crítica para entrevistas — reconhecer quando usar em vez de força bruta.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Por que Hash Map é O(1) em média?',xp:30,steps:['Entender hashing e complexidade média','Colisões: chaining vs open addressing']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Comparação',title:'Dictionary<K,V> vs dict',xp:30,steps:['Comparar sintaxe C# vs Python (mesma ideia)','Reescrever 2 exemplos do seu código C# em Python']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Group Anagrams"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Two Sum" revisitado',xp:30,steps:['Resolver com hash map (não força bruta)','Comparar complexidade com a solução da Semana 1']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Majority Element"',xp:30,steps:['Resolver no LeetCode','Revisar: quando usar hash map em vez de força bruta?']}]}
+{n:5,ph:1,t:'Hash Maps / Dictionaries',foco:'hashing, collisions, O(1)',desc:'Critical structure for interviews — recognize when to use it instead of brute force.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Why is a Hash Map O(1) on average?',xp:30,steps:['Understand hashing and average complexity','Collisions: chaining vs open addressing']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Deep dive',title:'Dictionary<K,V> deep dive',xp:30,steps:['Review TryGetValue and ContainsKey, and their Big-O','Rewrite 2 examples from your own code using Dictionary<K,V> explicitly for an algorithmic problem']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Group Anagrams"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Two Sum" revisited',xp:30,steps:['Solve it with a Dictionary<K,V> (not brute force)','Compare the complexity with Week 1\'s solution']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Majority Element"',xp:30,steps:['Solve it in C#','Review: when to use a hash map instead of brute force?']}]}
 ]},
-{n:6,ph:1,t:'Stacks e Queues',foco:'LIFO vs FIFO',desc:'Reconhecer qual estrutura usar olhando o enunciado do problema.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'LIFO vs FIFO',xp:30,steps:['Conceito de Stack (LIFO) e Queue (FIFO)','Vocabulário: push, pop, enqueue, dequeue']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Aplicação real',title:'Onde você já usou isso',xp:30,steps:['Pensar em exemplos de produção (undo/redo, filas de processamento, message queues)','Escrever 2 frases em inglês descrevendo um caso real']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Valid Parentheses"',xp:30,steps:['Resolver no LeetCode (Stack)']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Min Stack"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Implement Queue using Stacks"',xp:30,steps:['Resolver no LeetCode','Revisar: qual estrutura usar olhando o enunciado?']}]}
+{n:6,ph:1,t:'Stacks and Queues',foco:'LIFO vs FIFO',desc:'Recognize which structure to use just by reading the problem statement.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'LIFO vs FIFO',xp:30,steps:['Concept of Stack (LIFO) and Queue (FIFO)','Vocabulary: push, pop, enqueue, dequeue']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Real-world use',title:'Where have you already used this',xp:30,steps:['Think of production examples (undo/redo, processing queues, message queues)','Write 2 sentences in English describing a real case']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Valid Parentheses"',xp:30,steps:['Solve it in C# (Stack)']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Min Stack"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Implement Queue using Stacks"',xp:30,steps:['Solve it in C#','Review: which structure to use by reading the statement?']}]}
 ]},
-{n:7,ph:1,t:'Linked Lists',foco:'node, pointer, traversal',desc:'Estrutura de ponteiros — menos comum em C# high-level, mas essencial em entrevistas.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Node, pointer, traversal',xp:30,steps:['Conceitos fundamentais','Desenhar no papel uma linked list simples']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Linked List vs Array',xp:30,steps:['Trade-offs de inserção/remoção','Quando cada estrutura é melhor?']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Reverse Linked List"',xp:30,steps:['Resolver sem olhar solução']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Merge Two Sorted Lists"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Middle of the Linked List"',xp:30,steps:['Resolver no LeetCode','Revisar os 3 problemas da semana']}]}
+{n:7,ph:1,t:'Linked Lists',foco:'node, pointer, traversal',desc:'Pointer-based structure — less common in high-level C#, but essential for interviews.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Node, pointer, traversal',xp:30,steps:['Fundamental concepts','Draw a simple linked list on paper']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Linked List vs Array',xp:30,steps:['Insertion/removal trade-offs','When is each structure better?']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Reverse Linked List"',xp:30,steps:['Solve it in C# without looking at the solution']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Merge Two Sorted Lists"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Middle of the Linked List"',xp:30,steps:['Solve it in C#','Review the 3 problems from this week']}]}
 ]},
-{n:8,ph:1,t:'Inglês Técnico Falado + Revisão Geral',foco:'checkpoint da Fase 1',desc:'Consolidar tudo: explique OOP, Patterns, Async e Databases em inglês, com confiança.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Gravação',title:'"Walk me through your backend experience"',xp:30,steps:['Gravar vídeo de 2-3 min em inglês','Revisar gramática']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Refino',title:'Regravar e refinar',xp:30,steps:['Ouvir a gravação de segunda','Regravar corrigindo fluência']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Revisão mista',title:'1 problema de cada categoria',xp:30,steps:['Array, String, Hash, Stack, Linked List — escolha 1 rápido de cada']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Simulado',title:'2 Easy cronometrados',xp:30,steps:['15 min cada','Falar em voz alta em inglês enquanto resolve']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Checkpoint',title:'Revisão geral da Fase 1',xp:30,steps:['O que ficou confuso? Reforçar esses pontos','Checkpoint: explica OOP, Patterns, Async e Databases em inglês com confiança?']}]}
+{n:8,ph:1,t:'Spoken Technical English + General Review',foco:'Phase 1 checkpoint',desc:'Consolidate everything: explain OOP, Patterns, Async and Databases in English, with confidence.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Recording',title:'"Walk me through your backend experience"',xp:30,steps:['Record a 2-3 min video in English','Review grammar']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Refine',title:'Re-record and refine',xp:30,steps:['Listen to Monday\'s recording','Re-record, fixing fluency issues']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Mixed review',title:'1 problem from each category',xp:30,steps:['Array, String, Hash, Stack, Linked List — pick 1 quick one from each']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · Timed mock',title:'2 timed Easy problems',xp:30,steps:['15 min each','Speak out loud in English while solving']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Checkpoint',title:'Phase 1 general review',xp:30,steps:['What\'s still unclear? Reinforce it','Checkpoint: can you explain OOP, Patterns, Async and Databases in English with confidence?']}]}
 ]},
-{n:9,ph:2,t:'Binary Search',foco:'O(log n)',desc:'Algoritmo muito cobrado — vários problemas Medium escondem binary search dentro.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Como funciona Binary Search',xp:30,steps:['Por que precisa de array ordenado?','Complexidade O(log n)']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Implementação',title:'Implementar do zero',xp:30,steps:['Implementar versão iterativa','Implementar versão recursiva']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Binary Search"',xp:30,steps:['Resolver o problema clássico']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"First Bad Version"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Search in Rotated Sorted Array"',xp:30,steps:['Resolver no LeetCode']}]}
+{n:9,ph:2,t:'Binary Search',foco:'O(log n)',desc:'A frequently tested algorithm — many Medium problems hide binary search inside.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'How Binary Search works',xp:30,steps:['Why does it need a sorted array?','O(log n) complexity']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Implementation',title:'Implement it from scratch',xp:30,steps:['Implement the iterative version','Implement the recursive version']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Binary Search"',xp:30,steps:['Solve the classic problem in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"First Bad Version"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Search in Rotated Sorted Array"',xp:30,steps:['Solve it in C#']}]}
 ]},
-{n:10,ph:2,t:'Trees — Fundamentos',foco:'root, leaf, height, depth, traversal',desc:'Estrutura muito cobrada em entrevistas — desenhe no papel enquanto resolve.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Conceitos de árvore',xp:30,steps:['root, leaf, height, depth']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Tipos de traversal',xp:30,steps:['in-order, pre-order, post-order','Desenhar árvores no papel']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Maximum Depth of Binary Tree"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Invert Binary Tree"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Balanced Binary Tree"',xp:30,steps:['Resolver no LeetCode']}]}
+{n:10,ph:2,t:'Trees — Fundamentals',foco:'root, leaf, height, depth, traversal',desc:'A heavily tested structure — draw it on paper as you solve.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Tree concepts',xp:30,steps:['root, leaf, height, depth']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Traversal types',xp:30,steps:['in-order, pre-order, post-order','Draw trees on paper']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Maximum Depth of Binary Tree"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Invert Binary Tree"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Balanced Binary Tree"',xp:30,steps:['Solve it in C#']}]}
 ]},
-{n:11,ph:2,t:'Tree Traversal — DFS e BFS',foco:'DFS vs BFS',desc:'Os dois algoritmos mais usados em árvores e grafos.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'DFS',xp:30,steps:['Versão recursiva (mais simples)','Quando usar?']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'BFS',xp:30,steps:['Versão iterativa, usa Queue','Quando usar cada um?']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Binary Tree Level Order Traversal" (BFS)',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Path Sum" (DFS)',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Lowest Common Ancestor"',xp:30,steps:['Resolver no LeetCode','Checkpoint: implementa DFS e BFS de memória?']}]}
+{n:11,ph:2,t:'Tree Traversal — DFS and BFS',foco:'DFS vs BFS',desc:'The two most used algorithms on trees and graphs.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'DFS',xp:30,steps:['Recursive version (simpler)','When to use it?']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Theory',title:'BFS',xp:30,steps:['Iterative version, uses a Queue','When to use each one?']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Binary Tree Level Order Traversal" (BFS)',xp:30,steps:['Solve it in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Path Sum" (DFS)',xp:30,steps:['Solve it in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Lowest Common Ancestor"',xp:30,steps:['Solve it in C#','Checkpoint: can you implement DFS and BFS from memory?']}]}
 ]},
-{n:12,ph:2,t:'Sorting Algorithms',foco:'Merge Sort e Quick Sort',desc:'Raramente você implementa sort do zero, mas precisa entender complexidade para escolher a estrutura certa.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Merge Sort',xp:30,steps:['O(n log n), estável, divide and conquer']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Quick Sort',xp:30,steps:['O(n log n) médio, in-place']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Merge Intervals"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Non-overlapping Intervals"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Sort Colors" (Dutch flag)',xp:30,steps:['Resolver no LeetCode']}]}
+{n:12,ph:2,t:'Sorting Algorithms',foco:'Merge Sort and Quick Sort',desc:'You rarely implement sort from scratch, but you need to understand complexity to pick the right structure.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Merge Sort',xp:30,steps:['O(n log n), stable, divide and conquer']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Quick Sort',xp:30,steps:['O(n log n) average, in-place']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Merge Intervals"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Non-overlapping Intervals"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Sort Colors" (Dutch flag)',xp:30,steps:['Solve it in C#']}]}
 ]},
-{n:13,ph:2,t:'Graphs — Fundamentos',foco:'adjacency list vs matrix',desc:'Essencial para backend: dependency graphs, service mesh, comunicação entre microsserviços.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'O que é um grafo',xp:30,steps:['Vértices + arestas','Representação: adjacency list vs adjacency matrix']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Conexão real',title:'Conexão com o seu trabalho',xp:30,steps:['Dependency graphs, service mesh, microservices communication','Escrever 2 frases em inglês relacionando ao seu trabalho']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Number of Islands"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Clone Graph"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Course Schedule" (detectar ciclo)',xp:30,steps:['Resolver no LeetCode','Comparar com dependency resolution real']}]}
+{n:13,ph:2,t:'Graphs — Fundamentals',foco:'adjacency list vs matrix',desc:'Essential for backend work: dependency graphs, service mesh, microservice communication.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'What is a graph',xp:30,steps:['Vertices + edges','Representation: adjacency list vs adjacency matrix']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Real-world link',title:'Connection to your work',xp:30,steps:['Dependency graphs, service mesh, microservices communication','Write 2 sentences in English relating it to your work']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Number of Islands"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Clone Graph"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Course Schedule" (cycle detection)',xp:30,steps:['Solve it in C#','Compare it with real dependency resolution']}]}
 ]},
-{n:14,ph:2,t:'Inglês Conversacional + Revisão',foco:'entrevistas reais',desc:'Praticar fluência assistindo entrevistas reais e fazendo um mock interview em texto.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Listening',title:'Entrevista técnica real (1/2)',xp:30,steps:['YouTube, com legendas em inglês','Pausar e tentar prever a resposta']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Listening',title:'Entrevista técnica real (2/2)',xp:30,steps:['Continuar o vídeo','Anotar expressões novas']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Vocabulário',title:'Revisão das expressões',xp:30,steps:['Revisar as expressões anotadas','Escrever frases próprias usando elas']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Mock interview',title:'Mock interview em texto',xp:30,steps:['Simular entrevistador (Claude/ChatGPT) fazendo perguntas técnicas em inglês']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Revisitar 2 Medium já feitos',xp:30,steps:['Tentar resolver sem olhar solução','Comparar abordagem atual vs anterior']}]}
+{n:14,ph:2,t:'Conversational English + Review',foco:'real interviews',desc:'Practice fluency by watching real interviews and doing a text-based mock interview.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Listening',title:'Real technical interview (1/2)',xp:30,steps:['YouTube, with English subtitles','Pause and try to predict the answer']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Listening',title:'Real technical interview (2/2)',xp:30,steps:['Continue the video','Write down new expressions']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Vocabulary',title:'Review the expressions',xp:30,steps:['Review the expressions you wrote down','Write your own sentences using them']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · Mock interview',title:'Text-based mock interview',xp:30,steps:['Have an interviewer (Claude/ChatGPT) ask you technical questions in English']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Review',title:'Revisit 2 Medium problems',xp:30,steps:['Try solving them without looking at the solution','Compare your current approach vs the previous one']}]}
 ]},
-{n:15,ph:2,t:'Consolidação + Push para Medium',foco:'elevar o nível de dificuldade',desc:'Cronometrar e resolver Medium com consistência.',days:[
- {label:'Seg',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Array',xp:25,steps:['Resolver cronometrado (20-25 min)']}]},
- {label:'Ter',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Tree',xp:25,steps:['Resolver cronometrado']}]},
- {label:'Qua',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Graph',xp:25,steps:['Resolver cronometrado']}]},
- {label:'Qui',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Hash',xp:25,steps:['Resolver cronometrado']}]},
- {label:'Sex',sub:'50 min',tasks:[{time:'50 min · Simulado',title:'2 Medium seguidos',xp:40,steps:['50 min total, sem pausa']}]}
+{n:15,ph:2,t:'Consolidation + Push to Medium',foco:'raising the difficulty',desc:'Time yourself and solve Medium problems consistently.',days:[
+ {label:'Mon',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Array',xp:25,steps:['Solve it timed (20-25 min)']}]},
+ {label:'Tue',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Tree',xp:25,steps:['Solve it timed']}]},
+ {label:'Wed',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Graph',xp:25,steps:['Solve it timed']}]},
+ {label:'Thu',sub:'25 min',tasks:[{time:'20-25 min · Medium',title:'1 Medium — Hash',xp:25,steps:['Solve it timed']}]},
+ {label:'Fri',sub:'50 min',tasks:[{time:'50 min · Timed mock',title:'2 Medium back-to-back',xp:40,steps:['50 min total, no pause']}]}
 ]},
-{n:16,ph:2,t:'Heaps e Priority Queues',foco:'min-heap vs max-heap',desc:'Estrutura menos comum, mas cobrada. Checkpoint da Fase 2.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Min-heap vs max-heap',xp:30,steps:['Conceito','Por que O(log n) para insert/delete?']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Aplicação real',title:'Aplicações práticas',xp:30,steps:['Onde heaps aparecem em sistemas reais (filas de prioridade, schedulers)']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Kth Largest Element in an Array"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Top K Frequent Elements"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Find Median from Data Stream" (intro)',xp:30,steps:['Tentar resolver — pode ficar difícil, tudo bem','Checkpoint: reconhece qual estrutura usar ao ler o enunciado?']}]}
+{n:16,ph:2,t:'Heaps and Priority Queues',foco:'min-heap vs max-heap',desc:'A less common structure, but tested. Phase 2 checkpoint.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Min-heap vs max-heap',xp:30,steps:['Concept','Why O(log n) for insert/delete?']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Real-world use',title:'Real-world applications',xp:30,steps:['Where heaps show up in real systems (priority queues, schedulers)']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Kth Largest Element in an Array"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Top K Frequent Elements"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Find Median from Data Stream" (intro)',xp:30,steps:['Try solving it — it\'s ok if it\'s hard','Checkpoint: do you recognize which structure to use by reading the statement?']}]}
 ]},
-{n:17,ph:3,t:'Dynamic Programming — Introdução',foco:'memoização vs tabulação',desc:'O tópico mais temido, mas com lógica clara: perceber subproblemas repetidos.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Subproblemas sobrepostos',xp:30,steps:['Conceito de subestrutura ótima','Por que DP existe?']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Memoização vs Tabulação',xp:30,steps:['Top-down vs bottom-up']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Climbing Stairs"',xp:30,steps:['Resolver no LeetCode (o clássico para começar)']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Fibonacci com DP',xp:30,steps:['Resolver com memoização e depois com tabulação']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"House Robber"',xp:30,steps:['Resolver no LeetCode','Insight: DP é perceber que você resolve o mesmo subproblema várias vezes']}]}
+{n:17,ph:3,t:'Dynamic Programming — Introduction',foco:'memoization vs tabulation',desc:'The most feared topic, but with clear logic: spotting repeated subproblems.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Overlapping subproblems',xp:30,steps:['Concept of optimal substructure','Why does DP exist?']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Memoization vs Tabulation',xp:30,steps:['Top-down vs bottom-up']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Climbing Stairs"',xp:30,steps:['Solve the classic starter problem in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'Fibonacci with DP',xp:30,steps:['Solve it with memoization, then with tabulation']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"House Robber"',xp:30,steps:['Solve it in C#','Insight: DP is about noticing you\'re solving the same subproblem repeatedly']}]}
 ]},
-{n:18,ph:3,t:'Dynamic Programming — 2D',foco:'DP com duas dimensões',desc:'Comparar complexidade de brute force vs DP.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Unique Paths"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Coin Change" (1/2)',xp:30,steps:['Entender o problema, tentar força bruta']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Coin Change" (2/2)',xp:30,steps:['Resolver com DP']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Longest Common Subsequence"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Análise',title:'Brute force vs DP',xp:30,steps:['Escrever a complexidade de cada abordagem para os problemas da semana']}]}
+{n:18,ph:3,t:'Dynamic Programming — 2D',foco:'two-dimensional DP',desc:'Compare brute force vs DP complexity.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Unique Paths"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Coin Change" (1/2)',xp:30,steps:['Understand the problem, try brute force']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Coin Change" (2/2)',xp:30,steps:['Solve it with DP']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Longest Common Subsequence"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Analysis',title:'Brute force vs DP',xp:30,steps:['Write down the complexity of each approach for this week\'s problems']}]}
 ]},
-{n:19,ph:3,t:'Backtracking',foco:'choose → explore → unchoose',desc:'Exploração com retrocesso — combinações, permutações, problemas de decisão.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Padrão choose → explore → unchoose',xp:30,steps:['Conceito','Quando usar (combinações, permutações, decisões)']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Permutations"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Combinations"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Word Search" (1/2)',xp:30,steps:['Entender o problema, desenhar a busca no papel']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Word Search" (2/2)',xp:30,steps:['Resolver no LeetCode']}]}
+{n:19,ph:3,t:'Backtracking',foco:'choose → explore → unchoose',desc:'Exploration with backtracking — combinations, permutations, decision problems.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Choose → explore → unchoose pattern',xp:30,steps:['Concept','When to use it (combinations, permutations, decisions)']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Permutations"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Combinations"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Word Search" (1/2)',xp:30,steps:['Understand the problem, sketch the search on paper']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Word Search" (2/2)',xp:30,steps:['Solve it in C#']}]}
 ]},
-{n:20,ph:3,t:'Sliding Window',foco:'transforma O(n²) em O(n)',desc:'Padrão muito usado — dois ponteiros se movendo juntos numa janela.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Conceito de janela deslizante',xp:30,steps:['Dois ponteiros se movendo juntos','Quando usar (problemas de substring/subarray)']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Longest Substring Without Repeating Characters"',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Minimum Window Substring" (1/2)',xp:30,steps:['Entender o problema; tentar força bruta']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Minimum Window Substring" (2/2)',xp:30,steps:['Resolver com sliding window']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Permutation in String"',xp:30,steps:['Resolver no LeetCode']}]}
+{n:20,ph:3,t:'Sliding Window',foco:'turns O(n²) into O(n)',desc:'A widely used pattern — two pointers moving together across a window.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Sliding window concept',xp:30,steps:['Two pointers moving together','When to use it (substring/subarray problems)']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Longest Substring Without Repeating Characters"',xp:30,steps:['Solve it in C#']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Minimum Window Substring" (1/2)',xp:30,steps:['Understand the problem; try brute force']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Minimum Window Substring" (2/2)',xp:30,steps:['Solve it with sliding window']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Permutation in String"',xp:30,steps:['Solve it in C#']}]}
 ]},
-{n:21,ph:3,t:'System Design — Introdução ⭐ seu ponto forte',foco:'Load Balancer, Cache, CDN, DB, Message Queue',desc:'Aqui sua experiência de 6 anos de backend vale muito — formalizar em inglês.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Componentes básicos',xp:30,steps:['Load Balancer, Cache, CDN, Database, Message Queue','Vocabulário: horizontal scaling, vertical scaling, bottleneck, throughput, latency']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Vocabulário em inglês',xp:30,steps:['Praticar explicar cada componente em inglês, com exemplo do seu trabalho']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a URL Shortener" (1/2)',xp:30,steps:['Estudar o caso','Desenhar a arquitetura no papel']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a URL Shortener" (2/2)',xp:30,steps:['Praticar explicar em inglês (mesmo que só no papel)']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Refazer sem consultar',xp:30,steps:['Refazer o desenho da arquitetura do zero','Explicar em voz alta, sem anotações']}]}
+{n:21,ph:3,t:'System Design — Introduction ⭐ your strong suit',foco:'Load Balancer, Cache, CDN, DB, Message Queue',desc:'This is where your 6 years of backend experience really pay off — now formalize it in English.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Core components',xp:30,steps:['Load Balancer, Cache, CDN, Database, Message Queue','Vocabulary: horizontal scaling, vertical scaling, bottleneck, throughput, latency']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Vocabulary in English',xp:30,steps:['Practice explaining each component in English, with an example from your work']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a URL Shortener" (1/2)',xp:30,steps:['Study the case','Sketch the architecture on paper']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a URL Shortener" (2/2)',xp:30,steps:['Practice explaining it in English (even just on paper)']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Review',title:'Redo it from scratch',xp:30,steps:['Redo the architecture sketch without looking','Explain it out loud from scratch']}]}
 ]},
-{n:22,ph:3,t:'System Design — Databases em Escala',foco:'sharding, replication, CAP Theorem',desc:'Aprofundar o que você já sabe de DB, agora em escala.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Sharding e replication',xp:30,steps:['Conceitos','Read replicas']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Consistency models',xp:30,steps:['Strong vs eventual consistency','CAP Theorem (Consistency, Availability, Partition Tolerance)']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a system with high read traffic" (1/2)',xp:30,steps:['Estudar o caso','Aplicar cache + replicas']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a system with high read traffic" (2/2)',xp:30,steps:['Desenhar a arquitetura completa']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Praticar trade-offs em inglês',xp:30,steps:['Explicar as decisões de design em inglês']}]}
+{n:22,ph:3,t:'System Design — Databases at Scale',foco:'sharding, replication, CAP Theorem',desc:'Deepen what you already know about databases, now at scale.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Sharding and replication',xp:30,steps:['Concepts','Read replicas']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Consistency models',xp:30,steps:['Strong vs eventual consistency','CAP Theorem (Consistency, Availability, Partition Tolerance)']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a system with high read traffic" (1/2)',xp:30,steps:['Study the case','Apply cache + replicas']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a system with high read traffic" (2/2)',xp:30,steps:['Sketch the full architecture']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Practice trade-offs in English',xp:30,steps:['Explain your design decisions in English']}]}
 ]},
-{n:23,ph:3,t:'Graphs Avançado',foco:'Dijkstra, Topological Sort',desc:'Algoritmos de grafo mais complexos — parecidos com resolução de dependências reais.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Dijkstra — shortest path',xp:30,steps:['Conceito e quando usar']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Teoria',title:'Topological Sort',xp:30,steps:['Ordenação com dependências (parecido com resolver dependências de pacotes)']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Network Delay Time" (Dijkstra)',xp:30,steps:['Resolver no LeetCode']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Alien Dictionary" (1/2)',xp:30,steps:['Entender o problema (Topological Sort)']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Alien Dictionary" (2/2)',xp:30,steps:['Resolver no LeetCode']}]}
+{n:23,ph:3,t:'Advanced Graphs',foco:'Dijkstra, Topological Sort',desc:'More complex graph algorithms — similar to real dependency resolution.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Dijkstra — shortest path',xp:30,steps:['Concept and when to use it']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Theory',title:'Topological Sort',xp:30,steps:['Ordering with dependencies (similar to resolving package dependencies)']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Network Delay Time" (Dijkstra)',xp:30,steps:['Solve it in C#']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Alien Dictionary" (1/2)',xp:30,steps:['Understand the problem (Topological Sort)']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LeetCode',title:'"Alien Dictionary" (2/2)',xp:30,steps:['Solve it in C#']}]}
 ]},
-{n:24,ph:3,t:'Mock Interviews Completos',foco:'checkpoint da Fase 3',desc:'Simulação real, juntando tudo: coding, system design e comunicação em inglês.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'25 min + 5 min','title':'1 Medium + explicar em inglês',xp:30,steps:['Resolver (25 min)','Explicar a solução em inglês (5 min)']}]},
- {label:'Ter',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard cronometrado',xp:35,steps:['Resolver em até 35 min']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Mock',title:'System Design mock',xp:30,steps:['30 min, formato de entrevista real']}]},
- {label:'Qui',sub:'60 min',tasks:[{time:'60 min · Simulado',title:'2 problemas aleatórios',xp:50,steps:['60 min total, cronometrado']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Revisar gravações',xp:30,steps:['Pontos de melhoria: fluência, clareza, estrutura de resposta','Checkpoint: resolve Hard em ~30-35 min?']}]}
+{n:24,ph:3,t:'Full Mock Interviews',foco:'Phase 3 checkpoint',desc:'A real simulation, putting it all together: coding, system design, and communication in English.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'25 min + 5 min',title:'1 Medium + explain in English',xp:30,steps:['Solve it (25 min)','Explain your solution in English (5 min)']}]},
+ {label:'Tue',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 timed Hard problem',xp:35,steps:['Solve it in up to 35 min']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Mock',title:'System Design mock',xp:30,steps:['30 min, real-interview format']}]},
+ {label:'Thu',sub:'60 min',tasks:[{time:'60 min · Timed mock',title:'2 random problems',xp:50,steps:['60 min total, timed']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Review',title:'Review your recordings',xp:30,steps:['Areas to improve: fluency, clarity, answer structure','Checkpoint: can you solve a Hard problem in ~30-35 min?']}]}
 ]},
-{n:25,ph:4,t:'Hard Problems Intensivo',foco:'ganhar confiança em Hard',desc:'Combinando tópicos: DP + Tree, Graph + DP, Backtracking...',days:[
- {label:'Seg',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — DP + Tree',xp:35,steps:['Resolver combinando tópicos']}]},
- {label:'Ter',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — Graph + DP',xp:35,steps:['Resolver combinando tópicos']}]},
- {label:'Qua',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — Backtracking',xp:35,steps:['Resolver']}]},
- {label:'Qui',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — Sliding Window / Array',xp:35,steps:['Resolver']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Análise',title:'Documentar padrões',xp:30,steps:['Qual foi o padrão usado em cada problema da semana?']}]}
+{n:25,ph:4,t:'Hard Problems Intensive',foco:'building confidence on Hard',desc:'Combining topics: DP + Tree, Graph + DP, Backtracking...',days:[
+ {label:'Mon',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — DP + Tree',xp:35,steps:['Solve it combining topics']}]},
+ {label:'Tue',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — Graph + DP',xp:35,steps:['Solve it combining topics']}]},
+ {label:'Wed',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — Backtracking',xp:35,steps:['Solve it']}]},
+ {label:'Thu',sub:'35 min',tasks:[{time:'35 min · Hard',title:'1 Hard — Sliding Window / Array',xp:35,steps:['Solve it']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Analysis',title:'Document the patterns',xp:30,steps:['What pattern did you use in each problem this week?']}]}
 ]},
-{n:26,ph:4,t:'System Design Profundo ⭐',foco:'casos mais complexos, seu diferencial como sênior',desc:'Aplicar seu conhecimento real de .NET/backend em cenários de alta complexidade.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design Instagram / Photo Sharing" (1/2)',xp:30,steps:['Estudar o caso','Trade-offs de storage e CDN para imagens']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design Instagram / Photo Sharing" (2/2)',xp:30,steps:['Feed generation','Desenhar a arquitetura completa']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a Payment System" (1/2)',xp:30,steps:['Estudar o caso','Aplicar seu conhecimento real de .NET/backend']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a Payment System / Message Queue" (2/2)',xp:30,steps:['Completar o design','Trade-offs de consistência']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explicar arquitetura complexa em inglês',xp:30,steps:['Do zero, em 15 min, sem consultar anotações']}]}
+{n:26,ph:4,t:'System Design Deep Dive ⭐',foco:'more complex cases, your senior edge',desc:'Apply your real .NET/backend knowledge to high-complexity scenarios.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design Instagram / Photo Sharing" (1/2)',xp:30,steps:['Study the case','Storage and CDN trade-offs for images']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design Instagram / Photo Sharing" (2/2)',xp:30,steps:['Feed generation','Sketch the full architecture']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a Payment System" (1/2)',xp:30,steps:['Study the case','Apply your real .NET/backend knowledge']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · Case study',title:'"Design a Payment System / Message Queue" (2/2)',xp:30,steps:['Complete the design','Consistency trade-offs']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Speaking',title:'Explain a complex architecture in English',xp:30,steps:['From scratch, in 15 min, without notes']}]}
 ]},
-{n:27,ph:4,t:'Behavioral Interview Prep ⭐ seu diferencial',foco:'método STAR',desc:'6 anos de experiência = muitas histórias boas. Situation, Task, Action, Result.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · STAR',title:'História 1: maior sistema arquitetado',xp:30,steps:['Método STAR (Situation, Task, Action, Result)','Escrever em inglês']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · STAR',title:'História 2: conflito de equipe resolvido',xp:30,steps:['Escrever em inglês usando STAR']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · STAR',title:'História 3: falha em produção',xp:30,steps:['Ownership — como você resolveu','Escrever em inglês']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · STAR',title:'Histórias 4 e 5: decisão técnica difícil + otimização de performance',xp:30,steps:['Trade-offs entre 2 abordagens','Otimização com números/impacto']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Gravação',title:'Gravar todas as histórias',xp:30,steps:['Gravar as 5-6 histórias em inglês','Revisar fluência']}]}
+{n:27,ph:4,t:'Behavioral Interview Prep ⭐ your differentiator',foco:'the STAR method',desc:'6 years of experience means plenty of good stories. Situation, Task, Action, Result.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · STAR',title:'Story 1: the biggest system you architected',xp:30,steps:['STAR method (Situation, Task, Action, Result)','Write it in English']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · STAR',title:'Story 2: a team conflict you resolved',xp:30,steps:['Write it in English using STAR']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · STAR',title:'Story 3: a production failure',xp:30,steps:['Ownership — how you fixed it','Write it in English']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · STAR',title:'Stories 4 & 5: a tough technical decision + a performance optimization',xp:30,steps:['Trade-offs between 2 approaches','Optimization with numbers/impact']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Recording',title:'Record all your stories',xp:30,steps:['Record all 5-6 stories in English','Review fluency']}]}
 ]},
-{n:28,ph:4,t:'Revisão Geral + Hard Problems',foco:'manter tudo afiado',desc:'Resolver Hard com confiança, sem pânico.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Hard',title:'1 Hard',xp:30,steps:['Resolver']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Hard',title:'1 Hard',xp:30,steps:['Resolver']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Medium',title:'2 Medium aleatórios',xp:30,steps:['Não perder flexibilidade']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Revisitar 1 problema de cada categoria',xp:30,steps:['Array, Tree, Graph, DP, Backtracking']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Checkpoint',title:'Autoavaliação',xp:30,steps:['Resolve Hard com confiança, sem pânico?']}]}
+{n:28,ph:4,t:'General Review + Hard Problems',foco:'keeping everything sharp',desc:'Solve Hard problems with confidence, no panic.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Hard',title:'1 Hard problem',xp:30,steps:['Solve it']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Hard',title:'1 Hard problem',xp:30,steps:['Solve it']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Medium',title:'2 random Medium problems',xp:30,steps:['Don\'t lose flexibility']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · Review',title:'Revisit 1 problem from each category',xp:30,steps:['Array, Tree, Graph, DP, Backtracking']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Checkpoint',title:'Self-assessment',xp:30,steps:['Can you solve Hard problems with confidence, no panic?']}]}
 ]},
-{n:29,ph:4,t:'Portfolio e CV',foco:'CV, GitHub, LinkedIn em inglês',desc:'Preparar sua apresentação profissional para o mercado internacional.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · CV',title:'CV em inglês (1/2)',xp:30,steps:['Reescrever experiências com Ação + Resultado',"Ex: \"Reduced API latency by 40% by implementing Redis caching layer\""]}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · CV',title:'CV em inglês (2/2)',xp:30,steps:['Revisar e polir o CV completo']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · GitHub',title:'Atualizar repositórios',xp:30,steps:['Atualizar 2-3 repositórios .NET com README em inglês','Documentar decisões técnicas (por que essa arquitetura? por que esse banco?)']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · LinkedIn',title:'Atualizar LinkedIn (1/2)',xp:30,steps:['Atualizar em inglês, destacar arquitetura e impacto, não só lista de tecnologias']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · LinkedIn',title:'Atualizar LinkedIn (2/2)',xp:30,steps:['Conectar com recrutadores de tech internacionais']}]}
+{n:29,ph:4,t:'Portfolio and CV',foco:'CV, GitHub, LinkedIn in English',desc:'Prepare your professional presentation for the international market.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · CV',title:'CV in English (1/2)',xp:30,steps:['Rewrite your experience with Action + Result',"Ex: \"Reduced API latency by 40% by implementing a Redis caching layer\""]}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · CV',title:'CV in English (2/2)',xp:30,steps:['Review and polish the full CV']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · GitHub',title:'Update your repositories',xp:30,steps:['Update 2-3 .NET repositories with an English README','Document technical decisions (why this architecture? why this database?)']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · LinkedIn',title:'Update LinkedIn (1/2)',xp:30,steps:['Update it in English, highlighting architecture and impact, not just a tech list']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · LinkedIn',title:'Update LinkedIn (2/2)',xp:30,steps:['Connect with international tech recruiters']}]}
 ]},
-{n:30,ph:4,t:'Final Push + Aplicação',foco:'começar a aplicar',desc:'Últimos ajustes e o início das candidaturas.',days:[
- {label:'Seg',sub:'30 min',tasks:[{time:'30 min · Mock',title:'Mock interview completo (1/2)',xp:30,steps:['Coding (40 min)']}]},
- {label:'Ter',sub:'30 min',tasks:[{time:'30 min · Mock',title:'Mock interview completo (2/2)',xp:30,steps:['System design (20 min) + behavioral (15 min)']}]},
- {label:'Qua',sub:'30 min',tasks:[{time:'30 min · Simulado',title:'3-5 problemas aleatórios',xp:30,steps:['Misturando dificuldades']}]},
- {label:'Qui',sub:'30 min',tasks:[{time:'30 min · Revisão',title:'Revisar pontos fracos',xp:30,steps:['Reforçar 1-2 tópicos específicos identificados nos mocks']}]},
- {label:'Sex',sub:'30 min',tasks:[{time:'30 min · Aplicação',title:'Revisar e começar a aplicar',xp:30,steps:['Revisar CV, GitHub e LinkedIn uma última vez','Começar a aplicar: LinkedIn, Wellfound, empresas que contratam .NET']}]}
+{n:30,ph:4,t:'Final Push + Applying',foco:'starting to apply',desc:'Final touches and the start of applications.',days:[
+ {label:'Mon',sub:'30 min',tasks:[{time:'30 min · Mock',title:'Full mock interview (1/2)',xp:30,steps:['Coding (40 min)']}]},
+ {label:'Tue',sub:'30 min',tasks:[{time:'30 min · Mock',title:'Full mock interview (2/2)',xp:30,steps:['System design (20 min) + behavioral (15 min)']}]},
+ {label:'Wed',sub:'30 min',tasks:[{time:'30 min · Timed mock',title:'3-5 random problems',xp:30,steps:['Mixing difficulties']}]},
+ {label:'Thu',sub:'30 min',tasks:[{time:'30 min · Review',title:'Review weak spots',xp:30,steps:['Reinforce 1-2 specific topics identified in the mocks']}]},
+ {label:'Fri',sub:'30 min',tasks:[{time:'30 min · Applying',title:'Review and start applying',xp:30,steps:['Review your CV, GitHub and LinkedIn one last time','Start applying: LinkedIn, Wellfound, companies hiring .NET devs']}]}
 ]}
 ];
 
@@ -555,9 +555,9 @@ function toggleSkip(i){
 
 let studyWeek=1, liveWeek=0, levelPlain='Easy';
 function levelPair(w){
-  const b=[[8,'Easy',''],[16,'Easy','Medium'],[20,'Medium',''],[24,'Medium','Hard'],[28,'Hard',''],[30,'Hard','Pronto p/ entrevista']];
+  const b=[[8,'Easy',''],[16,'Easy','Medium'],[20,'Medium',''],[24,'Medium','Hard'],[28,'Hard',''],[30,'Hard','Interview ready']];
   for(const x of b)if(w<=x[0])return[x[1],x[2]];
-  return['Pronto p/ entrevista',''];
+  return['Interview ready',''];
 }
 function updateProgress(){
   liveWeek=curWeekIdx();
@@ -567,7 +567,7 @@ function updateProgress(){
   document.getElementById('streakNum').textContent=Math.min(150,studied);
   document.getElementById('weekVal').textContent=liveWeek+1;
   const rp=PHASES[WEEKS[liveWeek].ph-1];
-  document.getElementById('realPhase').textContent='Fase '+rp.n;
+  document.getElementById('realPhase').textContent='Phase '+rp.n;
   document.getElementById('realPhaseName').textContent=rp.nome;
   const[la,lz]=levelPair(studyWeek);
   levelPlain=lz?`${la} → ${lz}`:la;
@@ -586,16 +586,16 @@ function renderAssess(){
   el.innerHTML=`
     <div class="assess-ic"><i class="fa-solid ${due?'fa-bell':'fa-flag-checkered'}"></i></div>
     <div class="assess-body">
-      <b>${due?`Checkpoint pendente — Semana ${next}`:`Próximo checkpoint · Semana ${next}`}</b>
-      <span>Grave uma resposta técnica cronometrada + resolva 1 problema do nível atual sem consulta, para medir progresso real.</span>
+      <b>${due?`Checkpoint due — Week ${next}`:`Next checkpoint · Week ${next}`}</b>
+      <span>Record a timed technical answer + solve 1 problem at your current level without help, to measure real progress.</span>
     </div>
     <div class="assess-actions">
-      <button class="btn" onclick="startAssessment()"><i class="fa-solid fa-play"></i> Rodar teste ↗</button>
-      ${due?`<button class="btn" onclick="markAssess(${next})"><i class="fa-solid fa-check"></i> Marcar feito</button>`:''}
+      <button class="btn" onclick="startAssessment()"><i class="fa-solid fa-play"></i> Run test ↗</button>
+      ${due?`<button class="btn" onclick="markAssess(${next})"><i class="fa-solid fa-check"></i> Mark done</button>`:''}
     </div>`;
 }
 function startAssessment(){
-  const p=`(I'm a senior backend .NET/Azure/SQL developer with 6 years of experience, currently on Week ${studyWeek}/30 of my interview-prep plan, approximate level ${levelPlain}, goal: a backend job abroad.) Run a short checkpoint for me: 1) give me one coding problem matching my current level and ask me to explain my approach out loud in English; 2) ask 3 quick questions covering topics from the last few weeks (grammar/vocab optional); 3) at the end, estimate my readiness and name 2 concrete things to improve. Start now.`;
+  const p=`(I'm a senior backend .NET/Azure/SQL developer with 6 years of experience, currently on Week ${studyWeek}/30 of my interview-prep plan, approximate level ${levelPlain}, goal: a backend job abroad.) Run a short checkpoint for me: 1) give me one coding problem in C# matching my current level and ask me to explain my approach out loud in English; 2) ask 3 quick questions covering topics from the last few weeks; 3) at the end, estimate my readiness and name 2 concrete things to improve. Start now.`;
   ask(p);
 }
 function markAssess(week){
@@ -616,18 +616,18 @@ function renderMakeup(){
   if(owed<=0){el.innerHTML='';return;}
   el.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:.7rem 1rem;margin-bottom:1rem;border-radius:12px;background:rgba(255,180,61,.1);border:1px solid rgba(255,180,61,.3);font-size:12.5px">
     <i class="fa-solid fa-clock-rotate-left" style="color:var(--amber)"></i>
-    <span style="flex:1;color:var(--text-2)"><b style="color:var(--amber)">${owed} dia${owed>1?'s':''} pendente${owed>1?'s':''}</b> — dias pulados que você ainda deve (fazem parte dos 150). Faça a qualquer momento.</span>
-    <button onclick="gotoMakeup()" style="padding:6px 12px;border-radius:9px;border:1px solid rgba(255,180,61,.4);background:rgba(255,180,61,.14);color:var(--amber);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer">Fazer dia pendente</button>
+    <span style="flex:1;color:var(--text-2)"><b style="color:var(--amber)">${owed} owed day${owed>1?'s':''}</b> — skipped days you still owe (part of the 150). Do them anytime.</span>
+    <button onclick="gotoMakeup()" style="padding:6px 12px;border-radius:9px;border:1px solid rgba(255,180,61,.4);background:rgba(255,180,61,.14);color:var(--amber);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer">Do a makeup day</button>
   </div>`;
 }
 
 const VERTICES=[
- 'LeetCode problem-solving — algoritmos & estruturas de dados',
- 'System Design — escalabilidade, databases, cache, filas',
+ 'LeetCode problem-solving — algorithms & data structures',
+ 'System Design — scalability, databases, caching, queues',
  'Behavioral / STAR — "tell me about a time…" stories',
- 'C# & .NET real-world mapping — conectar aos seus 6 anos de experiência',
- 'Technical English — explicando conceitos em voz alta',
- 'Mock interview — live coding & comunicação'
+ 'C# & .NET real-world mapping — connect to your 6 years of experience',
+ 'Technical English — explaining concepts out loud',
+ 'Mock interview — live coding & communication'
 ];
 (function initHex(){
   const sel=document.getElementById('vertexSel');
@@ -639,18 +639,18 @@ function weeklyPrompt(){
   const W=WEEKS[weekIdx];
   const P=PHASES[W.ph-1];
   const v=VERTICES[+(document.getElementById('vertexSel').value||0)];
-  const p=`You are helping a senior backend .NET developer (6 years of experience) prepare for international software engineering interviews.\n\nContext: This week (Week ${W.n} of 30, "${W.t}") the focus is "${W.foco}". Current phase: ${P.n} (${P.nome}).\n\nTask: Based on the vertex "${v}", give me focused practice material for today. If it's a coding topic, give me one problem with hints (not the full solution) and ask me to explain my approach out loud in English. If it's system design or behavioral, act as the interviewer and ask me a question, then give feedback.\n\nAdapt the difficulty to my current phase.`;
+  const p=`You are helping a senior backend .NET developer (6 years of experience) prepare for international software engineering interviews.\n\nContext: This week (Week ${W.n} of 30, "${W.t}") the focus is "${W.foco}". Current phase: ${P.n} (${P.nome}). I solve LeetCode problems in C#.\n\nTask: Based on the vertex "${v}", give me focused practice material for today. If it's a coding topic, give me one problem (in C#) with hints (not the full solution) and ask me to explain my approach out loud in English. If it's system design or behavioral, act as the interviewer and ask me a question, then give feedback.\n\nAdapt the difficulty to my current phase.`;
   ask(p);
 }
 function practice(kind){
   const W=WEEKS[weekIdx];
   const P=PHASES[W.ph-1];
   const d=DAYS[cur];
-  const ctx=`(Context: I'm a senior backend .NET developer with 6 years of experience, preparing for an international job. I'm on Week ${studyWeek}/30, Phase ${P.n} (${P.nome}), this week's topic: ${W.t}. Adapt the difficulty to my level.) `;
+  const ctx=`(Context: I'm a senior backend .NET developer with 6 years of experience, preparing for an international job. I solve LeetCode problems in C#. I'm on Week ${studyWeek}/30, Phase ${P.n} (${P.nome}), this week's topic: ${W.t}. Adapt the difficulty to my level.) `;
   const Pr={
-    leetcode:ctx+"Give me one LeetCode problem (this week's topic if possible) and let me solve it. Don't give the solution — give hints if I'm stuck, and ask me to explain my approach out loud in English.",
+    leetcode:ctx+"Give me one LeetCode problem (this week's topic if possible) and let me solve it in C#. Don't give the solution — give hints if I'm stuck, and ask me to explain my approach out loud in English.",
     english:ctx+'Ask me to explain today\'s technical concept in English, then correct my grammar and vocabulary.',
-    interview:ctx+'Simulate a technical interview in English for a backend .NET role: mix live-coding think-aloud, system design and behavioral questions. Start with the first question and give me feedback.',
+    interview:ctx+'Simulate a technical interview in English for a backend .NET role: mix live-coding think-aloud (in C#), system design and behavioral questions. Start with the first question and give me feedback.',
     sysdesign:ctx+"Run a system design mock interview in English about this week's case study. Ask clarifying questions and evaluate my trade-off reasoning.",
     lesson:ctx+`Start today's study session, focused on "${d?d.tasks[0]?.title||W.t:W.t}", adapted to my level.`
   };
@@ -661,7 +661,7 @@ function renderWeek(){
   const W=WEEKS[weekIdx];
   DAYS=W.days;
   updateProgress();
-  document.getElementById('wkTag').textContent=(weekIdx===liveWeek?'Semana atual · Semana ':'Semana · Semana ')+W.n;
+  document.getElementById('wkTag').textContent=(weekIdx===liveWeek?'Current week · Week ':'Week · Week ')+W.n;
   document.getElementById('wkTitle').innerHTML=W.t;
   document.getElementById('wkDesc').innerHTML=W.desc;
   document.getElementById('wkPrev').disabled=weekIdx===0;
@@ -670,12 +670,12 @@ function renderWeek(){
 }
 function renderPhase(){
   const P=PHASES[WEEKS[weekIdx].ph-1];
-  document.getElementById('phaseTitle').textContent=`Fase ${P.n} · Semanas ${P.ini}-${P.fim} — ${P.nome}`;
+  document.getElementById('phaseTitle').textContent=`Phase ${P.n} · Weeks ${P.ini}-${P.fim} — ${P.nome}`;
   const pct=Math.min(100,Math.max(0,Math.round((studyWeek-P.ini+1)/(P.fim-P.ini+1)*100)));
   document.getElementById('phasePct').textContent=pct+'%';
   setTimeout(()=>{document.getElementById('barFill').style.width=pct+'%'},60);
   document.getElementById('phaseMs').innerHTML=P.ms.map(m=>
-    `<div class="ms${studyWeek>=m[0]?' complete':(studyWeek>=m[0]-2?' active':'')}"><b>Sem ${m[0]}</b><span>${m[1]}</span></div>`
+    `<div class="ms${studyWeek>=m[0]?' complete':(studyWeek>=m[0]-2?' active':'')}"><b>Wk ${m[0]}</b><span>${m[1]}</span></div>`
   ).join('');
 }
 function renderTabs(){
@@ -683,7 +683,7 @@ function renderTabs(){
     const ok=dayComplete(i);
     const sk=done.has(skipKey(weekIdx,i));
     return `<div class="day-tab${i===cur?' active':''}${(weekIdx===liveWeek&&i===nextDayIdx(weekIdx))?' today':''}${ok?' complete':(sk?' skipped':'')}" onclick="pick(${i})">
-      <b>${d.label}</b><span>${ok?'<i class="fa-solid fa-circle-check"></i> feito':(sk?'<i class="fa-solid fa-forward"></i> pulado':d.sub)}</span>
+      <b>${d.label}</b><span>${ok?'<i class="fa-solid fa-circle-check"></i> done':(sk?'<i class="fa-solid fa-forward"></i> skipped':d.sub)}</span>
     </div>`;
   }).join('');
 }
@@ -707,22 +707,22 @@ function renderTasks(){
     </div>`;
   }).join('') + (skipped
     ? `<div class="day-done low"><i class="fa-solid fa-forward"></i>
-        <div><b>${d.label}: pulado</b><span>Você ainda deve este dia (parte dos 150). Volte quando quiser. <a onclick="toggleSkip(${cur})">desfazer</a></span></div>
+        <div><b>${d.label}: skipped</b><span>You owe this day (still part of the 150). Come back anytime to do it. <a onclick="toggleSkip(${cur})">undo</a></span></div>
       </div>`
     : minLogged
     ? `<div class="day-done low"><i class="fa-solid fa-battery-quarter"></i>
-        <div><b>${d.label}: mínimo registrado</b><span>Dia de baixa energia — streak protegido. <a onclick="toggleMin(${cur})">desfazer</a></span></div>
+        <div><b>${d.label}: minimum logged</b><span>Low-energy day — streak protected. <a onclick="toggleMin(${cur})">undo</a></span></div>
       </div>`
     : complete
     ? `<div class="day-done"><i class="fa-solid fa-circle-check"></i>
-        <div><b>${d.label} concluído!</b><span>+${dayXP(cur)} XP</span></div>
+        <div><b>${d.label} done!</b><span>+${dayXP(cur)} XP</span></div>
       </div>`
     : `<div class="day-progress">
         <div class="dp-bar"><i style="width:${Math.round(doneCount/total*100)}%"></i></div>
-        <span>${doneCount} de ${total} tarefas · ${total-doneCount} restantes</span>
+        <span>${doneCount} of ${total} tasks · ${total-doneCount} left</span>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="min-btn" onclick="toggleMin(${cur})"><i class="fa-solid fa-battery-quarter"></i> Dia de baixa energia? Mínimo de 10 min</button>
-          <button class="min-btn" onclick="toggleSkip(${cur})" style="background:rgba(94,104,132,.14);border-color:var(--border-strong);color:var(--text-2)"><i class="fa-solid fa-forward"></i> Pular este dia (fazer depois)</button>
+          <button class="min-btn" onclick="toggleMin(${cur})"><i class="fa-solid fa-battery-quarter"></i> Low-energy day? 10-min minimum</button>
+          <button class="min-btn" onclick="toggleSkip(${cur})" style="background:rgba(94,104,132,.14);border-color:var(--border-strong);color:var(--text-2)"><i class="fa-solid fa-forward"></i> Skip this day (do it later)</button>
         </div>
       </div>`);
 }
@@ -743,7 +743,7 @@ function toggle(i){
 }
 function updateXP(){document.getElementById('xpVal').textContent=weekXP()}
 
-// ===== Supabase sync (mesma infra do app English, tabela/linha diferente) =====
+// ===== Supabase sync (same infra as the English app, different row) =====
 const SB_URL='https://ysnwsrndphmgdtynwxtu.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlzbndzcm5kcGhtZ2R0eW53eHR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MTIxODEsImV4cCI6MjEwMDQ4ODE4MX0.HzO38CqXLw0JIa0B2uDEzA5CWRSYsuMdbCjRCJgICag';
 const ROW_ID='leticia-dotnet-30w';
@@ -755,10 +755,10 @@ function setStatus(msg,icon,color){
 }
 let sb=null;
 try{ if(window.supabase) sb=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ console.warn('supabase init failed',e); }
-if(!sb) setStatus('Cloud off — só este dispositivo','fa-cloud-slash','var(--amber)');
+if(!sb) setStatus('Cloud off — this device only','fa-cloud-slash','var(--amber)');
 let saveT=null;
 function saveToCloud(){
-  if(!sb){setStatus('Cloud off — só este dispositivo','fa-cloud-slash','var(--amber)');return;}
+  if(!sb){setStatus('Cloud off — this device only','fa-cloud-slash','var(--amber)');return;}
   clearTimeout(saveT);
   saveT=setTimeout(async()=>{
     try{
@@ -767,7 +767,7 @@ function saveToCloud(){
         if(Array.isArray(srv.data.done)) done=new Set([...srv.data.done,...done]);
         localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
         renderTabs();renderTasks();updateXP();updateProgress();
-        setStatus('Mesclado com outro dispositivo','fa-code-merge','var(--amber)');
+        setStatus('Merged changes from another device','fa-code-merge','var(--amber)');
       }
       const stamp=new Date().toISOString();
       const payload={id:ROW_ID,done:[...done],notes,updated_at:stamp};
@@ -775,13 +775,13 @@ function saveToCloud(){
       if(res.error){ res=await sb.from('progress').upsert({id:ROW_ID,done:[...done],updated_at:stamp}); }
       if(res.error)throw res.error;
       cloudStamp=stamp;
-      setStatus('Salvo · '+new Date().toLocaleTimeString(),'fa-cloud-arrow-up','var(--green)');
-    }catch(e){ console.warn('cloud save failed',e); setStatus('Falha ao salvar — verifique a tabela/policies','fa-triangle-exclamation','var(--amber)'); }
+      setStatus('Saved · '+new Date().toLocaleTimeString(),'fa-cloud-arrow-up','var(--green)');
+    }catch(e){ console.warn('cloud save failed',e); setStatus('Save failed — check table & policies','fa-triangle-exclamation','var(--amber)'); }
   },500);
 }
 async function syncFromCloud(){
   if(!sb)return;
-  setStatus('Sincronizando…','fa-cloud','var(--text-3)');
+  setStatus('Syncing…','fa-cloud','var(--text-3)');
   try{
     let q=await sb.from('progress').select('done,notes,updated_at').eq('id',ROW_ID).maybeSingle();
     if(q.error) q=await sb.from('progress').select('done,updated_at').eq('id',ROW_ID).maybeSingle();
@@ -796,12 +796,12 @@ async function syncFromCloud(){
       weekIdx=curWeekIdx();
       cur=nextDayIdx(weekIdx);
       renderWeek();
-      setStatus('Sincronizado · '+new Date().toLocaleTimeString(),'fa-cloud-check','var(--green)');
+      setStatus('Synced · '+new Date().toLocaleTimeString(),'fa-cloud-check','var(--green)');
     }else{
       saveToCloud();
-      setStatus('Cloud pronto (novo registro criado)','fa-cloud-check','var(--green)');
+      setStatus('Cloud ready (new record created)','fa-cloud-check','var(--green)');
     }
-  }catch(e){ console.warn('cloud sync failed',e); setStatus('Erro de cloud — verifique a tabela/policies','fa-triangle-exclamation','var(--amber)'); }
+  }catch(e){ console.warn('cloud sync failed',e); setStatus('Cloud error — check table & policies','fa-triangle-exclamation','var(--amber)'); }
 }
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) syncFromCloud(); });
 
@@ -819,37 +819,37 @@ function openModal(type,extra){
   let html='';
   if(type==='resources'){
     html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-    <div class="m-ic">🧭</div><h2>Recursos recomendados</h2>
-    <p>Conteúdo técnico selecionado para o seu perfil de dev .NET backend.</p>
+    <div class="m-ic">🧭</div><h2>Recommended resources</h2>
+    <p>Technical content picked for your .NET backend profile.</p>
     <ul class="m-list">
-      <li><i class="fa-brands fa-github"></i><div><b>LeetCode.com</b><small>Plataforma principal de exercícios</small></div></li>
-      <li><i class="fa-brands fa-youtube"></i><div><b>Neetcode.io</b><small>Playlists por tópico (YouTube), com padrões explicados</small></div></li>
-      <li><i class="fa-solid fa-laptop-code"></i><div><b>freeCodeCamp</b><small>Crash courses gratuitos de algoritmos e system design</small></div></li>
-      <li><i class="fa-solid fa-sitemap"></i><div><b>System Design Primer (GitHub)</b><small>Referência gratuita e completa de system design</small></div></li>
-      <li><i class="fa-solid fa-layer-group"></i><div><b>Anki</b><small>Deck de vocabulário técnico em inglês</small></div></li>
-      <li><i class="fa-solid fa-comments"></i><div><b>Claude / ChatGPT</b><small>Mock interviews, explicações e feedback em inglês</small></div></li>
-      <li><i class="fa-solid fa-briefcase"></i><div><b>"Software engineer mock interview" (YouTube)</b><small>Entrevistas reais com legendas em inglês</small></div></li>
+      <li><i class="fa-brands fa-github"></i><div><b>LeetCode.com</b><small>Main practice platform — set C# as your language</small></div></li>
+      <li><i class="fa-brands fa-youtube"></i><div><b>Neetcode.io</b><small>Topic-based playlists (YouTube) with patterns explained</small></div></li>
+      <li><i class="fa-solid fa-laptop-code"></i><div><b>freeCodeCamp</b><small>Free crash courses on algorithms and system design</small></div></li>
+      <li><i class="fa-solid fa-sitemap"></i><div><b>System Design Primer (GitHub)</b><small>Free, thorough system design reference</small></div></li>
+      <li><i class="fa-solid fa-layer-group"></i><div><b>Anki</b><small>Technical English vocabulary deck</small></div></li>
+      <li><i class="fa-solid fa-comments"></i><div><b>Claude / ChatGPT</b><small>Mock interviews, explanations and feedback in English</small></div></li>
+      <li><i class="fa-solid fa-briefcase"></i><div><b>"Software engineer mock interview" (YouTube)</b><small>Real interviews with English subtitles</small></div></li>
     </ul>`;
   }else if(type==='progress'){
     const daysDone=DAYS.filter((d,i)=>dayComplete(i)).length;
     const P=PHASES[WEEKS[liveWeek].ph-1];
     const nextMs=P.ms.find(m=>studyWeek<m[0])||P.ms[P.ms.length-1];
     html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-    <div class="m-ic">📈</div><h2>Seu progresso</h2>
-    <p><b>${Math.min(150,totalCompleted())} de 150 dias estudados</b> · Semana atual ${liveWeek+1} de ${WEEKS.length} · Fase ${P.n} (${P.nome}). Você deve <b>${skippedCount()}</b> dia(s) pulado(s). Esta semana: <b>${daysDone}/5 feitos</b> · <b>${weekXP()} XP</b>.</p>
+    <div class="m-ic">📈</div><h2>Your progress</h2>
+    <p><b>${Math.min(150,totalCompleted())} of 150 days studied</b> · Current week ${liveWeek+1} of ${WEEKS.length} · Phase ${P.n} (${P.nome}). You owe <b>${skippedCount()}</b> skipped day(s). This week: <b>${daysDone}/5 done</b> · <b>${weekXP()} XP</b>.</p>
     <ul class="m-list">
-      <li><i class="fa-solid fa-signal"></i><div><b>Nível atual: ${levelPlain}</b><small>Avança automaticamente a cada fase (até "Pronto p/ entrevista" na semana 30)</small></div></li>
-      <li><i class="fa-solid fa-bullseye"></i><div><b>Fase ${P.n}: ${P.nome}</b><small>${P.n===1?'Fundamentos revisados e explicáveis em inglês':P.n===2?'Estruturas intermediárias + Medium com consistência':P.n===3?'DP, Hard e System Design (seu ponto forte)':'CV, GitHub, LinkedIn e aplicação'}</small></div></li>
-      <li><i class="fa-solid fa-flag-checkered"></i><div><b>Próximo marco: Semana ${nextMs[0]}</b><small>${nextMs[1]}</small></div></li>
-      <li><i class="fa-solid fa-forward"></i><div><b>Dias pendentes: ${skippedCount()}</b><small>Dias pulados que você ainda deve — parte dos 150. Volte com as setas (ou "Fazer dia pendente") para zerar</small></div></li>
+      <li><i class="fa-solid fa-signal"></i><div><b>Current level: ${levelPlain}</b><small>Advances automatically each phase (up to "Interview ready" by Week 30)</small></div></li>
+      <li><i class="fa-solid fa-bullseye"></i><div><b>Phase ${P.n}: ${P.nome}</b><small>${P.n===1?'Fundamentals reviewed and explainable in English':P.n===2?'Intermediate structures + Medium with consistency':P.n===3?'DP, Hard problems and System Design (your strong suit)':'CV, GitHub, LinkedIn and applications'}</small></div></li>
+      <li><i class="fa-solid fa-flag-checkered"></i><div><b>Next milestone: Week ${nextMs[0]}</b><small>${nextMs[1]}</small></div></li>
+      <li><i class="fa-solid fa-forward"></i><div><b>Owed days: ${skippedCount()}</b><small>Skipped days you still owe — part of the 150. Go back with the arrows (or "Do a makeup day") to clear them</small></div></li>
     </ul>
     <button onclick="resetProgress()" style="width:100%;padding:.85rem;border-radius:12px;border:1px solid var(--border-strong);background:transparent;color:var(--text-2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">
-      <i class="fa-solid fa-rotate-left" style="margin-right:7px"></i>Resetar todo o progresso
+      <i class="fa-solid fa-rotate-left" style="margin-right:7px"></i>Reset all progress
     </button>`;
   }else if(type==='chat'){
     html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-    <div class="m-ic">💬</div><h2>Copiado!</h2>
-    <p>Este prompt foi copiado para a área de transferência. Cole no chat do Claude para começar:</p>
+    <div class="m-ic">💬</div><h2>Copied!</h2>
+    <p>This prompt was copied to your clipboard. Paste it into Claude's chat to begin:</p>
     <ul class="m-list"><li><i class="fa-solid fa-quote-left"></i><div><b>${extra}</b></div></li></ul>`;
   }
   modalBox.innerHTML=html;
@@ -857,7 +857,7 @@ function openModal(type,extra){
 }
 function closeModal(){modalBg.classList.remove('show')}
 function resetProgress(){
-  if(!confirm('Resetar todo o progresso? Isso limpa todos os dias concluídos (localmente e na nuvem).'))return;
+  if(!confirm('Reset all progress? This clears every completed day (locally and in the cloud).'))return;
   done=new Set();
   localStorage.setItem(DONE_KEY,'[]');
   saveToCloud();
