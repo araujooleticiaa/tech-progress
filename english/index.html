@@ -348,7 +348,10 @@ function weekOfDay(day){for(let i=0;i<WEEKS.length;i++){const[a,b]=WEEKS[i].d.sp
 let weekIdx=0;
 
 // ===== DAY TEMPLATES (per phase) =====
-function p1(W,nf){return[
+function p1(W,nf){
+ const startDay=+W.d.split('-')[0];
+ const priorityDrill=startDay>=22&&startDay<50; // gap-fill until the dedicated Past Simple week (days 50-56) — added after the day-22 checkpoint flagged listening + past tense as the top 2 weaknesses
+ const days=[
  {label:'Mon',sub:'60 min',title:'Five for Five + Deep Processing',tasks:[
    {time:'20 min · Five for Five',title:`Video about ${W.foco}`,xp:20,steps:['Find ~5 min of a video from your YouTuber on this topic','Watch <b>without subtitles</b> (leave the doubts)','Watch <b>with subtitles</b> EN/PT (resolve them)','Watch <b>without subtitles</b> again (consolidate)','Note 5 new words/expressions + context']},
    {time:'15 min · Generate sentences with AI',title:`10 sentences with ${W.foco} (tech context)`,xp:15,steps:[`Ask Claude for 10 sentences using <b>${W.foco}</b> about .NET / Azure / SQL`,`Ex: "${W.ex[0]}", "${W.ex[1]}"`,'Check the grammar rule in each sentence']},
@@ -385,7 +388,15 @@ function p1(W,nf){return[
    {time:'15 min · Reflection',title:'Review the week\'s journal',xp:10,steps:['Which mistake was easiest? Hardest?',`Do you still get ${W.foco} wrong?`,'Which day was most productive?']},
    {time:'5 min · Preparation',title:'Prepare next week',xp:5,steps:[`Ready for <b>${nf}</b>?`,'Which YouTuber continues or changes?']}
  ]}
-]}
+ ];
+ if(priorityDrill){
+   days[1].tasks.push({time:'10 min · Priority drill (gap-fill until Past Simple week)',title:'Short work instructions + past tense',xp:10,steps:['Listen to one short work sentence (e.g. "Could you deploy the hotfix before the stand-up?")','Pause, repeat it aloud, then translate it mentally','Say aloud 3x with different verbs: "Today I fix a bug" → <b>"Yesterday I fixed a bug"</b>']});
+   days[1].sub='60 min';
+   days[3].tasks.push({time:'10 min · Priority drill (gap-fill until Past Simple week)',title:'Record: what I did today (past tense)',xp:10,steps:['Record 3-4 sentences about what you did at work today, in the past tense','Ex: "Yesterday I fixed the database problem. I deployed the API."','Listen back: did you use <b>-ed</b>, or slip into "I have fixed"?']});
+   days[3].sub='60 min';
+ }
+ return days;
+}
 function p2(W,nf){return[
  {label:'Mon',sub:'60 min',title:'Five for Five + Deep Processing',tasks:[
    {time:'20 min · Five for Five',title:`Podcast about ${W.foco}`,xp:20,steps:['10-15 min of a podcast/video from your podcaster on the topic','Watch without subtitles → with EN subtitles → without','Note 5 new expressions + context']},
