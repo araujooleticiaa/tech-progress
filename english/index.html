@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elite English · Technical Fluency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --bg:#0b0f1a;--bg-2:#121826;--card:#161d2e;--card-2:#1c2436;
+  --border:#252d40;--border-glow:#2f3b57;--text:#f1f4fa;--text-2:#9aa4bd;--text-3:#5e6884;
+  --accent:#5b8cff;--accent-2:#7c5bff;--teal:#28d9b0;--amber:#ffb43d;--pink:#ff5b9c;--green:#3ee08a;
+  --radius:16px;--radius-sm:11px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(124,91,255,.18), transparent 55%),
+    radial-gradient(1000px 500px at 0% 10%, rgba(91,140,255,.14), transparent 50%),
+    var(--bg);
+  color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:2.2rem 1.5rem 4rem}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 28px rgba(91,140,255,.4)}
+.brand h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.brand p{font-size:13px;color:var(--text-2);margin-top:2px}
+.streak{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,rgba(255,180,61,.15),rgba(255,91,156,.12));border:1px solid rgba(255,180,61,.3);padding:10px 16px;border-radius:13px}
+.streak i{color:var(--amber);font-size:18px}
+.streak b{font-size:17px;font-weight:700}
+.streak span{font-size:12px;color:var(--text-2);display:block;line-height:1.2}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:1.6rem}
+.stat{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+.stat:hover{transform:translateY(-3px);border-color:var(--border-glow)}
+.stat .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
+.stat.a .ic{background:rgba(91,140,255,.15);color:var(--accent)}
+.stat.b .ic{background:rgba(40,217,176,.15);color:var(--teal)}
+.stat.c .ic{background:rgba(255,180,61,.15);color:var(--amber)}
+.stat.d .ic{background:rgba(255,91,156,.15);color:var(--pink)}
+.stat .val{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.stat .lbl{font-size:12px;color:var(--text-2);margin-top:6px;font-weight:500}
+.phase-card{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.6rem}
+.phase-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;flex-wrap:wrap;gap:8px}
+.phase-head h3{font-size:16px;font-weight:600}
+.phase-head .pct{font-size:14px;font-weight:700;color:var(--accent)}
+.bar{height:10px;background:var(--bg-2);border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.bar>i{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--teal));width:2%;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.phase-milestones{display:flex;justify-content:space-between;margin-top:1rem;gap:8px}
+.ms{flex:1;text-align:center;padding:10px 6px;border-radius:11px;background:var(--bg-2);border:1px solid var(--border)}
+.ms.active{background:rgba(91,140,255,.12);border-color:rgba(91,140,255,.35)}
+.ms.complete{background:rgba(62,224,138,.1);border-color:rgba(62,224,138,.3)}
+.ms.complete b{color:var(--green)}
+.ms b{font-size:13px;font-weight:700;display:block}
+.ms span{font-size:11px;color:var(--text-3)}
+.sec-title{display:flex;align-items:center;gap:10px;margin:0 0 1rem;font-size:15px;font-weight:600}
+.sec-title i{color:var(--accent)}
+.sec-title .day-badge{margin-left:auto;font-size:11px;font-weight:600;color:var(--teal);background:rgba(40,217,176,.12);padding:5px 11px;border-radius:20px;border:1px solid rgba(40,217,176,.25)}
+.tasks{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:.5rem .3rem;margin-bottom:1.6rem}
+.task{display:flex;align-items:center;gap:14px;padding:1rem 1.2rem;border-radius:13px;cursor:pointer;transition:background .2s;position:relative}
+.task:hover{background:var(--bg-2)}
+.task+.task{border-top:1px solid var(--border)}
+.check{width:26px;height:26px;border-radius:9px;border:2px solid var(--border-glow);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;color:transparent;font-size:12px}
+.task.done .check{background:linear-gradient(135deg,var(--teal),var(--green));border-color:var(--teal);color:#04140f}
+.t-body{flex:1;min-width:0}
+.t-time{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.t-title{font-size:14px;font-weight:600;margin-bottom:2px}
+.task.done .t-title{color:var(--text-3);text-decoration:line-through}
+.task .pts{font-size:11px;font-weight:700;color:var(--amber);flex-shrink:0}
+.focus-banner{margin:.6rem 1rem 1rem;padding:1rem 1.2rem;border-radius:13px;background:linear-gradient(135deg,rgba(124,91,255,.14),rgba(91,140,255,.1));border:1px solid rgba(124,91,255,.3)}
+.focus-banner b{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.focus-banner b i{color:var(--accent-2)}
+.focus-banner p{font-size:12.5px;color:var(--text-2);line-height:1.5}
+.week-banner{background:linear-gradient(135deg,rgba(124,91,255,.16),rgba(91,140,255,.1));border:1px solid rgba(124,91,255,.32);border-radius:var(--radius);padding:1.3rem 1.5rem;margin-bottom:1.6rem;display:flex;align-items:center;gap:14px}
+.wk-content{flex:1;min-width:0}
+.wk-arrow{flex-shrink:0;width:40px;height:40px;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.06);border:1px solid rgba(124,91,255,.3);color:var(--accent-2);font-size:15px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.wk-arrow:hover{background:rgba(124,91,255,.18);border-color:var(--accent-2);transform:scale(1.06)}
+.wk-arrow:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.wb-tag{font-size:11px;font-weight:700;color:var(--accent-2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.week-banner h3{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:7px}
+.week-banner h3 span{color:var(--text-3);margin:0 3px}
+.week-banner p{font-size:13px;color:var(--text-2);line-height:1.6}
+.week-banner code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(91,140,255,.16);color:var(--accent);padding:2px 7px;border-radius:6px}
+.week-banner b{color:var(--text);font-weight:600}
+.hexbox{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.5rem;margin-bottom:1.6rem}
+.hex-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:1rem}
+.hex-row label{font-size:13px;font-weight:600;color:var(--text-2)}
+.hex-row select{flex:1;min-width:180px;padding:10px 12px;border-radius:11px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:13px;cursor:pointer}
+.hex-row .hex-gen{flex-shrink:0;background:linear-gradient(135deg,var(--teal),var(--accent));border:none;color:#04140f;font-weight:600}
+.hex-row .hex-gen:hover{transform:translateY(-2px)}
+.hex-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
+.hexchip{font-size:11.5px;color:var(--accent);background:rgba(91,140,255,.12);border:1px solid rgba(91,140,255,.25);padding:5px 11px;border-radius:20px}
+.hex-note{font-size:12.5px;color:var(--text-2);line-height:1.6}
+.hex-note b{color:var(--text);font-weight:600}
+.day-tabs{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.day-tab{flex:1;min-width:60px;padding:11px 8px;border-radius:12px;cursor:pointer;text-align:center;background:var(--card);border:1px solid var(--border);transition:all .2s}
+.day-tab:hover{border-color:var(--border-glow);background:var(--card-2)}
+.day-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none}
+.day-tab b{font-size:13px;font-weight:700;display:block}
+.day-tab span{font-size:10px;color:var(--text-3)}
+.day-tab.active b,.day-tab.active span{color:#fff}
+.day-tab.active span{color:rgba(255,255,255,.8)}
+.day-tab.today{position:relative}
+.day-tab.today::after{content:'';position:absolute;top:7px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.day-tab.complete{border-color:rgba(62,224,138,.4);background:rgba(62,224,138,.08)}
+.day-tab.complete b{color:var(--green)}
+.day-tab.complete span{color:var(--green)}
+.day-tab.complete.active{background:linear-gradient(135deg,var(--teal),var(--green));border:none}
+.day-tab.complete.active b,.day-tab.complete.active span{color:#04140f}
+.day-tab.skipped{opacity:.6}
+.day-tab.skipped span{color:var(--text-3)}
+.steps{list-style:none;margin:8px 0 0;padding:0}
+.steps li{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:4px 0 4px 20px;position:relative}
+.steps li::before{content:'';position:absolute;left:4px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.65}
+.steps li b{color:var(--text);font-weight:600}
+.steps li code{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--bg-2);color:var(--teal);padding:1px 6px;border-radius:5px}
+.task.done .steps{opacity:.5}
+.ptask{display:flex;padding:1rem 1.2rem}
+.ptask .t-title{margin-bottom:2px}
+.day-progress{padding:1rem 1.2rem;display:flex;flex-direction:column;gap:8px}
+.dp-bar{height:7px;background:var(--bg-2);border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.dp-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:20px;transition:width .4s}
+.day-progress span{font-size:12px;color:var(--text-2)}
+.min-btn{margin-top:4px;align-self:flex-start;padding:8px 13px;border-radius:10px;cursor:pointer;background:rgba(255,180,61,.12);border:1px solid rgba(255,180,61,.3);color:var(--amber);font-family:inherit;font-size:12px;font-weight:600}
+.min-btn:hover{background:rgba(255,180,61,.2)}
+.day-done{margin:.4rem;padding:1.1rem 1.3rem;border-radius:13px;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(40,217,176,.16),rgba(62,224,138,.1));border:1px solid rgba(62,224,138,.35)}
+.day-done>i{font-size:26px;color:var(--green)}
+.day-done b{font-size:15px;font-weight:700;display:block}
+.day-done span{font-size:12.5px;color:var(--text-2)}
+.day-done.low{background:linear-gradient(135deg,rgba(255,180,61,.16),rgba(255,91,156,.08));border-color:rgba(255,180,61,.35)}
+.day-done.low>i{color:var(--amber)}
+.day-done.low a{color:var(--accent);cursor:pointer;text-decoration:underline}
+.assess{display:flex;align-items:center;gap:14px;margin-bottom:1.6rem;padding:1.2rem 1.4rem;background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius)}
+.assess.due{background:linear-gradient(135deg,rgba(255,180,61,.15),rgba(91,140,255,.08));border-color:rgba(255,180,61,.35)}
+.assess-ic{width:44px;height:44px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;background:rgba(91,140,255,.15);color:var(--accent)}
+.assess.due .assess-ic{background:rgba(255,180,61,.18);color:var(--amber)}
+.assess-body{flex:1;min-width:0}
+.assess-body b{font-size:14px;font-weight:600;display:block;margin-bottom:3px}
+.assess-body span{font-size:12.5px;color:var(--text-2);line-height:1.5}
+.assess-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.assess-actions .btn{padding:.6rem .9rem;font-size:12.5px}
+.practice{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:1.6rem}
+.pcard{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1rem;text-align:center;cursor:pointer;transition:transform .25s,border-color .25s;position:relative;overflow:hidden}
+.pcard:hover{transform:translateY(-4px)}
+.pcard.p1:hover{border-color:var(--accent)}
+.pcard.p2:hover{border-color:var(--teal)}
+.pcard.p3:hover{border-color:var(--pink)}
+.pcard.p4:hover{border-color:var(--amber)}
+.pcard .pic{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px}
+.pcard.p1 .pic{background:rgba(91,140,255,.15);color:var(--accent)}
+.pcard.p2 .pic{background:rgba(40,217,176,.15);color:var(--teal)}
+.pcard.p3 .pic{background:rgba(255,91,156,.15);color:var(--pink)}
+.pcard.p4 .pic{background:rgba(255,180,61,.15);color:var(--amber)}
+.pcard h4{font-size:14px;font-weight:600;margin-bottom:3px}
+.pcard span{font-size:11px;color:var(--text-2)}
+.cta-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}
+.btn{padding:1rem 1.2rem;border-radius:13px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px}
+.btn:hover{background:var(--card-2);border-color:var(--border-glow);transform:translateY(-2px)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;box-shadow:0 8px 26px rgba(91,140,255,.35);color:#fff}
+.btn.primary:hover{box-shadow:0 12px 32px rgba(91,140,255,.5)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;filter:grayscale(.3)}
+.btn:disabled:hover{transform:none;box-shadow:none}
+.modal-bg{position:fixed;inset:0;background:rgba(6,9,16,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100;padding:1.5rem}
+.modal-bg.show{display:flex}
+.modal{background:linear-gradient(160deg,var(--card),var(--bg-2));border:1px solid var(--border-glow);border-radius:22px;max-width:520px;width:100%;max-height:min(88vh,860px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:2rem;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:pop .3s cubic-bezier(.4,0,.2,1)}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal .x{position:sticky;float:right;top:0;margin:0 0 0 1rem;width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text-2);cursor:pointer;font-size:15px;z-index:2}
+.modal .x:hover{background:var(--card);color:var(--text)}
+.modal .m-ic{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:1.1rem}
+.modal h2{font-size:20px;font-weight:700;margin-bottom:.6rem;letter-spacing:-.02em}
+.modal p{font-size:14px;color:var(--text-2);line-height:1.6;margin-bottom:1.3rem}
+.modal .m-list{list-style:none;margin-bottom:1.4rem}
+.modal .m-list li{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);font-size:13.5px;align-items:flex-start}
+.modal .m-list li:last-child{border:none}
+.modal .m-list i{color:var(--teal);margin-top:3px;font-size:13px}
+.modal .m-list b{color:var(--text);font-weight:600}
+.modal .m-list small{color:var(--text-2);display:block;margin-top:2px}
+.footer{text-align:center;margin-top:2.5rem;font-size:12px;color:var(--text-3)}
+.footer b{color:var(--text-2)}
+.modal.wide{max-width:760px}
+.pj-form{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
+.pj-form label{font-size:12px;color:var(--text-2);font-weight:600}
+.pj-form input[type=date],.pj-form textarea{width:100%;padding:10px 12px;border-radius:11px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:13px}
+.pj-form textarea{resize:vertical;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.5}
+.pj-actions{display:flex;gap:8px;flex-wrap:wrap}
+.pj-actions .btn{padding:.6rem .9rem;font-size:12.5px}
+.pj-row{display:grid;grid-template-columns:128px 1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:center}
+.pj-row input[type=date],.pj-row input[type=text]{padding:9px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;height:38px;box-sizing:border-box}
+.pj-row input[type=text]:focus,.pj-row input[type=date]:focus{outline:none;border-color:var(--accent)}
+.pj-icon-btn{flex-shrink:0;width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.pj-icon-btn:hover{background:rgba(255,91,156,.15);border-color:var(--pink);color:var(--pink)}
+.pj-empty{font-size:12.5px;color:var(--text-3);padding:10px 0}
+.pj-msg{font-size:12px;margin-top:8px}
+.pj-msg.err{color:var(--pink)}
+.pj-msg.ok{color:var(--green)}
+.pj-saved-item{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.pj-saved-item:last-child{border:none}
+.pj-saved-date{flex-shrink:0;width:74px;color:var(--text-3);font-family:'JetBrains Mono',monospace;font-size:11px;align-self:flex-start;padding-top:2px}
+.pj-saved-body{flex:1;min-width:0}
+.pj-saved-body .en{color:var(--text);font-weight:500}
+.pj-saved-body .pt{color:var(--text-2);margin-top:2px}
+.pj-confirm{flex-shrink:0;display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-2);white-space:nowrap}
+.pj-confirm button{padding:5px 10px;border-radius:8px;font-family:inherit;font-size:11px;font-weight:600;border:1px solid var(--border);background:var(--bg-2);color:var(--text);cursor:pointer}
+.pj-confirm button.danger{background:rgba(255,91,156,.15);border-color:var(--pink);color:var(--pink)}
+.pj-confirm button:hover{filter:brightness(1.15)}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.practice{grid-template-columns:repeat(2,1fr)}.cta-row{grid-template-columns:1fr}.phase-milestones{flex-direction:column}}
+@media(max-width:640px){.assess{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">🚀</div>
+      <div><h1>Elite English</h1><p>Technical fluency for backend devs · Leticia</p></div>
+    </div>
+    <div class="streak">
+      <i class="fa-solid fa-fire"></i>
+      <div><b id="streakNum">0</b><span>of 180 studied</span></div>
+    </div>
+  </div>
+
+  <a href="../index.html" style="font-size:12.5px;color:var(--text-2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin:-0.6rem 0 1rem"><i class="fa-solid fa-arrow-left"></i> Back to Backend Global</a>
+
+  <div id="syncStatus" style="font-size:12px;color:var(--text-3);margin:-0.4rem 0 1.2rem;display:flex;align-items:center;gap:7px"><i class="fa-solid fa-cloud"></i><span>Connecting…</span></div>
+
+  <div class="stats">
+    <div class="stat a"><div class="ic"><i class="fa-solid fa-calendar-day"></i></div><div class="val" id="dayVal">1</div><div class="lbl" id="dayTargetLbl">current week · of 26</div></div>
+    <div class="stat b"><div class="ic"><i class="fa-solid fa-layer-group"></i></div><div class="val" id="realPhase">Phase 1</div><div class="lbl" id="realPhaseName">Technical Foundation</div></div>
+    <div class="stat c"><div class="ic"><i class="fa-solid fa-bolt"></i></div><div class="val"><span id="xpVal">0</span></div><div class="lbl">Weekly XP</div></div>
+    <div class="stat d"><div class="ic"><i class="fa-solid fa-signal"></i></div><div class="val" id="levelVal">A1<i class="fa-solid fa-arrow-right-long" style="font-size:13px;margin:0 5px;color:var(--text-3)"></i>A2</div><div class="lbl">Current level</div></div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-head"><h3 id="phaseTitle">Phase 1 · Days 1-63 — Technical Foundation</h3><span class="pct" id="phasePct">32%</span></div>
+    <div class="bar"><i id="barFill"></i></div>
+    <div class="phase-milestones" id="phaseMs"></div>
+  </div>
+
+  <div class="week-banner" id="weekBanner">
+    <button class="wk-arrow" id="wkPrev" onclick="navWeek(-1)" aria-label="Previous week"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="wk-content"><div class="wb-tag" id="wkTag"></div><h3 id="wkTitle"></h3><p id="wkDesc"></p></div>
+    <button class="wk-arrow" id="wkNext" onclick="navWeek(1)" aria-label="Next week"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-diagram-project"></i> Weekly prompt · your hexagon</div>
+  <div class="hexbox">
+    <div class="hex-row">
+      <label for="vertexSel">Focus vertex</label>
+      <select id="vertexSel"></select>
+      <button class="btn hex-gen" onclick="weeklyPrompt()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate 10 sentences ↗</button>
+    </div>
+    <div class="hex-chips" id="hexChips"></div>
+    <p class="hex-note"><b>Five for Five (every Monday):</b> 5 min no subtitles → 5 min with subtitles → 5 min no subtitles → note 5 words → generate sentences with the prompt above, then rewrite them by hand.</p>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-list-check"></i> Detailed study plan<span class="day-badge" id="dayTotal">60 min</span></div>
+  <div class="day-tabs" id="dayTabs"></div>
+  <div id="makeupBar"></div>
+  <div class="tasks" id="taskList"></div>
+
+  <div class="sec-title"><i class="fa-solid fa-headphones"></i> Passive input · 4h while you work</div>
+  <div class="tasks" style="margin-bottom:1.6rem">
+    <div class="ptask"><div class="t-body">
+      <div class="t-time">Background listening · effortless</div>
+      <div class="t-title">Technical podcast running while you code</div>
+      <ul class="steps">
+        <li>.NET Rocks!, Azure Friday or The Changelog in the background, all day</li>
+        <li>Goal: get your ear used to rhythm and contractions — <b>no pressure to understand everything</b></li>
+        <li>If you catch a third-person sentence (he builds, it scales), repeat it under your breath</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-clipboard-check"></i> Assessment · every 21 days</div>
+  <div id="assessCard" class="assess"></div>
+
+  <div class="sec-title"><i class="fa-solid fa-dumbbell"></i> Quick practice</div>
+  <div class="practice">
+    <div class="pcard p1" onclick="practice('listening')"><div class="pic"><i class="fa-solid fa-ear-listen"></i></div><h4>Listening</h4><span>Technical comprehension</span></div>
+    <div class="pcard p2" onclick="practice('speaking')"><div class="pic"><i class="fa-solid fa-microphone-lines"></i></div><h4>Speaking</h4><span>Speech + pronunciation</span></div>
+    <div class="pcard p3" onclick="practice('interview')"><div class="pic"><i class="fa-solid fa-briefcase"></i></div><h4>Interview</h4><span>Mock interview</span></div>
+    <div class="pcard p4" onclick="practice('vocab')"><div class="pic"><i class="fa-solid fa-book-bookmark"></i></div><h4>Vocabulary</h4><span>.NET/Azure terms</span></div>
+  </div>
+
+  <div class="cta-row">
+    <button class="btn primary" onclick="practice('lesson')"><i class="fa-solid fa-play"></i> Start today's lesson</button>
+    <button class="btn" onclick="openModal('resources')"><i class="fa-solid fa-compass"></i> Resources</button>
+    <button class="btn" onclick="openModal('progress')"><i class="fa-solid fa-chart-line"></i> Progress</button>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-book-open"></i> Diário de frases<span class="day-badge" id="pjCountBadge">–</span></div>
+  <div class="tasks" style="margin-bottom:1.6rem;padding:1rem 1.2rem">
+    <button class="btn primary" onclick="openModal('phrases')"><i class="fa-solid fa-plus"></i> Adicionar frases</button>
+  </div>
+
+  <div class="footer"><b>Elite English</b> · Personalized 180-day program · Every day, 6h (2h active + 4h passive)</div>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal" id="modalBox"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const PHASES=[
+ {n:1,ini:1,fim:63,nome:'Technical Foundation',ms:[[21,'Podcast 50%'],[42,'Simulated meeting'],[63,'Real meeting']]},
+ {n:2,ini:64,fim:120,nome:'Conversational Fluency',ms:[[84,'Talk 5 min on a project'],[105,'Technical discussion'],[120,'Mock interview']]},
+ {n:3,ini:121,fim:180,nome:'Advanced Interview',ms:[[140,'Behavioral'],[160,'System design'],[180,'Real interview']]}
+];
+
+const WEEKS=[
+ {d:'1-7',ph:1,t:'Mandatory subject <span>·</span> Linking',foco:'the mandatory subject',ex:['<b>It</b> works on my machine','<b>There is</b> a bug in production'],desc:'Every verb needs a subject — <b>It is</b>, <b>There is</b>. Ear trained for <b>linking</b> (words that blend together).'},
+ {d:'8-14',ph:1,t:'Articles a / an / the <span>·</span> Elision',foco:'articles a/an/the',ex:['I opened <b>a</b> pull request','<b>The</b> deploy failed'],desc:'When to use <code>a</code>, <code>an</code>, <code>the</code>. Ear for <b>elision</b> (sounds that disappear).'},
+ {d:'15-21',ph:1,t:'Third person + S <span>·</span> contractions',foco:'third person (He/She/It + S)',ex:['She <b>deploys</b> the API','It <b>runs</b> on Azure'],desc:'He / She / It always take an <b>S</b> on the verb (he works, she deploys, it runs). Ear for: <code>I\'m</code>, <code>you\'re</code>, <code>he\'s</code>, <code>she\'s</code>, <code>it\'s</code>, <code>we\'re</code>, <code>they\'re</code>.'},
+ {d:'22-28',ph:1,t:'Have vs There is <span>·</span> negative contractions',foco:'have vs there is',ex:['<b>There is</b> a merge conflict','We <b>have</b> three environments'],desc:'Difference between <b>possession</b> (have) and <b>existence</b> (there is). Ear for: <code>don\'t</code>, <code>doesn\'t</code>, <code>can\'t</code>, <code>won\'t</code>.'},
+ {d:'29-35',ph:1,t:'Adjective position <span>·</span> silent letters',foco:'adjective position',ex:['a <b>scalable backend</b> service','a <b>clean</b> architecture'],desc:'The adjective comes <b>before</b> the noun (clean code, fast pipeline). Ear for silent letters.'},
+ {d:'36-42',ph:1,t:'Phase 1 consolidation <span>·</span> checkpoint',foco:'all 5 mistakes together',ex:['She <b>reviews</b> the clean code','<b>There is</b> a fast pipeline'],desc:'Checkpoint week: automatically eliminate the 5 mistakes. Comprehension and speaking test.'},
+ {d:'43-49',ph:1,t:'Present Simple vs Continuous <span>·</span> reductions',foco:'present simple vs continuous',ex:['The job <b>runs</b> every night','The pipeline <b>is running</b> now'],desc:'Routine (simple) vs now (continuous). Ear for reductions: <code>gonna</code>, <code>wanna</code>, <code>gimme</code>.'},
+ {d:'50-56',ph:1,t:'Past Simple + connectors <span>·</span> homophones',foco:'past simple + connectors',ex:['I <b>fixed</b> the bug, <b>then</b> deployed','We <b>migrated</b> the DB <b>because</b> it was slow'],desc:'Tell stories in the past with connectors (then, because, so). Ear for homophones (their/there).'},
+ {d:'57-63',ph:1,t:'Natural questions & negatives <span>·</span> TH sound',foco:'natural questions and negatives',ex:['<b>Does</b> it scale?','It <b>doesn\'t</b> throw errors'],desc:'Ask questions and negate naturally. Ear for the <b>TH</b> sound (think vs this).'},
+ {d:'64-70',ph:2,t:'Phrasal verb GET',foco:'phrasal verb GET',ex:['I need to <b>get</b> the service <b>up</b>','Let\'s <b>get into</b> the architecture'],desc:'GET in real context: get up, get by, get over, get into. Ear in real podcasts.'},
+ {d:'71-77',ph:2,t:'Phrasal verb PUT',foco:'phrasal verb PUT',ex:['<b>Put</b> the config <b>together</b>','We <b>put off</b> the release'],desc:'PUT: put together, put off, put out. Recognize it in conversations.'},
+ {d:'78-84',ph:2,t:'Phrasal verb TAKE',foco:'phrasal verb TAKE',ex:['It <b>takes over</b> the process','<b>Take</b> the logs <b>out</b>'],desc:'TAKE: take over, take out, take on. Use it in stories about projects.'},
+ {d:'85-91',ph:2,t:'Phrasal verb MAKE',foco:'phrasal verb MAKE',ex:['<b>Make up</b> a test case','It <b>makes sense</b>'],desc:'MAKE: make up, make sense, make sure. Phrasal verb consolidation.'},
+ {d:'92-98',ph:2,t:'Phrasal verbs GO / COME',foco:'phrasal verbs GO / COME',ex:['The build <b>went through</b>','A new bug <b>came up</b>'],desc:'GO and COME: go through, come up, come across. Fluency in storytelling.'},
+ {d:'99-105',ph:2,t:'Emotional expressions',foco:'emotional expressions',ex:['I\'m <b>over the moon</b> with this release','That legacy code <b>drives me crazy</b>'],desc:'Express emotion naturally: over the moon, gutted, drives me crazy. Standup and casual podcasts.'},
+ {d:'106-112',ph:2,t:'Business expressions',foco:'business expressions',ex:['Let\'s <b>circle back</b> on that','That\'s <b>low-hanging fruit</b>'],desc:'Corporate English: circle back, low-hanging fruit, ballpark. Business podcasts and TED.'},
+ {d:'113-120',ph:2,t:'Phase 2 consolidation <span>·</span> checkpoint',foco:'phrasal verbs + expressions',ex:['The team <b>rolled out</b> the feature','We\'ll <b>circle back</b> next sprint'],desc:'Checkpoint: phrasal verbs automated + 50 expressions. Test with a 30-min podcast without subtitles.'},
+ {d:'121-127',ph:3,t:'Logical argumentation',foco:'logical argumentation',ex:['My <b>thesis</b> is that microservices add complexity','The <b>evidence</b> shows lower latency'],desc:'Structure: thesis, evidence, counterargument, conclusion — on technical topics.'},
+ {d:'128-134',ph:3,t:'Persuasion + emotion',foco:'persuasion (ethos, pathos, logos)',ex:['This approach <b>empowers</b> the team','<b>Consider</b> the long-term cost'],desc:'Persuade using logic + emotion. Ethos, pathos, logos.'},
+ {d:'135-141',ph:3,t:'Debate & counterargument',foco:'debate and counterargument',ex:['I <b>see your point, but</b>…','<b>On the other hand</b>, monoliths are simpler'],desc:'Discuss without being rude: disagree diplomatically, acknowledge the other side.'},
+ {d:'142-148',ph:3,t:'Cultural context & humor',foco:'cultural context and humor',ex:['That\'s a <b>game changer</b>','Let\'s not <b>reinvent the wheel</b>'],desc:'Understand jokes, references and idioms from different cultures.'},
+ {d:'149-155',ph:3,t:'Register & formality',foco:'formal vs casual register',ex:['<b>I would suggest</b> refactoring (formal)','<b>Let\'s just</b> refactor it (casual)'],desc:'Adapt your language to the context: academic, professional, casual.'},
+ {d:'156-162',ph:3,t:'Final mocks <span>·</span> System design',foco:'system design mock interviews',ex:['Walk me through designing a <b>rate limiter</b>','I\'d put a <b>queue</b> between the services'],desc:'Full system design rounds in English — scalability, trade-offs, thinking out loud.'},
+ {d:'163-169',ph:3,t:'Final mocks <span>·</span> Behavioral (STAR)',foco:'behavioral STAR mock interviews',ex:['<b>Tell me about a time</b> you disagreed with a teammate','The <b>result</b> was a 30% faster pipeline'],desc:'Behavioral rounds: STAR stories about conflict, failure, leadership and impact.'},
+ {d:'170-176',ph:3,t:'Final mocks <span>·</span> Live coding',foco:'live coding mock interviews',ex:['Let me <b>walk you through</b> my approach','I\'ll start with a <b>brute force</b>, then optimize'],desc:'Live coding out loud in English — narrate your reasoning while you solve.'},
+ {d:'177-180',ph:3,t:'Graduation <span>·</span> full interview',foco:'a full end-to-end interview',ex:['<b>Do you have any questions</b> for us?','I\'m excited about the <b>impact</b> of this role'],desc:'Final stretch: a complete interview (behavioral + technical + system design) and a 10-min recording. 🏆'}
+];
+
+// ===== ANCHOR: your position comes from progress, not the date =====
+let startISO=localStorage.getItem('ee_start');
+if(!startISO){startISO=new Date().toISOString().slice(0,10);localStorage.setItem('ee_start',startISO)}
+function weekOfDay(day){for(let i=0;i<WEEKS.length;i++){const[a,b]=WEEKS[i].d.split('-').map(Number);if(day>=a&&day<=b)return i}return WEEKS.length-1}
+let weekIdx=0;
+
+// ===== DAY TEMPLATES (per phase) =====
+function p1(W,nf){return[
+ {label:'Mon',sub:'60 min',title:'Five for Five + Deep Processing',tasks:[
+   {time:'20 min · Five for Five',title:`Video about ${W.foco}`,xp:20,steps:['Find ~5 min of a video from your YouTuber on this topic','Watch <b>without subtitles</b> (leave the doubts)','Watch <b>with subtitles</b> EN/PT (resolve them)','Watch <b>without subtitles</b> again (consolidate)','Note 5 new words/expressions + context']},
+   {time:'15 min · Generate sentences with AI',title:`10 sentences with ${W.foco} (tech context)`,xp:15,steps:[`Ask Claude for 10 sentences using <b>${W.foco}</b> about .NET / Azure / SQL`,`Ex: "${W.ex[0]}", "${W.ex[1]}"`,'Check the grammar rule in each sentence']},
+   {time:'15 min · Rewrite by hand',title:'Copy the 10 sentences + translation',xp:15,steps:['Rewrite all 10 sentences <b>by hand</b>','Write the PT translation next to each','Underline the key point of each']},
+   {time:'10 min · Your sentences + out loud',title:'Create 5 sentences about YOUR work',xp:10,steps:[`Write 5 of your own sentences using <b>${W.foco}</b>`,'About your day as a backend dev','Read them all out loud 2x']}
+ ]},
+ {label:'Tue',sub:'50 min',title:'Shadowing + Pronunciation + Anki',tasks:[
+   {time:'20 min · Shadowing',title:'Imitate 2-3 sentences from Monday\'s video',xp:15,steps:['Take 2-3 sentences from <b>Monday\'s video</b>','Shadowing: imitate rhythm, speed and intonation','Identify 5 contractions in the audio']},
+   {time:'20 min · Speaking + Anki',title:'Record the 10 sentences you made on Monday',xp:15,steps:['Anki (8 min): review <b>Monday\'s sentences</b>','Free speaking (7 min): record 3-5 sentences about your day','Shadowing (5 min): imitate and record']},
+   {time:'10 min · Consolidation',title:'Listen to your recordings',xp:10,steps:['Listen to what you recorded','Did the pronunciation come out clear?','Mark what needs improvement']}
+ ]},
+ {label:'Wed',sub:'50 min',title:'Deep Listening + Anki',tasks:[
+   {time:'25 min · Active listening',title:'15-20 min of the YouTuber + simultaneous reading',xp:20,steps:[`Material about ${W.foco} or technical content with CC`,'Listen + read at the same time','Mark 10 sentences using the topic correctly','Note unknown vocabulary']},
+   {time:'15 min · Anki + patterns',title:'Review cards + find your patterns',xp:15,steps:['Anki (10 min): review the week\'s cards','Consolidation (5 min): where do you slip the most?']},
+   {time:'10 min · Reflection',title:'Pause and explain out loud',xp:10,steps:['Pause the video 5 times','Explain in English what you heard']}
+ ]},
+ {label:'Thu',sub:'50 min',title:'Free Listening + Speaking + Recording',tasks:[
+   {time:'25 min · Natural listening',title:'20 min of authentic material, no pausing',xp:20,steps:['Pick a technical video/podcast and just <b>enjoy it</b>','Goal: natural exposure to the accent','Note 3-5 words that caught your attention']},
+   {time:'20 min · Speaking + recording',title:'Record about your day using the topic',xp:15,steps:['Record 3-5 sentences about your day (1-2 min)',`Use <b>${W.foco}</b> naturally`,'Compare with <b>Tuesday\'s recording</b>']},
+   {time:'5 min · Consolidation',title:'Listen to both recordings',xp:5,steps:['Listen to Tuesday\'s and today\'s','Did you improve? Where?']}
+ ]},
+ {label:'Fri',sub:'50 min',title:'Consolidation + Handwriting + Journal',tasks:[
+   {time:'10 min · Anki',title:'Review the whole week',xp:10,steps:['Review all the cards','Mark the hardest sentences']},
+   {time:'20 min · Handwriting',title:'Rewrite Monday\'s sentences',xp:15,steps:['Pick 5-7 sentences from <b>Monday</b>','Write them by hand','Read out loud 3x']},
+   {time:'15 min · Mistake journal',title:'Self-assessment of the week',xp:10,steps:[`Do I still get ${W.foco} wrong? (score 1-10)`,'Pronunciation this week? (1-10)','Which sentence was most useful?']},
+   {time:'5 min · Preview',title:'Peek at the next topic',xp:5,steps:[`Next week: <b>${nf}</b>`,'Prepare the material']}
+ ]},
+ {label:'Sat',sub:'60 min',title:'Long Immersion + Analysis',tasks:[
+   {time:'45 min · Immersion',title:'Marathon of your YouTuber',xp:25,steps:['45 min of your main channel, <b>no subtitles</b> or EN only','5-10 videos from the same person','Just enjoy — immersion, not tense study']},
+   {time:'15 min · Analysis',title:'Note what you noticed',xp:15,steps:['5-10 new words',`3-5 correct uses of ${W.foco}`,'Does the person use many contractions?']}
+ ]},
+ {label:'Sun',sub:'30 min',title:'Active Rest + Reflection',tasks:[
+   {time:'10 min · Light input',title:'Music with lyrics OR a casual podcast',xp:5,steps:['Something you <b>enjoy</b>, no effort','Just enjoy the language']},
+   {time:'15 min · Reflection',title:'Review the week\'s journal',xp:10,steps:['Which mistake was easiest? Hardest?',`Do you still get ${W.foco} wrong?`,'Which day was most productive?']},
+   {time:'5 min · Preparation',title:'Prepare next week',xp:5,steps:[`Ready for <b>${nf}</b>?`,'Which YouTuber continues or changes?']}
+ ]}
+]}
+function p2(W,nf){return[
+ {label:'Mon',sub:'60 min',title:'Five for Five + Deep Processing',tasks:[
+   {time:'20 min · Five for Five',title:`Podcast about ${W.foco}`,xp:20,steps:['10-15 min of a podcast/video from your podcaster on the topic','Watch without subtitles → with EN subtitles → without','Note 5 new expressions + context']},
+   {time:'15 min · Generate sentences with AI',title:`10 sentences with ${W.foco}`,xp:15,steps:[`Ask for 10 sentences using <b>${W.foco}</b> in a tech context`,`Ex: "${W.ex[0]}", "${W.ex[1]}"`,'Note the prepositions that change the meaning']},
+   {time:'15 min · Rewrite by hand',title:'Copy the sentences + translation',xp:15,steps:['Rewrite the 10 sentences by hand','Translation in PT next to it','Underline the phrasal verb/expression']},
+   {time:'10 min · Your sentences + out loud',title:'Create 5 sentences about your projects',xp:10,steps:[`Use <b>${W.foco}</b> talking about a real project`,'Read out loud 2x']}
+ ]},
+ {label:'Tue',sub:'50 min',title:'Shadowing + Expressions + Anki',tasks:[
+   {time:'20 min · Shadowing',title:'Imitate 2-3 sentences from Monday\'s podcast',xp:15,steps:['Shadowing imitating tone and naturalness','Identify 5 uses of the topic in the audio']},
+   {time:'20 min · Speaking + Anki',title:'Record using Monday\'s expressions',xp:15,steps:['Anki (8 min): review the expressions','Free speaking (7 min): tell something from work','Shadowing (5 min): record']},
+   {time:'10 min · Consolidation',title:'Listen to your recordings',xp:10,steps:['Did the expression sound natural?','Mark what to improve']}
+ ]},
+ {label:'Wed',sub:'50 min',title:'Podcast + Written Discussion',tasks:[
+   {time:'25 min · Active listening',title:'15-20 min of a podcast on the topic',xp:20,steps:['Listen + read (if there\'s CC)','Mark where the topic appears naturally','Note new vocabulary']},
+   {time:'15 min · Written discussion',title:'Write your opinion (5 sentences)',xp:15,steps:['Write 5 opinion sentences about the podcast','Anki (5 min): review']},
+   {time:'10 min · Reflection',title:'Explain out loud',xp:10,steps:['Pause 5 times and summarize in English']}
+ ]},
+ {label:'Thu',sub:'50 min',title:'Standup/Comedy + Free Speaking',tasks:[
+   {time:'25 min · Natural listening',title:'20 min of standup or a casual podcast',xp:20,steps:['Enjoy the humor and slang','Note expressions that made you laugh']},
+   {time:'20 min · Free speaking',title:'Record a story about your day',xp:15,steps:['Structure: what happened → how you felt → what you learned',`Use <b>${W.foco}</b> naturally`]},
+   {time:'5 min · Self-assessment',title:'Did I use the topic naturally?',xp:5,steps:['Listen to the recording','Did it sound natural?']}
+ ]},
+ {label:'Fri',sub:'50 min',title:'Podcast + Consolidation',tasks:[
+   {time:'10 min · Anki',title:'Review the week',xp:10,steps:['Review phrasal verbs + expressions']},
+   {time:'20 min · Handwriting + bank',title:'Write Monday\'s sentences',xp:15,steps:['5-7 sentences by hand','Compile 3-5 new expressions in a "bank"']},
+   {time:'15 min · Podcast review',title:'Recognize what you learned',xp:10,steps:['15 min of your favorite podcast','Recognize the phrasal verbs/expressions']},
+   {time:'5 min · Preview',title:'Next topic',xp:5,steps:[`Next week: <b>${nf}</b>`]}
+ ]},
+ {label:'Sat',sub:'60 min',title:'Long Immersion + Analysis',tasks:[
+   {time:'45 min · Immersion',title:'Marathon of your podcaster',xp:25,steps:['45 min without subtitles or EN only','5-10 episodes from the same person']},
+   {time:'15 min · Analysis',title:'Note what you noticed',xp:15,steps:['5-10 new words','Which accent? Was it understandable?']}
+ ]},
+ {label:'Sun',sub:'30 min',title:'Active Rest + Reflection',tasks:[
+   {time:'10 min · Light input',title:'Casual podcast or music',xp:5,steps:['No effort, just enjoy']},
+   {time:'15 min · Reflection',title:'Review the week',xp:10,steps:[`Did I master ${W.foco}?`,'Did I use it naturally?']},
+   {time:'5 min · Preparation',title:'Prepare next week',xp:5,steps:[`Ready for <b>${nf}</b>?`]}
+ ]}
+]}
+function p3(W,nf){return[
+ {label:'Mon',sub:'60 min',title:'Documentary + Analysis + Writing',tasks:[
+   {time:'20 min · Documentary',title:`Material about ${W.foco}`,xp:20,steps:['20 min of new material, no subtitles or EN only','Note: main thesis, evidence, your opinion']},
+   {time:'15 min · Analytical writing',title:'Answer 5 questions',xp:15,steps:['What happened? Why?','Consequences? Your opinion? How it affects you?']},
+   {time:'15 min · Argument by hand',title:'Structure an argument',xp:15,steps:['Thesis / Evidence 1 / Evidence 2 / Counterargument / Conclusion',`Ex: "${W.ex[0]}"`,'Rewrite by hand']},
+   {time:'10 min · Out loud',title:'Speak with conviction',xp:10,steps:['Read your argument out loud',`Ex: "${W.ex[1]}"`]}
+ ]},
+ {label:'Tue',sub:'50 min',title:'Debate + Defending an Opinion',tasks:[
+   {time:'20 min · Listening',title:'20 min of a debate podcast',xp:15,steps:['Controversial topic','Note arguments from both sides']},
+   {time:'20 min · Recorded defense',title:'Record defending a position',xp:20,steps:['Thesis → Evidence 1 → Evidence 2 → Conclusion','No script, be convincing (2-3 min)']},
+   {time:'10 min · Consolidation',title:'Listen to your defense',xp:10,steps:['Was it convincing?','Mark what to improve']}
+ ]},
+ {label:'Wed',sub:'50 min',title:'News Analysis + Writing',tasks:[
+   {time:'25 min · Listening',title:'20 min of analysis (BBC/NPR)',xp:20,steps:['Topic: politics, economy, tech','No subtitles','Note the arguments']},
+   {time:'15 min · Writing',title:'Write your analysis (10 sentences)',xp:15,steps:['Written analysis','Anki (5 min): review']},
+   {time:'10 min · Reflection',title:'Explain out loud',xp:10,steps:['Pause 5x and explain the arguments']}
+ ]},
+ {label:'Thu',sub:'50 min',title:'Interview + Discussion',tasks:[
+   {time:'25 min · Listening',title:'20 min of a long-form interview',xp:20,steps:['Topic: life, career, worldview','Note nuances (tone, pauses, emotions)']},
+   {time:'20 min · Discussion out loud',title:'Talk about what you understood',xp:15,steps:['What you understood, what you found interesting','What you agree/disagree with','Record 2-3 min']},
+   {time:'5 min · Self-assessment',title:'Did I defend my position?',xp:5,steps:['Listen and assess']}
+ ]},
+ {label:'Fri',sub:'50 min',title:'Consolidation + Debate Podcast',tasks:[
+   {time:'10 min · Anki',title:'Review the arguments',xp:10,steps:['Review the week']},
+   {time:'15 min · Handwriting',title:'Write 5 arguments',xp:15,steps:['Without checking','Compile them in an "argument bank"']},
+   {time:'20 min · Debate podcast',title:'Recognize the techniques',xp:15,steps:['15 min of debate','Which side is more convincing?']},
+   {time:'5 min · Preview',title:'Next topic',xp:5,steps:[`Next week: <b>${nf}</b>`]}
+ ]},
+ {label:'Sat',sub:'60 min',title:'Long Immersion + Analysis',tasks:[
+   {time:'45 min · Immersion',title:'Documentary / film without subtitles',xp:25,steps:['45 min of deep immersion','Nuances, accents, emotions']},
+   {time:'15 min · Analysis',title:'Note what you noticed',xp:15,steps:['5-10 new words','Main message? Comprehension %?']}
+ ]},
+ {label:'Sun',sub:'30 min',title:'Active Rest + Reflection',tasks:[
+   {time:'10 min · Light input',title:'Short documentary or podcast',xp:5,steps:['No effort, just enjoy']},
+   {time:'15 min · Reflection',title:'Review the week',xp:10,steps:['Did I argue well? Did I catch the nuances?','Comprehension without subtitles %?']},
+   {time:'5 min · Preparation',title:'Prepare next week',xp:5,steps:[`Ready for <b>${nf}</b>?`]}
+ ]}
+]}
+
+function buildDays(idx){
+  const W=WEEKS[idx];
+  const nf=WEEKS[idx+1]?WEEKS[idx+1].foco:'final consolidation';
+  return W.ph===1?p1(W,nf):W.ph===2?p2(W,nf):p3(W,nf);
+}
+let DAYS=buildDays(weekIdx);
+let cur=0;
+
+const DONE_KEY='ee_done_v3';
+let done=new Set(JSON.parse(localStorage.getItem(DONE_KEY)||'[]'));
+let notes=JSON.parse(localStorage.getItem('ee_notes')||'{}');
+let cloudStamp=null;
+const tabsEl=document.getElementById('dayTabs');
+const listEl=document.getElementById('taskList');
+const totalEl=document.getElementById('dayTotal');
+
+function wk(){return WEEKS[weekIdx].d}
+function key(di,ti){return wk()+':'+di+':'+ti}
+function minKey(wi,di){return 'min:'+WEEKS[wi].d+':'+di}
+function skipKey(wi,di){return 'skip:'+WEEKS[wi].d+':'+di}
+function isDayDone(wi,di){
+  if(done.has(minKey(wi,di)))return true;
+  const ds=buildDays(wi), dd=WEEKS[wi].d;
+  return ds[di].tasks.every((t,ti)=>done.has(dd+':'+di+':'+ti));
+}
+// resolved = finished OR intentionally skipped (both leave the pending queue)
+function isDayResolved(wi,di){return isDayDone(wi,di)||done.has(skipKey(wi,di))}
+function skippedCount(){let c=0;done.forEach(k=>{if(k.indexOf('skip:')===0)c++});return c}
+// resolved = days you moved past (done OR skipped) = your position in the schedule
+function resolvedCount(){let c=0;for(let wi=0;wi<WEEKS.length;wi++){const ds=buildDays(wi);for(let di=0;di<ds.length;di++)if(isDayResolved(wi,di))c++;}return c}
+function dayComplete(di){return isDayDone(weekIdx,di)}
+function dayXP(di){let x=0;DAYS[di].tasks.forEach((t,ti)=>{if(done.has(key(di,ti)))x+=t.xp});return x}
+function weekXP(){let x=0;DAYS.forEach((d,di)=>x+=dayXP(di));return x}
+function completedDaysIn(idx){let c=0;const ds=buildDays(idx);ds.forEach((d,di)=>{if(isDayDone(idx,di))c++});return c}
+function totalCompleted(){let c=0;for(let i=0;i<WEEKS.length;i++)c+=completedDaysIn(i);return c}
+function furthestDay(){
+  let max=0;
+  for(let wi=0;wi<WEEKS.length;wi++){
+    const ds=buildDays(wi), start=+WEEKS[wi].d.split('-')[0];
+    ds.forEach((d,di)=>{ if(isDayDone(wi,di)) max=Math.max(max,start+di); });
+  }
+  return max;
+}
+// current week = first week that still has an UNRESOLVED day (skipping advances it)
+function curWeekIdx(){
+  for(let wi=0;wi<WEEKS.length;wi++){
+    const ds=buildDays(wi);
+    for(let di=0;di<ds.length;di++) if(!isDayResolved(wi,di)) return wi;
+  }
+  return WEEKS.length-1;
+}
+function nextDayIdx(wi){
+  const ds=buildDays(wi);
+  for(let di=0;di<ds.length;di++){ if(!isDayResolved(wi,di)) return di; }
+  return 0;
+}
+function toggleMin(i){
+  const k=minKey(weekIdx,i);
+  if(done.has(k))done.delete(k);else done.add(k);
+  done.delete(skipKey(weekIdx,i)); // finishing clears a skip
+  localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+  renderTabs();renderTasks();updateXP();updateProgress();saveToCloud();
+}
+function toggleSkip(i){
+  const k=skipKey(weekIdx,i);
+  if(done.has(k))done.delete(k);else done.add(k);
+  localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+  weekIdx=curWeekIdx();cur=nextDayIdx(weekIdx);
+  renderWeek();saveToCloud();
+}
+
+let studyDay=0, liveWeek=0, levelPlain='A1→A2';
+function levelPair(d){
+  const b=[[21,'A1','A2'],[42,'A2',''],[63,'A2','B1'],[90,'B1',''],[120,'B1','B2'],[150,'B2',''],[180,'B2','C1']];
+  for(const x of b)if(d<=x[0])return[x[1],x[2]];
+  return['C1',''];
+}
+function updateProgress(){
+  liveWeek=curWeekIdx();
+  studyDay=+WEEKS[liveWeek].d.split('-')[0];   // position = start day of current week (drives phase/level/milestones)
+  const studied=totalCompleted();               // days actually studied
+  const owed=skippedCount();
+  const dd=Math.max(1,studyDay);
+  document.getElementById('streakNum').textContent=Math.min(180,studied);    // fire = days studied (of 180)
+  document.getElementById('dayVal').textContent=liveWeek+1;                  // card = current week number
+  document.getElementById('dayTargetLbl').textContent='current week · of '+WEEKS.length+(owed>0?' · '+owed+' owed':'');
+  const rp=PHASES[WEEKS[liveWeek].ph-1];
+  document.getElementById('realPhase').textContent='Phase '+rp.n;
+  document.getElementById('realPhaseName').textContent=rp.nome;
+  const[la,lz]=levelPair(dd);
+  levelPlain=lz?`${la}→${lz}`:la;
+  document.getElementById('levelVal').innerHTML=lz?`${la}<i class="fa-solid fa-arrow-right-long" style="font-size:13px;margin:0 5px;color:var(--text-3)"></i>${lz}`:la;
+  renderPhase();
+  renderAssess();
+  renderMakeup();
+}
+
+// ===== Assessment every 21 days =====
+const CHECKPOINTS=[21,42,63,84,105,126,147,168,180];
+function renderAssess(){
+  const el=document.getElementById('assessCard'); if(!el)return;
+  const next=CHECKPOINTS.find(c=>!done.has('assess:'+c))||180;
+  const due=studyDay>=next && !done.has('assess:'+next);
+  el.className='assess'+(due?' due':'');
+  el.innerHTML=`
+    <div class="assess-ic"><i class="fa-solid ${due?'fa-bell':'fa-flag-checkered'}"></i></div>
+    <div class="assess-body">
+      <b>${due?`Assessment due — Day ${next}`:`Next assessment · Day ${next}`}</b>
+      <span>Record a 2-min speaking test + take a mini CEFR test to measure real progress.</span>
+    </div>
+    <div class="assess-actions">
+      <button class="btn" onclick="startAssessment()"><i class="fa-solid fa-play"></i> Run test ↗</button>
+      ${due?`<button class="btn" onclick="markAssess(${next})"><i class="fa-solid fa-check"></i> Mark done</button>`:''}
+    </div>`;
+}
+function startAssessment(){
+  const p=`(I'm a backend .NET/Azure/SQL developer, approximate level ${levelPlain}, day ${studyDay}/180, goal: a job abroad.) Run a short English assessment for me: 1) give me a 2-minute speaking prompt to record about my work; 2) ask 5 quick questions covering listening, grammar and vocabulary; 3) at the end, estimate my CEFR level and name 2 concrete things to improve. Start now.`;
+  ask(p);
+}
+function markAssess(day){
+  done.add('assess:'+day);
+  localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+  saveToCloud();
+  renderAssess();
+}
+
+// ===== Makeup: owed (skipped) days you still do later =====
+function firstSkip(){
+  for(let wi=0;wi<WEEKS.length;wi++){const ds=buildDays(wi);for(let di=0;di<ds.length;di++)if(done.has(skipKey(wi,di)))return[wi,di];}
+  return null;
+}
+function gotoMakeup(){ const f=firstSkip(); if(!f)return; weekIdx=f[0];cur=f[1];renderWeek(); }
+function renderMakeup(){
+  const el=document.getElementById('makeupBar'); if(!el)return;
+  const owed=skippedCount();
+  if(owed<=0){el.innerHTML='';return;}
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:.7rem 1rem;margin-bottom:1rem;border-radius:12px;background:rgba(255,180,61,.1);border:1px solid rgba(255,180,61,.3);font-size:12.5px">
+    <i class="fa-solid fa-clock-rotate-left" style="color:var(--amber)"></i>
+    <span style="flex:1;color:var(--text-2)"><b style="color:var(--amber)">${owed} owed day${owed>1?'s':''}</b> — skipped days you still owe (part of the 180). Do them anytime to reach 180.</span>
+    <button onclick="gotoMakeup()" style="padding:6px 12px;border-radius:9px;border:1px solid rgba(255,180,61,.4);background:rgba(255,180,61,.14);color:var(--amber);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer">Do a makeup day</button>
+  </div>`;
+}
+
+
+// ===== Hexagon vertices — tuned for overseas interviews =====
+const VERTICES=[
+ 'C# & .NET backend — API design, async/await, EF Core, LINQ',
+ 'Live coding — think-aloud problem solving',
+ 'System design — scalability, databases, caching, queues',
+ 'Behavioral / STAR — "tell me about a time…" stories',
+ 'Interview communication — clarifying, trade-offs, questions, negotiation',
+ 'Small talk & rapport — sports, music, cooking'
+];
+(function initHex(){
+  const sel=document.getElementById('vertexSel');
+  if(sel) sel.innerHTML=VERTICES.map((v,i)=>`<option value="${i}">${v}</option>`).join('');
+  const chips=document.getElementById('hexChips');
+  if(chips) chips.innerHTML=VERTICES.map(v=>`<span class="hexchip">${v.split(' — ')[0]}</span>`).join('');
+})();
+function weeklyPrompt(){
+  const W=WEEKS[weekIdx];
+  const v=VERTICES[+(document.getElementById('vertexSel').value||0)];
+  const p=`You are an expert at teaching English to Brazilian developers preparing for software engineering interviews abroad.\n\nContext: I'm a backend .NET/Azure/SQL developer, level ${levelPlain}. This week (Days ${W.d}) my grammar focus is "${W.foco}", and I'm using the Five for Five technique.\n\nTask: Generate 10 natural, interview-ready sentences about "${v}" that practice "${W.foco}".\n\nRules:\n- Real, natural sentences (not textbook), realistic tech-interview context.\n- Vary the structure and difficulty (easy → intermediate).\n- I'll use them for Anki, shadowing and handwriting.\n\nFormat for each sentence:\n[Sentence with the key point in BOLD]\n[PT translation]\n[Listening note for the week's sound/contraction]\n\nGenerate the 10 sentences now.`;
+  ask(p);
+}
+function practice(kind){
+  const W=WEEKS[weekIdx];
+  const ctx=`(Context: I'm a backend .NET/Azure/SQL developer preparing for a job abroad. I'm on day ${studyDay}/180, approximate level ${levelPlain}, this week's topic: ${W.foco}. Adapt the difficulty to my level.) `;
+  const P={
+    listening:ctx+'Let\'s practice technical listening: give me a short passage in English and ask 3 comprehension questions.',
+    speaking:ctx+'Let\'s practice speaking: ask me a question in English about my work and kindly correct my answer.',
+    interview:ctx+'Simulate a technical interview in English for a backend .NET role (mix of behavioral, C#/.NET and a short live-coding think-aloud). Start with the first question and give me feedback.',
+    vocab:ctx+'Teach me 10 English words/expressions about .NET/SQL/Azure and interviews, suited to my level, with example sentences.',
+    lesson:ctx+`Start today's lesson: a simulated conversation in English focused on "${W.foco}", adapted to my level.`
+  };
+  ask(P[kind]);
+}
+
+function renderWeek(){
+  const W=WEEKS[weekIdx];
+  DAYS=buildDays(weekIdx);
+  updateProgress();
+  document.getElementById('wkTag').textContent=(weekIdx===liveWeek?'Current week · Days ':'Week · Days ')+W.d;
+  document.getElementById('wkTitle').innerHTML=W.t;
+  document.getElementById('wkDesc').innerHTML=W.desc;
+  document.getElementById('wkPrev').disabled=weekIdx===0;
+  document.getElementById('wkNext').disabled=weekIdx===WEEKS.length-1;
+  renderTabs();renderTasks();updateXP();
+}
+function renderPhase(){
+  const P=PHASES[WEEKS[weekIdx].ph-1];
+  document.getElementById('phaseTitle').textContent=`Phase ${P.n} · Days ${P.ini}-${P.fim} — ${P.nome}`;
+  const pct=Math.min(100,Math.max(0,Math.round((studyDay-P.ini+1)/(P.fim-P.ini+1)*100)));
+  document.getElementById('phasePct').textContent=pct+'%';
+  setTimeout(()=>{document.getElementById('barFill').style.width=pct+'%'},60);
+  document.getElementById('phaseMs').innerHTML=P.ms.map(m=>
+    `<div class="ms${studyDay>=m[0]?' complete':(studyDay>=m[0]-6?' active':'')}"><b>Day ${m[0]}</b><span>${m[1]}</span></div>`
+  ).join('');
+}
+function renderTabs(){
+  tabsEl.innerHTML=DAYS.map((d,i)=>{
+    const ok=dayComplete(i);
+    const sk=done.has(skipKey(weekIdx,i));
+    return `<div class="day-tab${i===cur?' active':''}${(weekIdx===liveWeek&&i===nextDayIdx(weekIdx))?' today':''}${ok?' complete':(sk?' skipped':'')}" onclick="pick(${i})">
+      <b>${d.label}</b><span>${ok?'<i class="fa-solid fa-circle-check"></i> done':(sk?'<i class="fa-solid fa-forward"></i> skipped':d.sub)}</span>
+    </div>`;
+  }).join('');
+}
+function renderTasks(){
+  const d=DAYS[cur];
+  totalEl.textContent=d.sub;
+  const total=d.tasks.length, doneCount=d.tasks.filter((t,i)=>done.has(key(cur,i))).length;
+  const minLogged=done.has(minKey(weekIdx,cur));
+  const skipped=done.has(skipKey(weekIdx,cur));
+  const complete=isDayDone(weekIdx,cur);
+  listEl.innerHTML=d.tasks.map((t,i)=>{
+    const isDone=done.has(key(cur,i));
+    return `<div class="task${isDone?' done':''}" onclick="toggle(${i})">
+      <div class="check"><i class="fa-solid fa-check"></i></div>
+      <div class="t-body">
+        <div class="t-time">${t.time}</div>
+        <div class="t-title">${t.title}</div>
+        <ul class="steps">${t.steps.map(s=>`<li>${s}</li>`).join('')}</ul>
+      </div>
+      <div class="pts">+${t.xp}</div>
+    </div>`;
+  }).join('') + (skipped
+    ? `<div class="day-done low"><i class="fa-solid fa-forward"></i>
+        <div><b>${d.label}: skipped</b><span>You owe this day (still part of the 180). Come back anytime to do it. <a onclick="toggleSkip(${cur})">undo</a></span></div>
+      </div>`
+    : minLogged
+    ? `<div class="day-done low"><i class="fa-solid fa-battery-quarter"></i>
+        <div><b>${d.label}: minimum logged</b><span>Low-energy day — streak protected (20 min: listening + Anki). <a onclick="toggleMin(${cur})">undo</a></span></div>
+      </div>`
+    : complete
+    ? `<div class="day-done"><i class="fa-solid fa-circle-check"></i>
+        <div><b>${d.label} done!</b><span>+${dayXP(cur)} XP · ${d.title}</span></div>
+      </div>`
+    : `<div class="day-progress">
+        <div class="dp-bar"><i style="width:${Math.round(doneCount/total*100)}%"></i></div>
+        <span>${doneCount} of ${total} tasks · ${total-doneCount} left to finish the day</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="min-btn" onclick="toggleMin(${cur})"><i class="fa-solid fa-battery-quarter"></i> Low-energy day? 20-min minimum</button>
+          <button class="min-btn" onclick="toggleSkip(${cur})" style="background:rgba(94,104,132,.14);border-color:var(--border-strong);color:var(--text-2)"><i class="fa-solid fa-forward"></i> Skip this day (do it later)</button>
+        </div>
+      </div>`);
+}
+function pick(i){cur=i;renderTabs();renderTasks()}
+function navWeek(dir){
+  const n=weekIdx+dir;
+  if(n<0||n>=WEEKS.length)return;
+  weekIdx=n;
+  cur=(weekIdx===liveWeek)?nextDayIdx(weekIdx):0;
+  renderWeek();
+}
+function toggle(i){
+  const k=key(cur,i);
+  if(done.has(k))done.delete(k);else done.add(k);
+  done.delete(skipKey(weekIdx,cur)); // starting a skipped day clears the skip (you came back to do it)
+  localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+  renderTabs();renderTasks();updateXP();updateProgress();saveToCloud();
+}
+function updateXP(){document.getElementById('xpVal').textContent=weekXP()}
+
+// ===== Supabase sync =====
+const SB_URL='https://ysnwsrndphmgdtynwxtu.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlzbndzcm5kcGhtZ2R0eW53eHR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MTIxODEsImV4cCI6MjEwMDQ4ODE4MX0.HzO38CqXLw0JIa0B2uDEzA5CWRSYsuMdbCjRCJgICag';
+const ROW_ID='leticia';
+function setStatus(msg,icon,color){
+  const el=document.getElementById('syncStatus');
+  if(!el)return;
+  el.innerHTML=`<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+  el.style.color=color||'var(--text-3)';
+}
+let sb=null;
+try{ if(window.supabase) sb=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ console.warn('supabase init failed',e); }
+if(!sb) setStatus('Cloud off — this device only','fa-cloud-slash','var(--amber)');
+let saveT=null;
+function saveToCloud(){
+  if(!sb){setStatus('Cloud off — this device only','fa-cloud-slash','var(--amber)');return;}
+  clearTimeout(saveT);
+  saveT=setTimeout(async()=>{
+    try{
+      const srv=await sb.from('progress').select('done,updated_at').eq('id',ROW_ID).maybeSingle();
+      if(srv.data && srv.data.updated_at && cloudStamp && srv.data.updated_at!==cloudStamp && new Date(srv.data.updated_at)>new Date(cloudStamp)){
+        if(Array.isArray(srv.data.done)) done=new Set([...srv.data.done,...done]);
+        localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+        renderTabs();renderTasks();updateXP();updateProgress();
+        setStatus('Merged changes from another device','fa-code-merge','var(--amber)');
+      }
+      const stamp=new Date().toISOString();
+      const payload={id:ROW_ID,done:[...done],notes,start:localStorage.getItem('ee_start'),updated_at:stamp};
+      let res=await sb.from('progress').upsert(payload);
+      if(res.error){ res=await sb.from('progress').upsert({id:ROW_ID,done:[...done],start:localStorage.getItem('ee_start'),updated_at:stamp}); } // fallback if optional columns (notes/missed) don't exist
+      if(res.error)throw res.error;
+      cloudStamp=stamp;
+      setStatus('Saved · '+new Date().toLocaleTimeString(),'fa-cloud-arrow-up','var(--green)');
+    }catch(e){ console.warn('cloud save failed',e); setStatus('Save failed — check table & policies','fa-triangle-exclamation','var(--amber)'); }
+  },500);
+}
+async function syncFromCloud(){
+  if(!sb)return;
+  setStatus('Syncing…','fa-cloud','var(--text-3)');
+  try{
+    let q=await sb.from('progress').select('done,notes,start,updated_at').eq('id',ROW_ID).maybeSingle();
+    if(q.error) q=await sb.from('progress').select('done,start,updated_at').eq('id',ROW_ID).maybeSingle();
+    if(q.error)throw q.error;
+    const data=q.data;
+    if(data){
+      if(Array.isArray(data.done)) done=new Set(data.done);
+      if(data.notes && typeof data.notes==='object') notes=data.notes;
+      if(data.start) localStorage.setItem('ee_start',data.start);
+      cloudStamp=data.updated_at||null;
+      localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+      localStorage.setItem('ee_notes',JSON.stringify(notes));
+      weekIdx=curWeekIdx();
+      cur=nextDayIdx(weekIdx);
+      renderWeek();
+      setStatus('Synced · '+new Date().toLocaleTimeString(),'fa-cloud-check','var(--green)');
+    }else{
+      saveToCloud();
+      setStatus('Cloud ready (new record created)','fa-cloud-check','var(--green)');
+    }
+  }catch(e){ console.warn('cloud sync failed',e); setStatus('Cloud error — check table & policies','fa-triangle-exclamation','var(--amber)'); }
+}
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) syncFromCloud(); });
+
+// ===== Phrase journal (Supabase table: phrases) =====
+const PJ_TABLE='phrases';
+let pjRows=[]; // pending rows parsed from the pasted text, not yet saved
+let pjSaved=[]; // rows already saved in the cloud (loaded when the modal opens)
+function pjEscape(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function pjStripMarker(s){ return s.replace(/^\d+\s*[.\-)]\s*/,'').replace(/^[*\-]\s+/,'').trim(); }
+function pjParseDateLine(line){
+  const m=line.match(/^(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?$/);
+  if(!m)return null;
+  let d=m[1].padStart(2,'0'), mo=m[2].padStart(2,'0'), y=m[3];
+  if(!y) y=String(new Date().getFullYear());
+  else if(y.length===2) y='20'+y;
+  return `${y}-${mo}-${d}`;
+}
+// splits lines where an English sentence and its Portuguese translation were pasted glued together with no space (e.g. "...technologies.Sou uma...")
+function pjTrySplitGlued(line){
+  const m=line.match(/^(.*?[A-Za-zÀ-ÖØ-öø-ÿ0-9][.!?])(?=[A-ZÀ-Ö])(.+)$/);
+  if(!m)return null;
+  const left=m[1].trim(), right=m[2].trim();
+  if(!left||!right)return null;
+  return[left,right];
+}
+function parsePhrasesText(raw,fallbackDate){
+  let curDate=fallbackDate;
+  const items=[];
+  raw.split('\n').forEach(rawLine=>{
+    let line=rawLine.trim();
+    if(!line)return;
+    const d=pjParseDateLine(line);
+    if(d){curDate=d;return;}
+    line=line.replace(/\*\*/g,'');
+    const tm=line.match(/^(.*?)\s*tradu[cç][aã]o\s*:?\s*(.+)$/i);
+    if(tm && tm[1].trim() && tm[2].trim()){
+      const left=pjStripMarker(tm[1].trim()), right=tm[2].trim();
+      if(left)items.push({date:curDate,text:left});
+      if(right)items.push({date:curDate,text:right});
+      return;
+    }
+    const cleaned=pjStripMarker(line);
+    if(!cleaned)return;
+    const glued=pjTrySplitGlued(cleaned);
+    if(glued){ items.push({date:curDate,text:glued[0]}); items.push({date:curDate,text:glued[1]}); return; }
+    items.push({date:curDate,text:cleaned});
+  });
+  const rows=[];
+  for(let i=0;i<items.length;i+=2){
+    rows.push({date:items[i].date,en:items[i].text,pt:items[i+1]?items[i+1].text:''});
+  }
+  return rows;
+}
+function pjParse(){
+  const raw=document.getElementById('pjRaw').value;
+  const fallback=document.getElementById('pjDateInput').value||new Date().toISOString().slice(0,10);
+  if(!raw.trim()){ pjRows=[]; pjRenderPreview(); return; }
+  pjRows=parsePhrasesText(raw,fallback);
+  pjRenderPreview();
+}
+function pjAddRow(){
+  const fallback=document.getElementById('pjDateInput')?.value||new Date().toISOString().slice(0,10);
+  pjRows.push({date:fallback,en:'',pt:''});
+  pjRenderPreview();
+}
+function pjRemoveRow(i){ pjRows.splice(i,1); pjRenderPreview(); }
+function pjSetMsg(id,text,kind){
+  const el=document.getElementById(id); if(!el)return;
+  el.textContent=text||'';
+  el.className='pj-msg'+(kind?' '+kind:'');
+}
+function pjRenderPreview(){
+  const el=document.getElementById('pjPreview'); if(!el)return;
+  const saveBtn=document.getElementById('pjSaveBtn');
+  if(saveBtn) saveBtn.disabled = pjRows.length===0;
+  if(pjRows.length===0){ el.innerHTML='<div class="pj-empty">Nenhuma frase analisada ainda. Cole o texto acima e clique em "Analisar", ou adicione uma linha manual.</div>'; return; }
+  el.innerHTML=`<div style="font-size:11.5px;color:var(--text-3);margin-bottom:6px">${pjRows.length} frase(s) detectada(s) — revise antes de salvar:</div>`+
+    pjRows.map((r,i)=>`
+    <div class="pj-row">
+      <input type="date" value="${r.date}" onchange="pjRows[${i}].date=this.value">
+      <input type="text" placeholder="English" value="${pjEscape(r.en)}" oninput="pjRows[${i}].en=this.value">
+      <input type="text" placeholder="Português" value="${pjEscape(r.pt)}" oninput="pjRows[${i}].pt=this.value">
+      <button class="pj-icon-btn" onclick="pjRemoveRow(${i})" title="Remover"><i class="fa-solid fa-xmark"></i></button>
+    </div>`).join('');
+}
+async function pjSave(){
+  pjSetMsg('pjSaveMsg','');
+  if(!sb){ pjSetMsg('pjSaveMsg','Cloud desconectado — não é possível salvar agora.','err'); return; }
+  const rows=pjRows.filter(r=>r.en && r.en.trim());
+  if(rows.length===0)return;
+  const saveBtn=document.getElementById('pjSaveBtn');
+  if(saveBtn){ saveBtn.disabled=true; saveBtn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Salvando…'; }
+  try{
+    const payload=rows.map(r=>({phrase_date:r.date,en:r.en.trim(),pt:(r.pt||'').trim()}));
+    const res=await sb.from(PJ_TABLE).insert(payload);
+    if(res.error)throw res.error;
+    pjRows=[];
+    document.getElementById('pjRaw').value='';
+    pjRenderPreview();
+    await pjLoadSaved();
+    pjUpdateCount();
+    pjSetMsg('pjSaveMsg',`${rows.length} frase(s) salva(s) com sucesso.`,'ok');
+  }catch(e){
+    console.warn('phrase save failed',e);
+    pjSetMsg('pjSaveMsg','Erro ao salvar no Supabase. Verifique se a tabela "phrases" existe (veja o SQL fornecido).','err');
+  }finally{
+    if(saveBtn){ saveBtn.disabled=pjRows.length===0; saveBtn.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> Salvar no Supabase'; }
+  }
+}
+let pjConfirmId=null;
+function pjRenderSavedList(){
+  const listEl=document.getElementById('pjSavedList'); if(!listEl)return;
+  const cEl=document.getElementById('pjSavedCount'); if(cEl)cEl.textContent=`(${pjSaved.length})`;
+  listEl.innerHTML = pjSaved.length===0
+    ? '<div class="pj-empty">Nenhuma frase salva ainda.</div>'
+    : pjSaved.map(r=>`
+      <div class="pj-saved-item">
+        <div class="pj-saved-date">${r.phrase_date}</div>
+        <div class="pj-saved-body"><div class="en">${pjEscape(r.en)}</div>${r.pt?`<div class="pt">${pjEscape(r.pt)}</div>`:''}</div>
+        ${pjConfirmId===r.id
+          ? `<div class="pj-confirm"><span>Excluir?</span><button class="danger" onclick="pjConfirmDelete('${r.id}')">Sim</button><button onclick="pjCancelDelete()">Não</button></div>`
+          : `<button class="pj-icon-btn" onclick="pjAskDelete('${r.id}')" title="Excluir"><i class="fa-solid fa-trash"></i></button>`}
+      </div>`).join('');
+}
+async function pjLoadSaved(){
+  const listEl=document.getElementById('pjSavedList'); if(!listEl)return;
+  if(!sb){ listEl.innerHTML='<div class="pj-empty">Cloud desconectado.</div>'; return; }
+  listEl.innerHTML='<div class="pj-empty">Carregando…</div>';
+  try{
+    const res=await sb.from(PJ_TABLE).select('id,phrase_date,en,pt').order('phrase_date',{ascending:false}).order('created_at',{ascending:false});
+    if(res.error)throw res.error;
+    pjSaved=res.data||[];
+    pjConfirmId=null;
+    pjRenderSavedList();
+  }catch(e){
+    console.warn('phrase load failed',e);
+    listEl.innerHTML='<div class="pj-empty">Erro ao carregar — a tabela "phrases" existe no Supabase?</div>';
+  }
+}
+function pjAskDelete(id){ pjConfirmId=id; pjRenderSavedList(); }
+function pjCancelDelete(){ pjConfirmId=null; pjRenderSavedList(); }
+async function pjConfirmDelete(id){
+  if(!sb)return;
+  try{
+    const res=await sb.from(PJ_TABLE).delete().eq('id',id);
+    if(res.error)throw res.error;
+    pjConfirmId=null;
+    await pjLoadSaved();
+    pjUpdateCount();
+  }catch(e){
+    console.warn('phrase delete failed',e);
+    pjConfirmId=null;
+    pjRenderSavedList();
+    pjSetMsg('pjSaveMsg','Erro ao excluir a frase.','err');
+  }
+}
+async function pjUpdateCount(){
+  const el=document.getElementById('pjCountBadge'); if(!el)return;
+  if(!sb){ el.textContent='cloud off'; return; }
+  try{
+    const res=await sb.from(PJ_TABLE).select('id',{count:'exact',head:true});
+    if(res.error)throw res.error;
+    el.textContent=(res.count??0)+' salvas';
+  }catch(e){ el.textContent='–'; }
+}
+pjUpdateCount();
+
+weekIdx=curWeekIdx();
+cur=nextDayIdx(weekIdx);
+renderWeek();
+syncFromCloud();
+
+function ask(txt){
+  if(typeof sendPrompt==='function'){sendPrompt(txt)}
+  else{ navigator.clipboard?.writeText(txt); openModal('chat',txt); }
+}
+const modalBg=document.getElementById('modalBg'),modalBox=document.getElementById('modalBox');
+function openModal(type,extra){
+  let html='';
+  if(type==='resources'){
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">🧭</div><h2>Recommended resources</h2>
+    <p>Technical content in English, picked for your .NET backend profile.</p>
+    <ul class="m-list">
+      <li><i class="fa-solid fa-podcast"></i><div><b>.NET Rocks!</b><small>Weekly .NET podcast — use it as passive input</small></div></li>
+      <li><i class="fa-brands fa-youtube"></i><div><b>Nick Chapsas</b><small>Advanced C#/.NET, clear and technical English</small></div></li>
+      <li><i class="fa-brands fa-microsoft"></i><div><b>Azure Friday</b><small>Short Azure videos with EN subtitles</small></div></li>
+      <li><i class="fa-solid fa-headphones"></i><div><b>The Changelog</b><small>Interviews with devs — great for listening</small></div></li>
+      <li><i class="fa-solid fa-briefcase"></i><div><b>"Software engineer interview" (YouTube)</b><small>Real mock interviews to practice</small></div></li>
+    </ul>`;
+  }else if(type==='progress'){
+    const daysDone=DAYS.filter((d,i)=>dayComplete(i)).length;
+    const P=PHASES[WEEKS[weekOfDay(Math.max(1,studyDay))].ph-1];
+    const nextMs=P.ms.find(m=>studyDay<m[0])||P.ms[P.ms.length-1];
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">📈</div><h2>Your progress</h2>
+    <p><b>${Math.min(180,totalCompleted())} of 180 days studied</b> · Current week ${liveWeek+1} of ${WEEKS.length} · Phase ${P.n} (${P.nome}). You owe <b>${skippedCount()}</b> skipped day(s). This week: <b>${daysDone}/7 done</b> · <b>${weekXP()} XP</b>.</p>
+    <ul class="m-list">
+      <li><i class="fa-solid fa-signal"></i><div><b>Current level: ${levelPlain}</b><small>Advances automatically each phase (up to B2 → C1 by day 180)</small></div></li>
+      <li><i class="fa-solid fa-bullseye"></i><div><b>Phase ${P.n}: ${P.nome}</b><small>${P.n===1?'Understand 60% of a technical meeting':P.n===2?'Converse without hesitation':'Pass a technical interview in English'}</small></div></li>
+      <li><i class="fa-solid fa-flag-checkered"></i><div><b>Next milestone: Day ${nextMs[0]}</b><small>${nextMs[1]}</small></div></li>
+      <li><i class="fa-solid fa-forward"></i><div><b>Owed days: ${skippedCount()}</b><small>Skipped days you still owe — part of the 180. Go back with the arrows (or "Do a makeup day") and start their tasks to clear them</small></div></li>
+    </ul>
+    <button onclick="resetProgress()" style="width:100%;padding:.85rem;border-radius:12px;border:1px solid var(--border-strong);background:transparent;color:var(--text-2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">
+      <i class="fa-solid fa-rotate-left" style="margin-right:7px"></i>Reset all progress
+    </button>`;
+  }else if(type==='phrases'){
+    const today=new Date().toISOString().slice(0,10);
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">📓</div><h2>Diário de frases</h2>
+    <p>Cole suas frases (inglês + português) e as datas. Ao salvar, elas vão para o Supabase — não se perdem se você trocar de navegador ou atualizar a página.</p>
+    <div class="pj-form">
+      <label for="pjDateInput">Data padrão (usada quando o texto colado não tem uma data própria, ex: 27/07/2026, em uma linha separada)</label>
+      <input type="date" id="pjDateInput" value="${today}">
+      <textarea id="pjRaw" rows="8" placeholder="Cole aqui suas frases (pode incluir datas soltas no meio do texto, ex: 27/07/2026)"></textarea>
+      <div class="pj-actions">
+        <button class="btn" onclick="pjParse()"><i class="fa-solid fa-wand-magic-sparkles"></i> Analisar</button>
+        <button class="btn" onclick="pjAddRow()"><i class="fa-solid fa-plus"></i> Linha manual</button>
+      </div>
+    </div>
+    <div id="pjPreview"></div>
+    <button class="btn primary" id="pjSaveBtn" onclick="pjSave()" style="width:100%;margin-top:10px" disabled><i class="fa-solid fa-cloud-arrow-up"></i> Salvar no Supabase</button>
+    <div id="pjSaveMsg" class="pj-msg"></div>
+    <div style="margin-top:1.4rem;border-top:1px solid var(--border);padding-top:1rem">
+      <b style="font-size:13px">Frases salvas <span id="pjSavedCount"></span></b>
+      <div id="pjSavedList" style="margin-top:8px"></div>
+    </div>`;
+  }else if(type==='chat'){
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">💬</div><h2>Copied!</h2>
+    <p>This prompt was copied to your clipboard. Paste it into Claude's chat to begin:</p>
+    <ul class="m-list"><li><i class="fa-solid fa-quote-left"></i><div><b>${extra}</b></div></li></ul>`;
+  }
+  modalBox.className='modal'+(type==='phrases'?' wide':'');
+  modalBox.innerHTML=html;
+  modalBg.classList.add('show');
+  if(type==='phrases'){ pjRows=[]; pjRenderPreview(); pjLoadSaved(); }
+}
+function closeModal(){modalBg.classList.remove('show')}
+function resetProgress(){
+  if(!confirm('Reset all progress? This clears every completed day (locally and in the cloud).'))return;
+  done=new Set();
+  localStorage.setItem(DONE_KEY,'[]');
+  saveToCloud();
+  weekIdx=0;cur=0;
+  renderWeek();
+  closeModal();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+</script>
+</body>
+</html>
