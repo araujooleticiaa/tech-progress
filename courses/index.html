@@ -37,10 +37,6 @@ body{
 .stat-pill span{font-size:12px;color:var(--text-2);display:block;line-height:1.2}
 .back-link{font-size:12.5px;color:var(--text-2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-bottom:1.2rem}
 .back-link:hover{color:var(--text)}
-.notice{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,rgba(255,180,61,.14),rgba(251,146,60,.08));border:1px solid rgba(255,180,61,.35);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:1.6rem;font-size:12.5px;color:var(--text-2);line-height:1.6}
-.notice i{color:var(--amber);font-size:16px;margin-top:2px;flex-shrink:0}
-.notice b{color:var(--text)}
-.notice a{color:var(--accent)}
 .sec-title{display:flex;align-items:center;gap:10px;margin:0 0 1rem;font-size:15px;font-weight:600}
 .sec-title i{color:var(--accent)}
 .sec-title .badge{margin-left:auto;font-size:11px;font-weight:600;color:var(--teal);background:rgba(45,212,191,.12);padding:5px 11px;border-radius:20px;border:1px solid rgba(45,212,191,.25)}
@@ -113,12 +109,7 @@ body{
     </div>
   </div>
 
-  <div class="notice">
-    <i class="fa-solid fa-triangle-exclamation"></i>
-    <div>
-      <b>About this list:</b> mirrored by hand from <a href="https://community.borderlesscoding.com/courses?category=all" target="_blank" rel="noopener">community.borderlesscoding.com/courses</a> — that platform announced it would be discontinued on <b>July 15</b> and may migrate or go offline. Each card links straight to the same external resource (mostly YouTube) the original course card pointed to, opened in a new tab — same behavior as the source site. Categories were grouped by topic during import (the original category filter wasn't accessible here) — they're a best-effort guide, not exact.
-    </div>
-  </div>
+  <div id="syncStatus" style="font-size:12px;color:var(--text-3);margin:-0.6rem 0 1.2rem;display:flex;align-items:center;gap:7px"><i class="fa-solid fa-cloud"></i><span>Connecting…</span></div>
 
   <div class="progress-line">
     <span><b id="shownCount">0</b> of <b id="totalCount">0</b> courses shown</span>
@@ -136,16 +127,15 @@ body{
       <option value="Intermediate">Intermediate</option>
       <option value="Advanced">Advanced</option>
     </select>
-    <label class="chk"><input type="checkbox" id="freeChk"> Free only</label>
-    <label class="chk"><input type="checkbox" id="doneChk"> Hide completed</label>
   </div>
 
   <div class="sec-title"><i class="fa-solid fa-book"></i> Courses<span class="badge" id="catBadge">All categories</span></div>
   <div class="course-grid" id="grid"></div>
 
-  <div class="footer"><b>Course Library</b> · Personal checklist · Source: Borderless Community</div>
+  <div class="footer"><b>Course Library</b> · Personal checklist</div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ===== Access gate (light deterrent only — not real security, this is a static file) =====
 const LOCK_KEY='bg_unlocked_v1';
@@ -260,10 +250,12 @@ const COURSES=[
 
 const DONE_KEY='courses_done_v1';
 let done=new Set(JSON.parse(localStorage.getItem(DONE_KEY)||'[]'));
+let cloudStamp=null;
 function toggleDone(i){
   if(done.has(i))done.delete(i);else done.add(i);
   localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
   render();
+  saveToCloud();
 }
 
 (function initCatSelect(){
@@ -276,14 +268,10 @@ function render(){
   const q=document.getElementById('search').value.trim().toLowerCase();
   const cat=document.getElementById('catSel').value;
   const lvl=document.getElementById('lvlSel').value;
-  const freeOnly=document.getElementById('freeChk').checked;
-  const hideDone=document.getElementById('doneChk').checked;
   const list=COURSES.map((c,i)=>({...c,i})).filter(c=>{
     if(q && !c.t.toLowerCase().includes(q))return false;
     if(cat!=='all' && c.c!==cat)return false;
     if(lvl!=='all' && c.l!==lvl)return false;
-    if(freeOnly && !c.f)return false;
-    if(hideDone && done.has(c.i))return false;
     return true;
   });
   document.getElementById('grid').innerHTML = list.length ? list.map(c=>`
@@ -308,8 +296,63 @@ function render(){
 }
 ['search'].forEach(id=>document.getElementById(id).addEventListener('input',render));
 ['catSel','lvlSel'].forEach(id=>document.getElementById(id).addEventListener('change',render));
-['freeChk','doneChk'].forEach(id=>document.getElementById(id).addEventListener('change',render));
 render();
+
+// ===== Supabase sync (same infra as the rest of the site, own row) =====
+const SB_URL='https://ysnwsrndphmgdtynwxtu.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlzbndzcm5kcGhtZ2R0eW53eHR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MTIxODEsImV4cCI6MjEwMDQ4ODE4MX0.HzO38CqXLw0JIa0B2uDEzA5CWRSYsuMdbCjRCJgICag';
+const ROW_ID='leticia-courses';
+function setStatus(msg,icon,color){
+  const el=document.getElementById('syncStatus');
+  if(!el)return;
+  el.innerHTML=`<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+  el.style.color=color||'var(--text-3)';
+}
+let sb=null;
+try{ if(window.supabase) sb=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ console.warn('supabase init failed',e); }
+if(!sb) setStatus('Cloud off — this device only','fa-cloud-slash','var(--amber)');
+let saveT=null;
+function saveToCloud(){
+  if(!sb){setStatus('Cloud off — this device only','fa-cloud-slash','var(--amber)');return;}
+  clearTimeout(saveT);
+  saveT=setTimeout(async()=>{
+    try{
+      const srv=await sb.from('progress').select('done,updated_at').eq('id',ROW_ID).maybeSingle();
+      if(srv.data && srv.data.updated_at && cloudStamp && srv.data.updated_at!==cloudStamp && new Date(srv.data.updated_at)>new Date(cloudStamp)){
+        if(Array.isArray(srv.data.done)) done=new Set([...srv.data.done,...done]);
+        localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+        render();
+        setStatus('Merged changes from another device','fa-code-merge','var(--amber)');
+      }
+      const stamp=new Date().toISOString();
+      const res=await sb.from('progress').upsert({id:ROW_ID,done:[...done],updated_at:stamp});
+      if(res.error)throw res.error;
+      cloudStamp=stamp;
+      setStatus('Saved · '+new Date().toLocaleTimeString(),'fa-cloud-arrow-up','var(--green)');
+    }catch(e){ console.warn('cloud save failed',e); setStatus('Save failed — check table & policies','fa-triangle-exclamation','var(--amber)'); }
+  },500);
+}
+async function syncFromCloud(){
+  if(!sb)return;
+  setStatus('Syncing…','fa-cloud','var(--text-3)');
+  try{
+    const q=await sb.from('progress').select('done,updated_at').eq('id',ROW_ID).maybeSingle();
+    if(q.error)throw q.error;
+    const data=q.data;
+    if(data){
+      if(Array.isArray(data.done)) done=new Set(data.done);
+      cloudStamp=data.updated_at||null;
+      localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+      render();
+      setStatus('Synced · '+new Date().toLocaleTimeString(),'fa-cloud-check','var(--green)');
+    }else{
+      saveToCloud();
+      setStatus('Cloud ready (new record created)','fa-cloud-check','var(--green)');
+    }
+  }catch(e){ console.warn('cloud sync failed',e); setStatus('Cloud error — check table & policies','fa-triangle-exclamation','var(--amber)'); }
+}
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) syncFromCloud(); });
+syncFromCloud();
 </script>
 </body>
 </html>
