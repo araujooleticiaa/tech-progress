@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Courses · Backend Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --bg:#080b08;--bg-2:#0d130d;--card:#121810;--card-2:#171f16;
+  --border:#212b1f;--border-glow:#2c3d29;--border-strong:#3a4f36;--text:#eef3ec;--text-2:#95a998;--text-3:#59684f;
+  --accent:#34d399;--accent-2:#10b981;--teal:#2dd4bf;--amber:#ffb43d;--pink:#fb923c;--green:#4ade80;
+  --radius:16px;--radius-sm:11px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(16,185,129,.18), transparent 55%),
+    radial-gradient(1000px 500px at 0% 10%, rgba(52,211,153,.14), transparent 50%),
+    var(--bg);
+  color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:2.2rem 1.5rem 4rem}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:1rem}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 28px rgba(52,211,153,.4)}
+.brand h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.brand p{font-size:13px;color:var(--text-2);margin-top:2px}
+.stat-pill{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,rgba(255,180,61,.15),rgba(251,146,60,.12));border:1px solid rgba(255,180,61,.3);padding:10px 16px;border-radius:13px}
+.stat-pill i{color:var(--amber);font-size:18px}
+.stat-pill b{font-size:17px;font-weight:700}
+.stat-pill span{font-size:12px;color:var(--text-2);display:block;line-height:1.2}
+.back-link{font-size:12.5px;color:var(--text-2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-bottom:1.2rem}
+.back-link:hover{color:var(--text)}
+.notice{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,rgba(255,180,61,.14),rgba(251,146,60,.08));border:1px solid rgba(255,180,61,.35);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:1.6rem;font-size:12.5px;color:var(--text-2);line-height:1.6}
+.notice i{color:var(--amber);font-size:16px;margin-top:2px;flex-shrink:0}
+.notice b{color:var(--text)}
+.notice a{color:var(--accent)}
+.sec-title{display:flex;align-items:center;gap:10px;margin:0 0 1rem;font-size:15px;font-weight:600}
+.sec-title i{color:var(--accent)}
+.sec-title .badge{margin-left:auto;font-size:11px;font-weight:600;color:var(--teal);background:rgba(45,212,191,.12);padding:5px 11px;border-radius:20px;border:1px solid rgba(45,212,191,.25)}
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:1.4rem;background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem}
+.filter-bar input[type=text],.filter-bar select{padding:9px 12px;border-radius:10px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:13px}
+.filter-bar input[type=text]{flex:1;min-width:160px}
+.filter-bar select{cursor:pointer}
+.filter-bar label.chk{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-2);cursor:pointer;white-space:nowrap}
+.filter-bar input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px}
+.progress-line{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;font-size:12.5px;color:var(--text-2)}
+.progress-line b{color:var(--text)}
+.mini-bar{height:7px;background:var(--bg-2);border-radius:20px;overflow:hidden;border:1px solid var(--border);margin-bottom:1.6rem}
+.mini-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:20px;transition:width .4s}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:1.6rem}
+.course-card{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:9px;transition:transform .2s,border-color .2s;text-decoration:none;color:inherit;cursor:pointer}
+.course-card:hover{transform:translateY(-3px);border-color:var(--border-glow)}
+.course-card.done{border-color:rgba(74,222,128,.45);background:linear-gradient(160deg,rgba(74,222,128,.08),var(--card-2))}
+.course-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.course-title{font-size:13.5px;font-weight:600;line-height:1.4}
+.course-card.done .course-title{color:var(--text-2);text-decoration:line-through}
+.course-check{width:23px;height:23px;border-radius:7px;border:2px solid var(--border-glow);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:transparent;font-size:11px;transition:all .2s}
+.course-card.done .course-check{background:linear-gradient(135deg,var(--teal),var(--green));border-color:var(--teal);color:#04140f}
+.course-cat{font-size:10.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.course-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+.pill.beginner{color:var(--teal);background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.3)}
+.pill.intermediate{color:var(--amber);background:rgba(255,180,61,.12);border:1px solid rgba(255,180,61,.3)}
+.pill.advanced{color:var(--pink);background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.3)}
+.pill.free{color:var(--green);background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3)}
+.pill.paid{color:#f87171;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.35)}
+.empty-msg{color:var(--text-3);font-size:13px;padding:2.5rem;text-align:center;grid-column:1/-1}
+.footer{text-align:center;margin-top:2.5rem;font-size:12px;color:var(--text-3)}
+.footer b{color:var(--text-2)}
+.footer a{color:var(--accent)}
+@media(max-width:640px){.filter-bar{flex-direction:column;align-items:stretch}}
+.lock-screen{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:1.5rem}
+.lock-box{max-width:360px;width:100%;background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border-glow);border-radius:22px;padding:2.2rem 2rem;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.lock-box .lock-ic{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 1.2rem;color:#04140f}
+.lock-box h2{font-size:19px;font-weight:700;margin-bottom:.5rem}
+.lock-box p{font-size:13px;color:var(--text-2);margin-bottom:1.4rem;line-height:1.5}
+.lock-box input{width:100%;padding:.9rem 1rem;border-radius:12px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:18px;text-align:center;letter-spacing:.3em;margin-bottom:.6rem}
+.lock-box input:focus{outline:none;border-color:var(--accent)}
+.lock-box .lock-err{font-size:12.5px;color:var(--pink);min-height:16px;margin-bottom:.8rem}
+.btn{padding:.85rem 1.1rem;border-radius:13px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:9px}
+.btn:hover{background:var(--card-2);border-color:var(--border-glow);transform:translateY(-2px)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;box-shadow:0 8px 26px rgba(52,211,153,.35);color:#fff}
+</style>
+</head>
+<body>
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-ic"><i class="fa-solid fa-lock"></i></div>
+    <h2>Backend Global</h2>
+    <p>Enter the access code to open this tracker.</p>
+    <input type="password" id="lockInput" inputmode="numeric" maxlength="12" placeholder="••••••" autocomplete="off">
+    <div class="lock-err" id="lockErr"></div>
+    <button class="btn primary" onclick="tryUnlock()" style="width:100%"><i class="fa-solid fa-unlock"></i> Unlock</button>
+  </div>
+</div>
+<div class="wrap">
+  <a href="../index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Backend Global</a>
+  <div class="top">
+    <div class="brand">
+      <div class="logo">🎓</div>
+      <div><h1>Course Library</h1><p>Mirrored from Borderless Community · Leticia</p></div>
+    </div>
+    <div class="stat-pill">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <div><b id="doneCount">0</b><span>completed</span></div>
+    </div>
+  </div>
+
+  <div class="notice">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <div>
+      <b>About this list:</b> mirrored by hand from <a href="https://community.borderlesscoding.com/courses?category=all" target="_blank" rel="noopener">community.borderlesscoding.com/courses</a> — that platform announced it would be discontinued on <b>July 15</b> and may migrate or go offline. Each card links straight to the same external resource (mostly YouTube) the original course card pointed to, opened in a new tab — same behavior as the source site. Categories were grouped by topic during import (the original category filter wasn't accessible here) — they're a best-effort guide, not exact.
+    </div>
+  </div>
+
+  <div class="progress-line">
+    <span><b id="shownCount">0</b> of <b id="totalCount">0</b> courses shown</span>
+    <span id="freeCount"></span>
+  </div>
+  <div class="mini-bar"><i id="progBar" style="width:0%"></i></div>
+
+  <div class="sec-title"><i class="fa-solid fa-filter"></i> Filters</div>
+  <div class="filter-bar">
+    <input type="text" id="search" placeholder="Search courses…">
+    <select id="catSel"></select>
+    <select id="lvlSel">
+      <option value="all">All levels</option>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+    </select>
+    <label class="chk"><input type="checkbox" id="freeChk"> Free only</label>
+    <label class="chk"><input type="checkbox" id="doneChk"> Hide completed</label>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-book"></i> Courses<span class="badge" id="catBadge">All categories</span></div>
+  <div class="course-grid" id="grid"></div>
+
+  <div class="footer"><b>Course Library</b> · Personal checklist · Source: Borderless Community</div>
+</div>
+
+<script>
+// ===== Access gate (light deterrent only — not real security, this is a static file) =====
+const LOCK_KEY='bg_unlocked_v1';
+const PASSCODE='020300';
+function checkLock(){
+  if(localStorage.getItem(LOCK_KEY)==='1'){
+    document.getElementById('lockScreen').style.display='none';
+  }else{
+    document.getElementById('lockInput')?.focus();
+  }
+}
+function tryUnlock(){
+  const input=document.getElementById('lockInput');
+  if(input.value.trim()===PASSCODE){
+    localStorage.setItem(LOCK_KEY,'1');
+    document.getElementById('lockScreen').style.display='none';
+  }else{
+    document.getElementById('lockErr').textContent='Incorrect code, try again.';
+    input.value='';
+    input.focus();
+  }
+}
+document.getElementById('lockInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')tryUnlock();});
+checkLock();
+
+// ===== Course data (mirrored by hand from Borderless Community, category=all) =====
+const COURSES=[
+ {t:'Java 8 for Beginners',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=grEKMHGYyns'},
+ {t:'Como ler uma documentação',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=WNlZ_nbMWUE'},
+ {t:'Logica de programação',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=iF2MdbrTiBM'},
+ {t:'Estrutura de Dados',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=RBSGKlAvoiM'},
+ {t:'Como usar MacOS/UNIX',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=aKRYQsKR46I'},
+ {t:'O básico de Javascript - Backend',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=hyMCPZNLXps'},
+ {t:'Roadmap Básico do Backend',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=2owfyEKscuo'},
+ {t:'NodeJS do Zero',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=IOfDoyP1Aq0'},
+ {t:'PostgresSQL',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=k4wYRoMvBwE'},
+ {t:'API REST',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=_4PikzgWX24'},
+ {t:'Curso de API para Iniciantes',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=WXsD0ZgxjRw'},
+ {t:'Criando uma API do zero com nodeJS',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=Q9oVStZ1DJA'},
+ {t:'Learn GraphQL in 4 Hours',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=yqWzCV0kU_c'},
+ {t:'HTML e CSS do zero',l:'Beginner',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=CZPa3-1BKnY'},
+ {t:'Tudo de CSS que você precisa saber',l:'Beginner',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=1Rs2ND1ryYc'},
+ {t:'TailwindCSS',l:'Beginner',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=1eLaBow7Zbo'},
+ {t:'ReactJS do zero',l:'Beginner',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=K65wUN-2no4'},
+ {t:'15 Projects with vanilla Javascript',l:'Beginner',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=3PHXvlpOkf4'},
+ {t:'R for data science',l:'Beginner',f:true,c:'Data Science',u:'https://r4ds.hadley.nz/'},
+ {t:'Python do zero',l:'Beginner',f:true,c:'Data Science',u:'https://www.youtube.com/watch?v=rfscVS0vtbw'},
+ {t:'Pandas & Python for Data Analysis by Example',l:'Beginner',f:true,c:'Data Science',u:'https://www.youtube.com/watch?v=gtjxAH8uaP0'},
+ {t:'Python for Data Science - Course for Beginners',l:'Beginner',f:true,c:'Data Science',u:'https://www.youtube.com/watch?v=LHBE6Q9XlzI'},
+ {t:'Learn Data Science Tutorial',l:'Beginner',f:true,c:'Data Science',u:'https://www.youtube.com/watch?v=ua-CiDNNj30'},
+ {t:'Machine Learning for Everybody',l:'Beginner',f:true,c:'Data Science',u:'https://www.youtube.com/watch?v=i_LwzRVP7bg'},
+ {t:'RESTful API with .NET Core (.NET 7)',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=_uZYOgzYheU'},
+ {t:'C# basics',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=M5ugY7fWydE'},
+ {t:'Como usar VSCODE - 1',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=NXgsXiu4LtA'},
+ {t:'Como usar VSCODE - 2',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=qJ_M4W0u5rI'},
+ {t:'FAZENDO DEPLOY DE APLICAÇÃO SPRING NA AWS',l:'Beginner',f:true,c:'DevOps',u:'https://www.youtube.com/watch?v=bEkCdlrxF54'},
+ {t:'A MELHOR OPCAO para deploy node.js',l:'Beginner',f:true,c:'DevOps',u:'https://www.youtube.com/watch?v=pmXfvd6Zqg4'},
+ {t:'Curso extra de lógica de programacao',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=SrKTnlKdLrQ'},
+ {t:'SWAGGER API - CRIE DOCUMENTACAO PARA SUA API',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=3nl9AzttzBQ'},
+ {t:'O básico de docker',l:'Beginner',f:true,c:'DevOps',u:'https://www.youtube.com/watch?v=Kzcz-EVKBEQ'},
+ {t:'Como falar (preparação para entrevistas)',l:'Intermediate',f:true,c:'Career',u:'https://www.youtube.com/watch?v=Unzc731iCUY'},
+ {t:'Aprenda GOLang - curso espetacular',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=WiGU_ZB-u0w'},
+ {t:'Curso Github (Obrigatório a todos)',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=xEKo29OWILE'},
+ {t:'Golang do zero',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=_MkQLDMak-4'},
+ {t:'Review Algo e estrutura de dados',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=O_Cc-Xzc0zM'},
+ {t:'ReactJS Hooks',l:'Intermediate',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=MA3Ngo32qiI'},
+ {t:'Hoisting em Javascript',l:'Intermediate',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=A9RwfhYjabw'},
+ {t:'Learn Functional Programming in Javascript',l:'Intermediate',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=XvLMO2wE3OQ'},
+ {t:'Typescript Full Course',l:'Intermediate',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=30LWjhZzg50'},
+ {t:'Inglês',l:'Beginner',f:true,c:'Career',u:'https://github.com/ProgramadoresSemPatria/resources/blob/main/tutoriais/ingles.md'},
+ {t:'Entenda de uma vez por todas Async/Await',l:'Intermediate',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=ZYb_ZU8LNxs'},
+ {t:'All the Javascript you need to know for React',l:'Intermediate',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=m55PTVUrlnA'},
+ {t:'What the heck is event loop?',l:'Intermediate',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=8aGhZQkoFbQ'},
+ {t:'Fazendo Deploy da aplicação',l:'Intermediate',f:true,c:'DevOps',u:'https://www.youtube.com/watch?v=pmXfvd6Zqg4'},
+ {t:'Criando API com tRPC',l:'Advanced',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=qG1VmGZvQkw'},
+ {t:'GraphQL Server Development',l:'Advanced',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=-iwjiiCGiO0'},
+ {t:'Entenda prisma de uma vez por todas',l:'Intermediate',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=RebA5J-rlwg'},
+ {t:'Cria uma extensão do Chrome',l:'Intermediate',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=0n809nd4Zu4'},
+ {t:'Flask Course - Python Web Application Development',l:'Intermediate',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=Qr4QMBUPxWo'},
+ {t:'R Shiny for Data Science Tutorial – Build Interactive Data-Driven Web Apps',l:'Intermediate',f:true,c:'Data Science',u:'https://www.youtube.com/watch?v=9uFQECk30kA'},
+ {t:'R Programming - Learn the Basics of Statistical Computing',l:'Intermediate',f:true,c:'Data Science',u:'https://www.youtube.com/watch?v=_V8eKsto3Ug'},
+ {t:'Time series Notebook - with python',l:'Beginner',f:true,c:'Data Science',u:'https://www.kaggle.com/code/iamleonie/time-series-interpreting-acf-and-pacf'},
+ {t:'Soft-Skills',l:'Beginner',f:true,c:'Career',u:'https://github.com/ProgramadoresSemPatria/resources/blob/main/tutoriais/softSkills.md'},
+ {t:'.NET Microsservices',l:'Intermediate',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=CqCDOosvZIk'},
+ {t:'RESTAPI with .NET5',l:'Intermediate',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=ZXdFisA_hOY'},
+ {t:'Practical Deep Learning for Coders',l:'Intermediate',f:true,c:'Data Science',u:'https://www.youtube.com/watch?v=8SF_h3xF3cE'},
+ {t:'Recursion in JAVA',l:'Intermediate',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=k-7jJP7QFEM'},
+ {t:'JUnit',l:'Intermediate',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=vZm0lHciFsQ'},
+ {t:'Java Streams',l:'Intermediate',f:true,c:'Backend',u:'https://www.youtube.com/watch?v=t1-YZ6bF-g0'},
+ {t:'Complete Blockchain, Solidity and web3 Full-Stack Development',l:'Advanced',f:true,c:'Blockchain',u:'https://www.youtube.com/watch?v=gyMwXuJrbJQ'},
+ {t:'Blockchain & Web3 fundamentals (concepts, Solidity, security, DevOps)',l:'Intermediate',f:true,c:'Blockchain',u:'https://updraft.cyfrin.io/courses'},
+ {t:'Frontend Web3 com Web3.js',l:'Intermediate',f:true,c:'Blockchain',u:'https://www.youtube.com/watch?v=Lo4I2q7UTk0'},
+ {t:'Foundational topics',l:'Beginner',f:true,c:'Fundamentals',u:'https://ethereum.org/en/developers/docs/intro-to-ethereum/'},
+ {t:'Roadmap Javascript',l:'Beginner',f:true,c:'Frontend',u:'https://roadmap.sh/javascript'},
+ {t:'Roadmap Frontend',l:'Beginner',f:true,c:'Frontend',u:'https://roadmap.sh/frontend'},
+ {t:'Roadmap Backend',l:'Beginner',f:true,c:'Backend',u:'https://roadmap.sh/backend'},
+ {t:'Roadmap DevOps',l:'Beginner',f:true,c:'DevOps',u:'https://roadmap.sh/devops'},
+ {t:'Site de livros gratuitos',l:'Beginner',f:true,c:'Fundamentals',u:'https://libgen.st/'},
+ {t:'Estrutura de Dados (PORTUGUÊS)',l:'Beginner',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=y0B-vQI6Tiw'},
+ {t:'Build 12 Data Science Apps with Python and Streamlit',l:'Intermediate',f:true,c:'Data Science',u:'https://www.youtube.com/watch?v=JwSS70SZdyM'},
+ {t:'Next.js para iniciantes',l:'Intermediate',f:true,c:'Frontend',u:'https://www.youtube.com/playlist?list=PLkFMdTTdI9c2js2bPRUhChVA0jdI-358s'},
+ {t:'Commits Pattern',l:'Beginner',f:true,c:'Fundamentals',u:'https://medium.com/linkapi-solutions/conventional-commits-pattern-3778d1a1e657'},
+ {t:'Solana Frontend Development Course',l:'Intermediate',f:true,c:'Blockchain',u:'https://www.youtube.com/watch?v=8azRe9PRLg0'},
+ {t:'Solana Bootcamp 2024 - Blockchain and FS Web3 - Part II',l:'Intermediate',f:true,c:'Blockchain',u:'https://www.youtube.com/watch?v=HOdYZSe1uhE'},
+ {t:'Solana Bootcamp 2024 - Blockchain and FS Web3 - Part I',l:'Intermediate',f:true,c:'Blockchain',u:'https://www.youtube.com/watch?v=amAq-WHAFs8'},
+ {t:'GraphQL - NodeJs + React',l:'Beginner',f:true,c:'Backend',u:'https://www.youtube.com/playlist?list=PLm7xfhMOszqz28ApUQDVsyU42_5_Smj3J'},
+ {t:'Padrões de Projeto (Design Patterns - GoF)',l:'Intermediate',f:true,c:'Fundamentals',u:'https://www.youtube.com/watch?v=MqddY6Ochkc'},
+ {t:'Criação de Agentes para atendimento Humanizado no Whatsapp',l:'Intermediate',f:false,c:'AI & Automation',u:'https://oficinapython.com.br/chatbot-academy/'},
+ {t:'JavaScript Visualized - Call Stack, Event Loop, Web APIs, Macro and Microtasks',l:'Intermediate',f:true,c:'Frontend',u:'https://www.youtube.com/watch?v=eiC58R16hb8'},
+ {t:'Leetcode Extra para Code Breakers (Categoria: Graphs — came up in a real web3 interview)',l:'Advanced',f:true,c:'Fundamentals',u:'https://leetcode.com/problems/word-search/description/'}
+];
+
+const DONE_KEY='courses_done_v1';
+let done=new Set(JSON.parse(localStorage.getItem(DONE_KEY)||'[]'));
+function toggleDone(i){
+  if(done.has(i))done.delete(i);else done.add(i);
+  localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+  render();
+}
+
+(function initCatSelect(){
+  const cats=[...new Set(COURSES.map(c=>c.c))].sort();
+  const sel=document.getElementById('catSel');
+  sel.innerHTML='<option value="all">All categories</option>'+cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+})();
+
+function render(){
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  const cat=document.getElementById('catSel').value;
+  const lvl=document.getElementById('lvlSel').value;
+  const freeOnly=document.getElementById('freeChk').checked;
+  const hideDone=document.getElementById('doneChk').checked;
+  const list=COURSES.map((c,i)=>({...c,i})).filter(c=>{
+    if(q && !c.t.toLowerCase().includes(q))return false;
+    if(cat!=='all' && c.c!==cat)return false;
+    if(lvl!=='all' && c.l!==lvl)return false;
+    if(freeOnly && !c.f)return false;
+    if(hideDone && done.has(c.i))return false;
+    return true;
+  });
+  document.getElementById('grid').innerHTML = list.length ? list.map(c=>`
+    <a class="course-card${done.has(c.i)?' done':''}" href="${c.u}" target="_blank" rel="noopener">
+      <div class="course-top">
+        <div class="course-title">${c.t}</div>
+        <div class="course-check" onclick="event.preventDefault();event.stopPropagation();toggleDone(${c.i})"><i class="fa-solid fa-check"></i></div>
+      </div>
+      <div class="course-cat">${c.c}</div>
+      <div class="course-tags">
+        <span class="pill ${c.l.toLowerCase()}">${c.l}</span>
+        <span class="pill ${c.f?'free':'paid'}">${c.f?'Free':'Paid'}</span>
+      </div>
+    </a>`).join('') : '<div class="empty-msg">No courses match these filters.</div>';
+  document.getElementById('shownCount').textContent=list.length;
+  document.getElementById('totalCount').textContent=COURSES.length;
+  document.getElementById('doneCount').textContent=done.size;
+  const freeN=COURSES.filter(c=>c.f).length;
+  document.getElementById('freeCount').textContent=`${freeN} free · ${COURSES.length-freeN} paid`;
+  document.getElementById('progBar').style.width=Math.round(done.size/COURSES.length*100)+'%';
+  document.getElementById('catBadge').textContent = cat==='all' ? 'All categories' : cat;
+}
+['search'].forEach(id=>document.getElementById(id).addEventListener('input',render));
+['catSel','lvlSel'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+['freeChk','doneChk'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+render();
+</script>
+</body>
+</html>
