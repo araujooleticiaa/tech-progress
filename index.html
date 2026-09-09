@@ -144,13 +144,15 @@ body{
 .assess-body span{font-size:12.5px;color:var(--text-2);line-height:1.5}
 .assess-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
 .assess-actions .btn{padding:.6rem .9rem;font-size:12.5px}
-.practice{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:1.6rem}
+.practice{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:1.6rem}
 .pcard{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1rem;text-align:center;cursor:pointer;transition:transform .25s,border-color .25s;position:relative;overflow:hidden}
 .pcard:hover{transform:translateY(-4px)}
 .pcard.p1:hover{border-color:var(--accent)}
 .pcard.p2:hover{border-color:var(--teal)}
 .pcard.p3:hover{border-color:var(--pink)}
 .pcard.p4:hover{border-color:var(--amber)}
+.pcard.p5:hover{border-color:var(--green)}
+.pcard.p6:hover{border-color:var(--accent-2)}
 .pcard .pic{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px}
 .pcard.p1 .pic{background:rgba(91,140,255,.15);color:var(--accent)}
 .pcard.p2 .pic{background:rgba(40,217,176,.15);color:var(--teal)}
@@ -302,6 +304,8 @@ body{
     <div class="pcard p2" onclick="practice('speaking')"><div class="pic"><i class="fa-solid fa-microphone-lines"></i></div><h4>Speaking</h4><span>Speech + pronunciation</span></div>
     <div class="pcard p3" onclick="practice('interview')"><div class="pic"><i class="fa-solid fa-briefcase"></i></div><h4>Interview</h4><span>Mock interview</span></div>
     <div class="pcard p4" onclick="practice('vocab')"><div class="pic"><i class="fa-solid fa-book-bookmark"></i></div><h4>Vocabulary</h4><span>.NET/Azure terms</span></div>
+    <div class="pcard p5" onclick="practice('leetcode')"><div class="pic"><i class="fa-solid fa-code"></i></div><h4>LeetCode</h4><span>Problem in C#, this week's topic</span></div>
+    <div class="pcard p6" onclick="practice('sysdesign')"><div class="pic"><i class="fa-solid fa-sitemap"></i></div><h4>System Design</h4><span>Mock, this week's case</span></div>
   </div>
 
   <div class="cta-row">
@@ -729,12 +733,16 @@ function weeklyPrompt(){
 }
 function practice(kind){
   const W=WEEKS[weekIdx];
+  const tw=techWeekFor(weekIdx);
   const ctx=`(Context: I'm a backend .NET/Azure/SQL developer preparing for a job abroad. I'm on day ${studyDay}/180, approximate level ${levelPlain}, this week's topic: ${W.foco}. Adapt the difficulty to my level.) `;
+  const techCtx=`(Context: I'm a senior backend .NET developer with 6 years of experience, preparing for an international job. I solve LeetCode problems in C#. Day ${studyDay}/180, this week's tech track: ${tw.t} (${tw.foco}). Adapt the difficulty to my level.) `;
   const P={
     listening:ctx+'Let\'s practice technical listening: give me a short passage in English and ask 3 comprehension questions.',
     speaking:ctx+'Let\'s practice speaking: ask me a question in English about my work and kindly correct my answer.',
     interview:ctx+'Simulate a technical interview in English for a backend .NET role (mix of behavioral, C#/.NET and a short live-coding think-aloud). Start with the first question and give me feedback.',
     vocab:ctx+'Teach me 10 English words/expressions about .NET/SQL/Azure and interviews, suited to my level, with example sentences.',
+    leetcode:techCtx+"Give me one LeetCode problem (this week's tech track topic if possible) and let me solve it in C#. Don't give the solution — give hints if I'm stuck, and ask me to explain my approach out loud in English.",
+    sysdesign:techCtx+"Run a system design mock interview in English about this week's tech track case study. Ask clarifying questions and evaluate my trade-off reasoning.",
     lesson:ctx+`Start today's lesson: a simulated conversation in English focused on "${W.foco}", adapted to my level.`
   };
   ask(P[kind]);
