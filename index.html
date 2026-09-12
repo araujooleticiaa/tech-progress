@@ -217,6 +217,7 @@ body{
 .footer{text-align:center;margin-top:2.5rem;font-size:12px;color:var(--text-3)}
 .footer b{color:var(--text-2)}
 .modal.wide{max-width:760px}
+.modal.kanban{max-width:min(1180px,96vw)}
 .pj-form{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
 .pj-form label{font-size:12px;color:var(--text-2);font-weight:600}
 .pj-form input[type=date],.pj-form textarea{width:100%;padding:10px 12px;border-radius:11px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:13px}
@@ -248,20 +249,44 @@ body{
 .ax-form-grid input:focus,.ax-form-grid select:focus{outline:none;border-color:var(--accent)}
 .ax-form-grid #axLink{grid-column:1/3}
 .ax-form-grid .btn{height:38px}
-.ax-stats{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.ax-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--bg-2);border:1px solid var(--border);color:var(--text-2)}
-.ax-item{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:12.5px}
-.ax-item:last-child{border:none}
-.ax-body{flex:1;min-width:0}
-.ax-role{color:var(--text);font-weight:600}
-.ax-role a{color:var(--text-3);margin-left:5px}
-.ax-meta{color:var(--text-2);margin-top:2px;font-size:11.5px}
-.ax-status-sel{flex-shrink:0;padding:5px 8px;border-radius:8px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer}
-.ax-applied{border-color:rgba(91,140,255,.5);color:#9db6ff}
-.ax-screening{border-color:rgba(40,217,176,.5);color:var(--teal)}
-.ax-interview{border-color:rgba(255,180,61,.55);color:var(--amber)}
-.ax-offer{border-color:rgba(62,224,138,.6);color:var(--green)}
-.ax-rejected{border-color:rgba(255,91,156,.5);color:var(--pink)}
+/* Kanban board */
+.ax-addbar{display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr auto auto;gap:8px;margin-bottom:1rem}
+.ax-addbar input{padding:9px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;height:38px;box-sizing:border-box}
+.ax-addbar input:focus{outline:none;border-color:var(--accent)}
+.ax-addbar .btn{height:38px;white-space:nowrap}
+.ax-board{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.ax-col{flex:1 1 0;min-width:200px;background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:9px}
+.ax-col.drop{border-color:var(--accent);background:rgba(91,140,255,.08)}
+.ax-col-head{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;letter-spacing:.03em;padding:2px 4px}
+.ax-col-head .cnt{font-size:11px;font-weight:700;color:var(--text-3);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1px 8px}
+.ax-col.applied .ax-col-head{color:#9db6ff}
+.ax-col.screening .ax-col-head{color:var(--teal)}
+.ax-col.interview .ax-col-head{color:var(--amber)}
+.ax-col.offer .ax-col-head{color:var(--green)}
+.ax-col.rejected .ax-col-head{color:var(--pink)}
+.ax-col-body{display:flex;flex-direction:column;gap:8px;min-height:44px;flex:1}
+.ax-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border-strong);border-radius:11px;padding:10px 11px;cursor:grab;transition:border-color .15s,transform .15s}
+.ax-card:hover{border-color:var(--border-glow)}
+.ax-card.dragging{opacity:.5}
+.ax-col.applied .ax-card{border-left-color:#5b8cff}
+.ax-col.screening .ax-card{border-left-color:var(--teal)}
+.ax-col.interview .ax-card{border-left-color:var(--amber)}
+.ax-col.offer .ax-card{border-left-color:var(--green)}
+.ax-col.rejected .ax-card{border-left-color:var(--pink)}
+.ax-card .role{font-size:12.5px;font-weight:700;color:var(--text);line-height:1.25}
+.ax-card .role a{color:var(--text-3);margin-left:4px;font-size:11px}
+.ax-card .meta{font-size:11px;color:var(--text-2);margin-top:3px}
+.ax-card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.ax-move{display:flex;gap:4px}
+.ax-move button,.ax-card .del{width:24px;height:24px;border-radius:7px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.ax-move button:hover{border-color:var(--accent);color:var(--accent)}
+.ax-move button:disabled{opacity:.3;cursor:default}
+.ax-card .del:hover{border-color:var(--pink);color:var(--pink)}
+.ax-col-empty{font-size:11px;color:var(--text-3);text-align:center;padding:14px 4px;border:1px dashed var(--border);border-radius:9px}
+.ax-confirm{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text-2)}
+.ax-confirm button{padding:3px 7px;border-radius:6px;font-family:inherit;font-size:10px;font-weight:600;border:1px solid var(--border);background:var(--bg-2);color:var(--text);cursor:pointer}
+.ax-confirm button.danger{background:rgba(255,91,156,.15);border-color:var(--pink);color:var(--pink)}
+@media(max-width:700px){.ax-addbar{grid-template-columns:1fr 1fr}.ax-addbar .btn{grid-column:1/3}.ax-col{min-width:78vw}}
 @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.practice{grid-template-columns:repeat(2,1fr)}.cta-row{grid-template-columns:1fr}.phase-milestones{flex-direction:column}}
 @media(max-width:640px){.assess{flex-direction:column;align-items:flex-start}}
 .lock-screen{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:1.5rem}
@@ -1229,7 +1254,7 @@ async function axAdd(){
   const company=(document.getElementById('axCompany').value||'').trim();
   const role=(document.getElementById('axRole').value||'').trim();
   if(!company||!role){ axMsg('Preencha ao menos a empresa e o cargo.','err'); return; }
-  const payload={company,role,link:(document.getElementById('axLink').value||'').trim(),applied_date:document.getElementById('axDate').value||new Date().toISOString().slice(0,10),status:document.getElementById('axStatus').value||'Applied'};
+  const payload={company,role,link:(document.getElementById('axLink').value||'').trim(),applied_date:document.getElementById('axDate').value||new Date().toISOString().slice(0,10),status:'Applied'};
   try{
     const res=await sb.from(AX_TABLE).insert(payload);
     if(res.error)throw res.error;
@@ -1240,47 +1265,77 @@ async function axAdd(){
 }
 async function axSetStatus(id,status){
   if(!sb)return;
-  try{ const res=await sb.from(AX_TABLE).update({status}).eq('id',id); if(res.error)throw res.error; await axLoad(); }
-  catch(e){ console.warn('application update failed',e); axMsg('Erro ao atualizar status.','err'); }
+  const row=axRows.find(r=>r.id===id); if(!row)return;
+  const prev=row.status;
+  row.status=status; axRenderBoard();                 // optimistic: move the card now
+  try{ const res=await sb.from(AX_TABLE).update({status}).eq('id',id); if(res.error)throw res.error; }
+  catch(e){ console.warn('application update failed',e); row.status=prev; axRenderBoard(); axMsg('Erro ao atualizar status.','err'); }
 }
 let axConfirmId=null;
-function axAskDelete(id){ axConfirmId=id; axRenderList(); }
-function axCancelDelete(){ axConfirmId=null; axRenderList(); }
+function axAskDelete(id){ axConfirmId=id; axRenderBoard(); }
+function axCancelDelete(){ axConfirmId=null; axRenderBoard(); }
 async function axDelete(id){
   if(!sb)return;
   try{ const res=await sb.from(AX_TABLE).delete().eq('id',id); if(res.error)throw res.error; axConfirmId=null; await axLoad(); axUpdateCount(); }
-  catch(e){ console.warn('application delete failed',e); axConfirmId=null; axRenderList(); axMsg('Erro ao excluir.','err'); }
+  catch(e){ console.warn('application delete failed',e); axConfirmId=null; axRenderBoard(); axMsg('Erro ao excluir.','err'); }
 }
 async function axLoad(){
-  const listEl=document.getElementById('axList'); if(!listEl)return;
-  if(!sb){ listEl.innerHTML='<div class="pj-empty">Cloud desconectado.</div>'; return; }
-  listEl.innerHTML='<div class="pj-empty">Carregando…</div>';
+  const board=document.getElementById('axBoard'); if(!board)return;
+  if(!sb){ board.innerHTML='<div class="pj-empty">Cloud desconectado.</div>'; return; }
+  board.innerHTML='<div class="pj-empty">Carregando…</div>';
   try{
     const res=await sb.from(AX_TABLE).select('id,company,role,link,applied_date,status').order('applied_date',{ascending:false}).order('created_at',{ascending:false});
     if(res.error)throw res.error;
-    axRows=res.data||[]; axConfirmId=null; axRenderList(); axRenderStats();
-  }catch(e){ console.warn('application load failed',e); listEl.innerHTML='<div class="pj-empty">Erro ao carregar — a tabela "applications" existe no Supabase?</div>'; }
+    axRows=res.data||[]; axConfirmId=null; axRenderBoard();
+  }catch(e){ console.warn('application load failed',e); board.innerHTML='<div class="pj-empty">Erro ao carregar — a tabela "applications" existe no Supabase?</div>'; }
 }
-function axRenderStats(){
-  const el=document.getElementById('axStats'); if(!el)return;
-  const cEl=document.getElementById('axSavedCount'); if(cEl)cEl.textContent=`(${axRows.length})`;
-  if(axRows.length===0){ el.innerHTML=''; return; }
-  el.innerHTML=AX_STATUSES.map(s=>{const n=axRows.filter(r=>r.status===s).length;return `<span class="ax-pill ax-${s.toLowerCase()}">${n} ${s}</span>`;}).join('');
+function axCardHTML(r){
+  const st=(r.status||'Applied'); const idx=AX_STATUSES.indexOf(st);
+  const foot=axConfirmId===r.id
+    ? `<div class="ax-confirm"><span>Excluir?</span><button class="danger" onclick="event.stopPropagation();axDelete('${r.id}')">Sim</button><button onclick="event.stopPropagation();axCancelDelete()">Não</button></div>`
+    : `<div class="ax-move">
+         <button title="Move back" onclick="event.stopPropagation();axMove('${r.id}',-1)" ${idx<=0?'disabled':''}><i class="fa-solid fa-chevron-left"></i></button>
+         <button title="Move forward" onclick="event.stopPropagation();axMove('${r.id}',1)" ${idx>=AX_STATUSES.length-1?'disabled':''}><i class="fa-solid fa-chevron-right"></i></button>
+       </div>
+       <button class="del" title="Excluir" onclick="event.stopPropagation();axAskDelete('${r.id}')"><i class="fa-solid fa-trash"></i></button>`;
+  return `<div class="ax-card" draggable="true" data-id="${r.id}"
+      ondragstart="axDragStart(event,'${r.id}')" ondragend="axDragEnd(event)">
+    <div class="role">${pjEscape(r.role)}${r.link?` <a href="${pjEscape(r.link)}" target="_blank" rel="noopener" title="Open job link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>`:''}</div>
+    <div class="meta">${pjEscape(r.company)} · ${r.applied_date||''}</div>
+    <div class="ax-card-foot">${foot}</div>
+  </div>`;
 }
-function axRenderList(){
-  const listEl=document.getElementById('axList'); if(!listEl)return;
-  if(axRows.length===0){ listEl.innerHTML='<div class="pj-empty">Nenhuma aplicação ainda. Adicione a primeira acima.</div>'; return; }
-  listEl.innerHTML=axRows.map(r=>`
-    <div class="ax-item">
-      <div class="ax-body">
-        <div class="ax-role">${pjEscape(r.role)}${r.link?` <a href="${pjEscape(r.link)}" target="_blank" rel="noopener" title="Open job link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>`:''}</div>
-        <div class="ax-meta">${pjEscape(r.company)} · ${r.applied_date||''}</div>
-      </div>
-      <select class="ax-status-sel ax-${(r.status||'applied').toLowerCase()}" onchange="axSetStatus('${r.id}',this.value)">${AX_STATUSES.map(s=>`<option value="${s}"${s===r.status?' selected':''}>${s}</option>`).join('')}</select>
-      ${axConfirmId===r.id
-        ? `<div class="pj-confirm"><span>Excluir?</span><button class="danger" onclick="axDelete('${r.id}')">Sim</button><button onclick="axCancelDelete()">Não</button></div>`
-        : `<button class="pj-icon-btn" onclick="axAskDelete('${r.id}')" title="Excluir"><i class="fa-solid fa-trash"></i></button>`}
-    </div>`).join('');
+function axRenderBoard(){
+  const board=document.getElementById('axBoard'); if(!board)return;
+  const cEl=document.getElementById('axSavedCount'); if(cEl)cEl.textContent=axRows.length?`· ${axRows.length}`:'';
+  board.innerHTML=AX_STATUSES.map(s=>{
+    const rows=axRows.filter(r=>(r.status||'Applied')===s);
+    const cards=rows.length?rows.map(axCardHTML).join(''):'<div class="ax-col-empty">—</div>';
+    return `<div class="ax-col ${s.toLowerCase()}" data-status="${s}"
+        ondragover="axDragOver(event)" ondragleave="axDragLeave(event)" ondrop="axDrop(event,'${s}')">
+      <div class="ax-col-head"><span>${s}</span><span class="cnt">${rows.length}</span></div>
+      <div class="ax-col-body">${cards}</div>
+    </div>`;
+  }).join('');
+}
+// drag & drop
+let axDragId=null;
+function axDragStart(e,id){ axDragId=id; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+function axDragEnd(e){ e.currentTarget.classList.remove('dragging'); }
+function axDragOver(e){ e.preventDefault(); e.currentTarget.classList.add('drop'); e.dataTransfer.dropEffect='move'; }
+function axDragLeave(e){ e.currentTarget.classList.remove('drop'); }
+function axDrop(e,status){
+  e.preventDefault(); e.currentTarget.classList.remove('drop');
+  if(!axDragId)return;
+  const row=axRows.find(r=>r.id===axDragId);
+  if(row && (row.status||'Applied')!==status){ axSetStatus(axDragId,status); }
+  axDragId=null;
+}
+function axMove(id,dir){
+  const row=axRows.find(r=>r.id===id); if(!row)return;
+  const idx=AX_STATUSES.indexOf(row.status||'Applied');
+  const ni=idx+dir; if(ni<0||ni>=AX_STATUSES.length)return;
+  axSetStatus(id,AX_STATUSES[ni]);
 }
 async function axUpdateCount(){
   const el=document.getElementById('axCountBadge'); if(!el)return;
@@ -1376,31 +1431,24 @@ function openModal(type,extra){
   }else if(type==='apps'){
     const today=new Date().toISOString().slice(0,10);
     html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-    <div class="m-ic">💼</div><h2>Application tracker</h2>
-    <p>Log every role you apply to and move it through the pipeline. Saved to Supabase — safe across devices.</p>
-    <div class="pj-form">
-      <div class="ax-form-grid">
-        <input type="text" id="axCompany" placeholder="Company">
-        <input type="text" id="axRole" placeholder="Role (e.g. Senior .NET Engineer)">
-        <input type="url" id="axLink" placeholder="Job link (optional)">
-        <input type="date" id="axDate" value="${today}">
-        <select id="axStatus">${AX_STATUSES.map(s=>`<option value="${s}">${s}</option>`).join('')}</select>
-        <button class="btn primary" onclick="axAdd()"><i class="fa-solid fa-cloud-arrow-up"></i> Add</button>
-      </div>
+    <div class="m-ic">💼</div><h2>Application tracker <span id="axSavedCount" style="font-size:14px;color:var(--text-3);font-weight:600"></span></h2>
+    <p>Add a role, then drag cards across the pipeline (or use the ‹ › arrows on mobile). Saved to Supabase.</p>
+    <div class="ax-addbar">
+      <input type="text" id="axCompany" placeholder="Company">
+      <input type="text" id="axRole" placeholder="Role (e.g. Senior .NET Engineer)">
+      <input type="url" id="axLink" placeholder="Job link (optional)">
+      <input type="date" id="axDate" value="${today}" title="Applied date">
+      <button class="btn primary" onclick="axAdd()"><i class="fa-solid fa-plus"></i> Add</button>
     </div>
-    <div id="axSaveMsg" class="pj-msg"></div>
-    <div class="ax-stats" id="axStats"></div>
-    <div style="margin-top:1rem;border-top:1px solid var(--border);padding-top:1rem">
-      <b style="font-size:13px">Applications <span id="axSavedCount"></span></b>
-      <div id="axList" style="margin-top:8px"></div>
-    </div>`;
+    <div id="axSaveMsg" class="pj-msg" style="margin-bottom:.6rem"></div>
+    <div class="ax-board" id="axBoard"></div>`;
   }else if(type==='chat'){
     html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     <div class="m-ic">💬</div><h2>Copied!</h2>
     <p>This prompt was copied to your clipboard. Paste it into Claude's chat to begin:</p>
     <ul class="m-list"><li><i class="fa-solid fa-quote-left"></i><div><b>${extra}</b></div></li></ul>`;
   }
-  modalBox.className='modal'+((type==='phrases'||type==='apps')?' wide':'');
+  modalBox.className='modal'+(type==='phrases'?' wide':type==='apps'?' kanban':'');
   modalBox.innerHTML=html;
   modalBg.classList.add('show');
   if(type==='phrases'){ pjRows=[]; pjRenderPreview(); pjLoadSaved(); }
