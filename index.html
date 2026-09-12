@@ -177,6 +177,9 @@ body{
 .modal h2{font-size:20px;font-weight:700;margin-bottom:.6rem;letter-spacing:-.02em}
 .modal p{font-size:14px;color:var(--text-2);line-height:1.6;margin-bottom:1.3rem}
 .modal .m-list{list-style:none;margin-bottom:1.4rem}
+.modal .res-group{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:.2rem 0 .1rem}
+.min-hint{font-size:12px;color:var(--text-2);background:rgba(255,180,61,.08);border:1px solid rgba(255,180,61,.22);border-radius:11px;padding:9px 13px;margin-bottom:12px}
+.min-hint i{color:var(--amber);margin-right:5px}
 .modal .m-list li{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);font-size:13.5px;align-items:flex-start}
 .modal .m-list li:last-child{border:none}
 .modal .m-list i{color:var(--teal);margin-top:3px;font-size:13px}
@@ -278,24 +281,15 @@ body{
   </div>
 
   <div class="sec-title"><i class="fa-solid fa-list-check"></i> Detailed study plan<span class="day-badge" id="dayTotal">60 min</span></div>
+  <p class="min-hint"><i class="fa-solid fa-battery-quarter"></i> <b>Busy day?</b> Do the <b>20-min minimum</b> (Monday's first task or a single tech item) and mark the day — consistency beats a perfect day you skip.</p>
   <div class="day-tabs" id="dayTabs"></div>
   <div id="makeupBar"></div>
   <div class="tasks" id="taskList"></div>
 
   <div class="sec-title"><i class="fa-solid fa-headphones"></i> Passive input · 4h while you work</div>
-  <div class="tasks" style="margin-bottom:1.6rem">
-    <div class="ptask"><div class="t-body">
-      <div class="t-time">Background listening · effortless</div>
-      <div class="t-title">Technical podcast running while you code</div>
-      <ul class="steps">
-        <li>.NET Rocks!, Azure Friday or The Changelog in the background, all day</li>
-        <li>Goal: get your ear used to rhythm and contractions — <b>no pressure to understand everything</b></li>
-        <li>If you catch a third-person sentence (he builds, it scales), repeat it under your breath</li>
-      </ul>
-    </div></div>
-  </div>
+  <div class="tasks" style="margin-bottom:1.6rem" id="passiveBox"></div>
 
-  <div class="sec-title"><i class="fa-solid fa-clipboard-check"></i> Assessment · every 21 days</div>
+  <div class="sec-title"><i class="fa-solid fa-clipboard-check"></i> Assessment · day-1 diagnostic, then every 21 days</div>
   <div id="assessCard" class="assess"></div>
 
   <div class="sec-title"><i class="fa-solid fa-dumbbell"></i> Quick practice</div>
@@ -320,7 +314,7 @@ body{
     <button class="btn primary" onclick="openModal('phrases')"><i class="fa-solid fa-plus"></i> Adicionar frases</button>
   </div>
 
-  <div class="footer"><b>Backend Global</b> · Personalized 180-day program · English fluency + .NET/DSA/System Design interview prep</div>
+  <div class="footer"><b>Backend Global</b> · Personalized 180-day program · English fluency + .NET/DSA/System Design interview prep + job search</div>
 </div>
 
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal" id="modalBox"></div></div>
@@ -386,48 +380,69 @@ const WEEKS=[
  {d:'177-180',ph:3,t:'Graduation <span>·</span> full interview',foco:'a full end-to-end interview',ex:['<b>Do you have any questions</b> for us?','I\'m excited about the <b>impact</b> of this role'],desc:'Final stretch: a complete interview (behavioral + technical + system design) and a 10-min recording. 🏆'}
 ];
 
-// ===== TECH TRACK (condensed) — the old 30-week .NET/DSA/System Design plan, woven in ===== //
-// One short "Tech track" task is added to Monday of each week below, pulled from these.
-// This is intentionally lean: no separate time budget per topic, just the day's focus + a checklist.
+// ===== TECH TRACK — the .NET/DSA/System Design + job-search plan, woven in ===== //
+// Exactly one entry per English week (26), so the mapping is 1:1 with no gaps.
+// injectTechTrack() spreads each week's items across Mon/Wed/Fri + a Sat pattern-log,
+// and adds a weekly job-search sprint during phase 3. Lean by design: no per-topic clock.
 const TECH_WEEKS=[
- {t:'Setup + OOP Review',foco:'the 4 pillars of OOP',items:['Set up LeetCode (C#) + submit a warm-up solution','The 4 pillars of OOP in English','Practice explaining OOP out loud','SOLID principles in English','LeetCode: "Two Sum" in C#']},
- {t:'Design Patterns',foco:'Singleton, Factory, Builder, Repository, Observer, Strategy',items:['Creational patterns — study','Explain Factory/Builder in English','Structural/Behavioral patterns — study','Explain the Repository pattern in English','LeetCode: 2 Easy Array problems in C#']},
- {t:'Async/Await and Concurrency',foco:'thread, task, blocking, race condition',items:['Async/await fundamentals','Deadlock and race condition','Concurrency vs Parallelism, out loud','LeetCode: "Reverse String" + "Valid Anagram"','LeetCode: "First Unique Character in a String"']},
- {t:'Databases',foco:'ACID, indexing, normalization',items:['SQL vs NoSQL','Database vocabulary (indexing, normalization, FK)','Explain indexing in English','LeetCode: "Contains Duplicate"','LeetCode: "Group Anagrams" (intro)']},
- {t:'Hash Maps / Dictionaries',foco:'hashing, collisions, O(1)',items:['Why is a Hash Map O(1) on average?','Dictionary<K,V> deep dive','LeetCode: "Group Anagrams"','LeetCode: "Two Sum" with a Dictionary','LeetCode: "Majority Element"']},
- {t:'Stacks and Queues',foco:'LIFO vs FIFO',items:['LIFO vs FIFO + vocabulary','Real production use cases, in English','LeetCode: "Valid Parentheses"','LeetCode: "Min Stack"','LeetCode: "Implement Queue using Stacks"']},
- {t:'Linked Lists',foco:'node, pointer, traversal',items:['Node, pointer, traversal','Linked List vs Array trade-offs','LeetCode: "Reverse Linked List"','LeetCode: "Merge Two Sorted Lists"','LeetCode: "Middle of the Linked List"']},
- {t:'Spoken Technical English + Review',foco:'Phase 1 checkpoint',items:['Record: "Walk me through your backend experience"','Re-record and refine','Mixed review: Array/String/Hash/Stack/Linked List','2 timed Easy problems, speaking out loud','Phase 1 checkpoint review']},
- {t:'Binary Search',foco:'O(log n)',items:['How Binary Search works','Implement it (iterative + recursive)','LeetCode: "Binary Search"','LeetCode: "First Bad Version"','LeetCode: "Search in Rotated Sorted Array"']},
- {t:'Trees — Fundamentals',foco:'root, leaf, height, depth, traversal',items:['Tree concepts: root, leaf, height, depth','Traversal types: in/pre/post-order','LeetCode: "Maximum Depth of Binary Tree"','LeetCode: "Invert Binary Tree"','LeetCode: "Balanced Binary Tree"']},
- {t:'Tree Traversal — DFS and BFS',foco:'DFS vs BFS',items:['DFS (recursive)','BFS (iterative, Queue)','LeetCode: "Binary Tree Level Order Traversal"','LeetCode: "Path Sum"','LeetCode: "Lowest Common Ancestor"']},
- {t:'Sorting Algorithms',foco:'Merge Sort and Quick Sort',items:['Merge Sort — O(n log n), stable','Quick Sort — O(n log n) avg, in-place','LeetCode: "Merge Intervals"','LeetCode: "Non-overlapping Intervals"','LeetCode: "Sort Colors" (Dutch flag)']},
- {t:'Graphs — Fundamentals',foco:'adjacency list vs matrix',items:['What is a graph: vertices + edges','Relate it to dependency graphs/microservices','LeetCode: "Number of Islands"','LeetCode: "Clone Graph"','LeetCode: "Course Schedule" (cycle detection)']},
- {t:'Conversational English + Review',foco:'real interviews',items:['Real technical interview (1/2), with subtitles','Real technical interview (2/2)','Review new expressions','Text-based mock interview','Revisit 2 Medium problems']},
- {t:'Consolidation + Push to Medium',foco:'raising the difficulty',items:['1 Medium — Array, timed','1 Medium — Tree, timed','1 Medium — Graph, timed','1 Medium — Hash, timed','2 Medium back-to-back, 50 min']},
- {t:'Heaps and Priority Queues',foco:'min-heap vs max-heap',items:['Min-heap vs max-heap','Real-world uses: schedulers, priority queues','LeetCode: "Kth Largest Element in an Array"','LeetCode: "Top K Frequent Elements"','LeetCode: "Find Median from Data Stream" (intro)']},
- {t:'Dynamic Programming — Introduction',foco:'memoization vs tabulation',items:['Overlapping subproblems','Memoization vs Tabulation','LeetCode: "Climbing Stairs"','Fibonacci with DP (both approaches)','LeetCode: "House Robber"']},
- {t:'Dynamic Programming — 2D',foco:'two-dimensional DP',items:['LeetCode: "Unique Paths"','LeetCode: "Coin Change" (1/2)','LeetCode: "Coin Change" (2/2)','LeetCode: "Longest Common Subsequence"','Compare brute force vs DP complexity']},
- {t:'Backtracking',foco:'choose → explore → unchoose',items:['Choose → explore → unchoose pattern','LeetCode: "Permutations"','LeetCode: "Combinations"','LeetCode: "Word Search" (1/2)','LeetCode: "Word Search" (2/2)']},
- {t:'Sliding Window',foco:'turns O(n²) into O(n)',items:['Sliding window concept','LeetCode: "Longest Substring Without Repeating Characters"','LeetCode: "Minimum Window Substring" (1/2)','LeetCode: "Minimum Window Substring" (2/2)','LeetCode: "Permutation in String"']},
- {t:'System Design — Introduction ⭐',foco:'Load Balancer, Cache, CDN, DB, Message Queue',items:['Core components + vocabulary','Explain each component in English','"Design a URL Shortener" (1/2)','"Design a URL Shortener" (2/2), explain it in English','Redo the architecture from scratch, out loud']},
- {t:'System Design — Databases at Scale',foco:'sharding, replication, CAP Theorem',items:['Sharding and replication','Consistency models + CAP Theorem','"Design a system with high read traffic" (1/2)','"Design a system with high read traffic" (2/2)','Practice trade-offs in English']},
- {t:'Advanced Graphs',foco:'Dijkstra, Topological Sort',items:['Dijkstra — shortest path','Topological Sort','LeetCode: "Network Delay Time" (Dijkstra)','LeetCode: "Alien Dictionary" (1/2)','LeetCode: "Alien Dictionary" (2/2)']},
- {t:'Full Mock Interviews',foco:'Phase 3 checkpoint',items:['1 Medium + explain the solution in English','1 timed Hard problem','System Design mock, 30 min','2 random problems, 60 min timed','Review your recordings']},
- {t:'Hard Problems Intensive',foco:'building confidence on Hard',items:['1 Hard — DP + Tree','1 Hard — Graph + DP','1 Hard — Backtracking','1 Hard — Sliding Window / Array','Document the pattern used each day']},
- {t:'System Design Deep Dive ⭐',foco:'more complex cases, your senior edge',items:['"Design Instagram / Photo Sharing" (1/2)','"Design Instagram / Photo Sharing" (2/2)','"Design a Payment System" (1/2)','"Design a Payment System / Message Queue" (2/2)','Explain a complex architecture in English, from scratch']},
- {t:'Behavioral Interview Prep ⭐',foco:'the STAR method',items:['STAR story: the biggest system you architected','STAR story: a team conflict you resolved','STAR story: a production failure','STAR stories: a tough technical decision + a performance win','Record all 5-6 stories in English']},
- {t:'Portfolio and CV',foco:'CV, GitHub, LinkedIn in English',items:['CV in English (1/2): Action + Result','CV in English (2/2): review and polish','Update 2-3 GitHub repos with an English README','Update LinkedIn (1/2)','Update LinkedIn (2/2) + connect with recruiters']},
- {t:'Final Push + Applying',foco:'starting to apply',items:['Full mock interview: coding (1/2)','Full mock interview: system design + behavioral (2/2)','3-5 random problems, mixed difficulty, timed','Review weak spots from the mocks','Review CV/GitHub/LinkedIn and start applying']}
+ /* wk1  d1-7   */ {t:'Setup + OOP Review',foco:'the 4 pillars of OOP',items:['Set up LeetCode (C#) + submit a warm-up solution','The 4 pillars of OOP + SOLID, in English','LeetCode: "Two Sum" (brute force → Dictionary)','LeetCode: "Valid Anagram"','Explain OOP & SOLID out loud in English']},
+ /* wk2  d8-14  */ {t:'Design Patterns',foco:'Singleton, Factory, Builder, Repository, Observer, Strategy',items:['Creational patterns — study + find them in your code','Structural/Behavioral patterns — study','Explain Factory & Repository in English','LeetCode: "Contains Duplicate"','LeetCode: "Group Anagrams"']},
+ /* wk3  d15-21 */ {t:'Async/Await and Concurrency',foco:'thread, task, blocking, race condition',items:['Async/await fundamentals (I/O vs CPU bound)','Deadlock & race condition — relate to a real bug','Concurrency vs Parallelism, out loud','LeetCode: "Reverse String"','LeetCode: "First Unique Character in a String"']},
+ /* wk4  d22-28 */ {t:'Databases',foco:'ACID, indexing, normalization',items:['SQL vs NoSQL + ACID','Database vocabulary (indexing, normalization, FK)','Explain how an index works, in English','LeetCode: "Majority Element"','LeetCode: "Product of Array Except Self"']},
+ /* wk5  d29-35 */ {t:'Hash Maps / Dictionaries',foco:'hashing, collisions, O(1)',items:['Why is a Hash Map O(1) on average? Collisions','Dictionary<K,V> deep dive (TryGetValue, Big-O)','LeetCode: "Top K Frequent Elements"','LeetCode: "Valid Sudoku"','When to reach for a hash map vs brute force']},
+ /* wk6  d36-42 */ {t:'Stacks and Queues',foco:'LIFO vs FIFO',items:['LIFO vs FIFO + vocabulary (push/pop/enqueue)','Real production use cases, in English','LeetCode: "Valid Parentheses"','LeetCode: "Min Stack"','LeetCode: "Implement Queue using Stacks"']},
+ /* wk7  d43-49 */ {t:'Linked Lists',foco:'node, pointer, traversal',items:['Node, pointer, traversal + LL vs Array trade-offs','LeetCode: "Reverse Linked List"','LeetCode: "Merge Two Sorted Lists"','LeetCode: "Linked List Cycle"','LeetCode: "Middle of the Linked List"']},
+ /* wk8  d50-56 */ {t:'Binary Search',foco:'O(log n)',items:['How Binary Search works (needs sorted input)','Implement it (iterative + recursive)','LeetCode: "Binary Search"','LeetCode: "First Bad Version"','LeetCode: "Search in Rotated Sorted Array"']},
+ /* wk9  d57-63 */ {t:'Trees — Fundamentals',foco:'root, leaf, height, depth, traversal',items:['Tree concepts + traversal types (in/pre/post-order)','LeetCode: "Maximum Depth of Binary Tree"','LeetCode: "Invert Binary Tree"','LeetCode: "Balanced Binary Tree"','LeetCode: "Same Tree"']},
+ /* wk10 d64-70 */ {t:'Tree Traversal — DFS and BFS',foco:'DFS vs BFS',items:['DFS (recursive) — when to use it','BFS (iterative, Queue) — when to use it','LeetCode: "Binary Tree Level Order Traversal" (BFS)','LeetCode: "Path Sum" (DFS)','LeetCode: "Lowest Common Ancestor"']},
+ /* wk11 d71-77 */ {t:'Sorting Algorithms',foco:'Merge Sort and Quick Sort',items:['Merge Sort — O(n log n), stable','Quick Sort — O(n log n) avg, in-place','LeetCode: "Merge Intervals"','LeetCode: "Non-overlapping Intervals"','LeetCode: "Sort Colors" (Dutch flag)']},
+ /* wk12 d78-84 */ {t:'Graphs — Fundamentals',foco:'adjacency list vs matrix',items:['Graph basics + adjacency list vs matrix','Relate it to dependency graphs / microservices','LeetCode: "Number of Islands"','LeetCode: "Clone Graph"','LeetCode: "Course Schedule" (cycle detection)']},
+ /* wk13 d85-91 */ {t:'Heaps and Priority Queues',foco:'min-heap vs max-heap',items:['Min-heap vs max-heap (why O(log n) insert/delete)','Real-world uses: schedulers, priority queues','LeetCode: "Kth Largest Element in an Array"','LeetCode: "Top K Frequent Elements"','LeetCode: "Find Median from Data Stream" (intro)']},
+ /* wk14 d92-98 */ {t:'Consolidation + Push to Medium',foco:'raising the difficulty, timed',items:['1 Medium — Array, timed (20-25 min)','1 Medium — Tree, timed','1 Medium — Graph, timed','1 Medium — Hash, timed','2 Mediums back-to-back, 50 min, speaking out loud']},
+ /* wk15 d99-105*/ {t:'Dynamic Programming — Introduction',foco:'memoization vs tabulation',items:['Overlapping subproblems + optimal substructure','Memoization vs Tabulation (top-down vs bottom-up)','LeetCode: "Climbing Stairs"','Fibonacci with DP (both approaches)','LeetCode: "House Robber"']},
+ /* wk16 d106-112*/{t:'Dynamic Programming — 2D',foco:'two-dimensional DP',items:['LeetCode: "Unique Paths"','LeetCode: "Coin Change" (brute force → DP)','LeetCode: "Longest Common Subsequence"','LeetCode: "Longest Palindromic Substring"','Compare brute force vs DP complexity, out loud']},
+ /* wk17 d113-120*/{t:'Backtracking',foco:'choose → explore → unchoose',items:['Choose → explore → unchoose pattern','LeetCode: "Permutations"','LeetCode: "Combinations" / "Subsets"','LeetCode: "Word Search"','LeetCode: "Combination Sum"']},
+ /* wk18 d121-127*/{t:'Sliding Window',foco:'turns O(n²) into O(n)',items:['Sliding window concept (two pointers together)','LeetCode: "Best Time to Buy and Sell Stock"','LeetCode: "Longest Substring Without Repeating Characters"','LeetCode: "Minimum Window Substring"','LeetCode: "Permutation in String"']},
+ /* wk19 d128-134*/{t:'System Design — Introduction ⭐',foco:'Load Balancer, Cache, CDN, DB, Message Queue',items:['Core components + vocabulary (scaling, latency, throughput)','Explain each component in English','"Design a URL Shortener" — sketch the architecture','Explain your URL Shortener design in English','Redo the architecture from scratch, out loud']},
+ /* wk20 d135-141*/{t:'System Design — Databases at Scale',foco:'sharding, replication, CAP Theorem',items:['Sharding & replication (read replicas)','Consistency models + CAP Theorem','"Design a high read-traffic system" (cache + replicas)','Sketch the full architecture','Practice explaining trade-offs in English']},
+ /* wk21 d142-148*/{t:'Advanced Graphs',foco:'Dijkstra, Topological Sort',items:['Dijkstra — shortest path','Topological Sort (dependency ordering)','LeetCode: "Network Delay Time" (Dijkstra)','LeetCode: "Course Schedule II" (topo sort)','LeetCode: "Pacific Atlantic Water Flow"']},
+ /* wk22 d149-155*/{t:'Hard Problems Intensive',foco:'combining topics, building confidence',items:['1 Hard — DP + Tree','1 Hard — Graph + DP','1 Hard — Backtracking','1 Hard — Sliding Window / Array','Document the pattern used in each']},
+ /* wk23 d156-162*/{t:'System Design Deep Dive ⭐',foco:'complex cases — your senior edge',items:['"Design Instagram / Photo Sharing" (storage + CDN)','Feed generation — sketch the full architecture','"Design a Payment System" (consistency trade-offs)','"Design a Message Queue / rate limiter"','Explain a complex architecture in English, from scratch']},
+ /* wk24 d163-169*/{t:'Behavioral Interview Prep ⭐',foco:'the STAR method',items:['STAR story: the biggest system you architected','STAR story: a team conflict you resolved','STAR story: a production failure you owned','STAR stories: a tough technical decision + a performance win','Record all 5-6 stories in English + refine']},
+ /* wk25 d170-176*/{t:'Portfolio, CV & Live Coding',foco:'presentation + narrating your code',items:['CV in English: rewrite with Action + Result (metrics)','Update 2-3 GitHub repos with an English README','Update LinkedIn (headline + about + impact)','Live coding: narrate your reasoning out loud (2 problems)','Prep your questions for the interviewer + salary research (levels.fyi)']},
+ /* wk26 d177-180*/{t:'Final Push + Applying',foco:'apply, interview, negotiate',items:['Full mock: coding + system design + behavioral','Apply to 8-10 roles that fit .NET/backend','Send 5 personalized recruiter / hiring-manager messages','Practice a salary-negotiation conversation in English','Set up an application tracker + weekly follow-up routine']}
 ];
-// Stretches 29 tech weeks across the english-plan's weeks (26), skipping a few lightweight ones — lean by design.
-function techWeekFor(idx){ return TECH_WEEKS[Math.min(TECH_WEEKS.length-1,Math.round(idx*(TECH_WEEKS.length-1)/(WEEKS.length-1)))]; }
+// 1:1 with the 26 English weeks — no gaps, clean progression.
+function techWeekFor(idx){ return TECH_WEEKS[Math.min(TECH_WEEKS.length-1,idx)]; }
 // Injects one condensed "Tech track" task into Monday of each week — no separate time budget, just a checklist.
 function injectTechTrack(days,idx){
   const tw=techWeekFor(idx);
-  if(days[0]){
-    days[0].tasks.push({time:'Tech track · C# / .NET',title:`${tw.t} (${tw.foco})`,xp:20,steps:tw.items});
-    days[0].sub=days[0].sub+' + tech track';
+  const it=tw.items||[];
+  const put=(label,time,title,steps,xp)=>{
+    const d=days.find(x=>x.label===label);
+    if(!d||!steps.length)return;
+    d.tasks.push({time,title,xp:xp||15,steps});
+    if(!/tech/.test(d.sub)) d.sub=d.sub+' + tech';
+  };
+  // Spread the week's tech items across three real slots instead of one Monday dump
+  put('Mon','~20 min · Tech track · study',`${tw.t}: ${tw.foco}`,[it[0],it[1]].filter(Boolean),20);
+  put('Wed','~20 min · Tech track · practice',`${tw.t} — practice`,[it[2],it[3]].filter(Boolean),15);
+  put('Fri','~20 min · Tech track · solve & explain',`${tw.t} — solve, then explain in English`,[it[4]].filter(Boolean),15);
+  // Spaced repetition for the tech side (mirrors the English Anki loop)
+  put('Sat','~15 min · Tech track · pattern log','Revisit & log patterns',[
+    'Re-solve 1 problem from a PREVIOUS week, from memory',
+    'Log: which pattern did each of this week\'s problems use?',
+    'Note anything you blanked on — that\'s next week\'s warm-up'
+  ],10);
+  // Job-search sprint runs every week of Phase 3 (days 121-180), not just at the very end
+  if(WEEKS[idx] && WEEKS[idx].ph===3){
+    put('Sun','~20 min · Job search · weekly sprint','Apply + outreach + follow-up',[
+      'Apply to <b>5 roles</b> that fit .NET/backend (LinkedIn, Wellfound, company sites)',
+      'Send <b>3 personalized</b> recruiter / hiring-manager messages',
+      'Ask for <b>1 referral</b> from your network',
+      'Follow up on last week\'s applications',
+      'Update your tracker (company · role · date · status)'
+    ],15);
   }
   return days;
 }
@@ -661,28 +676,54 @@ function updateProgress(){
   renderPhase();
   renderAssess();
   renderMakeup();
+  renderPassive();
+}
+// ===== Passive input rotates with the current phase =====
+const PASSIVE=[
+  {ph:1,time:'Background listening · effortless',title:'Technical podcast running while you code',steps:['.NET Rocks!, Azure Friday or The Changelog in the background, all day','Goal: get your ear used to rhythm and contractions — <b>no pressure to understand everything</b>','If you catch a third-person sentence (he builds, it scales), repeat it under your breath']},
+  {ph:2,time:'Background listening · effortless',title:'Podcasts & standup while you work',steps:['Mix dev podcasts with casual/comedy content (standup, talk shows) all day','Goal: soak up phrasal verbs, slang and natural rhythm','When an expression makes you smile, jot it down for your bank']},
+  {ph:3,time:'Background listening · effortless',title:'Debates, documentaries & long-form interviews',steps:['BBC/NPR analysis, tech debates and long-form interviews in the background','Goal: absorb argumentation, nuance and register at native speed','Notice how they disagree politely and structure an argument']}
+];
+function renderPassive(){
+  const el=document.getElementById('passiveBox'); if(!el)return;
+  const ph=PHASES[WEEKS[liveWeek].ph-1].n;
+  const p=PASSIVE.find(x=>x.ph===ph)||PASSIVE[0];
+  el.innerHTML=`<div class="ptask"><div class="t-body">
+    <div class="t-time">${p.time}</div>
+    <div class="t-title">${p.title}</div>
+    <ul class="steps">${p.steps.map(s=>`<li>${s}</li>`).join('')}</ul>
+  </div></div>`;
 }
 
 // ===== Assessment every 21 days =====
-const CHECKPOINTS=[21,42,63,84,105,126,147,168,180];
+const CHECKPOINTS=[1,21,42,63,84,105,126,147,168,180];
 function renderAssess(){
   const el=document.getElementById('assessCard'); if(!el)return;
   const next=CHECKPOINTS.find(c=>!done.has('assess:'+c))||180;
   const due=studyDay>=next && !done.has('assess:'+next);
+  const isDiag=next===1;
+  const hasMock=next>=42;
   el.className='assess'+(due?' due':'');
   el.innerHTML=`
-    <div class="assess-ic"><i class="fa-solid ${due?'fa-bell':'fa-flag-checkered'}"></i></div>
+    <div class="assess-ic"><i class="fa-solid ${due?'fa-bell':(isDiag?'fa-compass':'fa-flag-checkered')}"></i></div>
     <div class="assess-body">
-      <b>${due?`Assessment due — Day ${next}`:`Next assessment · Day ${next}`}</b>
-      <span>Record a 2-min speaking test + take a mini CEFR test to measure real progress.</span>
+      <b>${isDiag?(due?'Day-1 diagnostic — place yourself':'Day-1 diagnostic'):(due?`Assessment due — Day ${next}`:`Next assessment · Day ${next}`)}</b>
+      <span>${isDiag?'Find your real CEFR level so you can skip (or keep) the basic-grammar weeks — and get a tech baseline.':`2-min speaking test + mini CEFR test${hasMock?' + a short mock interview':''} + a timed LeetCode Medium, to measure real progress.`}</span>
     </div>
     <div class="assess-actions">
-      <button class="btn" onclick="startAssessment()"><i class="fa-solid fa-play"></i> Run test ↗</button>
+      <button class="btn" onclick="startAssessment()"><i class="fa-solid fa-play"></i> ${isDiag?'Run diagnostic ↗':'Run test ↗'}</button>
       ${due?`<button class="btn" onclick="markAssess(${next})"><i class="fa-solid fa-check"></i> Mark done</button>`:''}
     </div>`;
 }
 function startAssessment(){
-  const p=`(I'm a backend .NET/Azure/SQL developer, approximate level ${levelPlain}, day ${studyDay}/180, goal: a job abroad.) Run a short English assessment for me: 1) give me a 2-minute speaking prompt to record about my work; 2) ask 5 quick questions covering listening, grammar and vocabulary; 3) at the end, estimate my CEFR level and name 2 concrete things to improve. Start now.`;
+  const next=CHECKPOINTS.find(c=>!done.has('assess:'+c))||180;
+  let p;
+  if(next===1){
+    p=`(I'm a backend .NET/Azure/SQL developer with ~6 years of experience; goal: a job at an international company. This is my day-1 placement.) Run a short diagnostic for me: 1) give me a 2-minute speaking prompt to record about my work; 2) ask 5 quick questions across listening, grammar and vocabulary; 3) give me one LeetCode Medium to solve in C# (25 min) as a tech baseline; 4) at the end, estimate my CEFR level, tell me honestly whether I can SKIP the basic-grammar weeks (days 1-63) or should keep them, and name 2 concrete things to improve. Start now.`;
+  }else{
+    const wantsMock=next>=42;
+    p=`(I'm a backend .NET/Azure/SQL developer, approximate level ${levelPlain}, day ${studyDay}/180, goal: a job abroad.) Run a short assessment for me: 1) a 2-minute speaking prompt to record about my work; 2) 5 quick questions covering listening, grammar and vocabulary; 3) a tech self-check — give me one LeetCode Medium to solve in C# in 25 min and tell me if my time and approach are interview-ready${wantsMock?'; 4) a 10-minute mock interview question (alternate behavioral and system design) with feedback':''}; then estimate my CEFR level and name 2 concrete things to improve. Start now.`;
+  }
   ask(p);
 }
 function markAssess(day){
@@ -1076,16 +1117,31 @@ function openModal(type,extra){
   if(type==='resources'){
     html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     <div class="m-ic">🧭</div><h2>Recommended resources</h2>
-    <p>Technical content in English, picked for your .NET backend profile.</p>
+    <p>Everything for the two tracks — English fluency and the .NET interview + job search.</p>
+    <div class="res-group">English &amp; listening</div>
     <ul class="m-list">
       <li><i class="fa-solid fa-brain"></i><div><b><a href="https://www.remnote.com/flashcards_home" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">RemNote</a></b><small>Your flashcards — review vocabulary and grammar cards</small></div></li>
       <li><i class="fa-solid fa-podcast"></i><div><b>.NET Rocks!</b><small>Weekly .NET podcast — use it as passive input</small></div></li>
       <li><i class="fa-brands fa-youtube"></i><div><b>Nick Chapsas</b><small>Advanced C#/.NET, clear and technical English</small></div></li>
       <li><i class="fa-brands fa-microsoft"></i><div><b>Azure Friday</b><small>Short Azure videos with EN subtitles</small></div></li>
       <li><i class="fa-solid fa-headphones"></i><div><b>The Changelog</b><small>Interviews with devs — great for listening</small></div></li>
-      <li><i class="fa-solid fa-briefcase"></i><div><b>"Software engineer interview" (YouTube)</b><small>Real mock interviews to practice</small></div></li>
       <li><i class="fa-solid fa-phone"></i><div><b><a href="https://app.sesame.com/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">AI to Call</a></b><small>Practice a live spoken conversation with an AI</small></div></li>
       <li><i class="fa-solid fa-robot"></i><div><b><a href="https://www.vocaid.ai/pt" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">AI Test Interview</a></b><small>Simulated interview practice with AI feedback</small></div></li>
+    </ul>
+    <div class="res-group">Coding &amp; system design</div>
+    <ul class="m-list">
+      <li><i class="fa-solid fa-code"></i><div><b><a href="https://leetcode.com/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">LeetCode</a></b><small>Main practice platform — set C# as your language</small></div></li>
+      <li><i class="fa-brands fa-youtube"></i><div><b><a href="https://neetcode.io/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">NeetCode.io</a></b><small>Topic-based playlists with patterns explained (the NeetCode 150)</small></div></li>
+      <li><i class="fa-solid fa-sitemap"></i><div><b><a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">System Design Primer</a></b><small>Free, thorough system design reference (GitHub)</small></div></li>
+      <li><i class="fa-solid fa-laptop-code"></i><div><b><a href="https://www.freecodecamp.org/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">freeCodeCamp</a></b><small>Free crash courses on algorithms and system design</small></div></li>
+      <li><i class="fa-solid fa-people-arrows"></i><div><b><a href="https://www.pramp.com/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">Pramp / interviewing.io</a></b><small>Free peer mock interviews — practice out loud with a real person</small></div></li>
+    </ul>
+    <div class="res-group">Job search &amp; offers</div>
+    <ul class="m-list">
+      <li><i class="fa-brands fa-linkedin"></i><div><b><a href="https://www.linkedin.com/jobs/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">LinkedIn Jobs</a></b><small>Set alerts for remote .NET/backend roles; message recruiters</small></div></li>
+      <li><i class="fa-solid fa-rocket"></i><div><b><a href="https://wellfound.com/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">Wellfound</a></b><small>Startup roles, many remote-first and international</small></div></li>
+      <li><i class="fa-solid fa-dollar-sign"></i><div><b><a href="https://www.levels.fyi/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">levels.fyi</a></b><small>Real compensation data — prep your salary negotiation</small></div></li>
+      <li><i class="fa-solid fa-globe"></i><div><b><a href="https://remoteok.com/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">RemoteOK</a></b><small>Remote-only board — filter for .NET / C# / backend</small></div></li>
     </ul>`;
   }else if(type==='progress'){
     const daysDone=DAYS.filter((d,i)=>dayComplete(i)).length;
