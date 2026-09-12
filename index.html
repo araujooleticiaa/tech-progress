@@ -250,18 +250,21 @@ body{
 .ax-form-grid #axLink{grid-column:1/3}
 .ax-form-grid .btn{height:38px}
 /* Kanban board */
-.ax-addbar{display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr auto auto;gap:8px;margin-bottom:1rem}
-.ax-addbar input{padding:9px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;height:38px;box-sizing:border-box}
+.ax-addbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
+.ax-addbar input{padding:9px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;height:38px;box-sizing:border-box;flex:1 1 150px;min-width:120px}
 .ax-addbar input:focus{outline:none;border-color:var(--accent)}
-.ax-addbar .btn{height:38px;white-space:nowrap}
-.ax-board{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
-.ax-col{flex:1 1 0;min-width:200px;background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:9px}
+.ax-addbar .ax-notes-in{flex:1 1 100%}
+.ax-addbar .btn{height:38px;white-space:nowrap;flex:0 0 auto}
+.ax-board{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.ax-col{flex:1 1 0;min-width:158px;background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:9px}
 .ax-col.drop{border-color:var(--accent);background:rgba(91,140,255,.08)}
 .ax-col-head{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;letter-spacing:.03em;padding:2px 4px}
 .ax-col-head .cnt{font-size:11px;font-weight:700;color:var(--text-3);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1px 8px}
 .ax-col.applied .ax-col-head{color:#9db6ff}
 .ax-col.screening .ax-col-head{color:var(--teal)}
+.ax-col.take-home .ax-col-head{color:#b9a5ff}
 .ax-col.interview .ax-col-head{color:var(--amber)}
+.ax-col.final-round .ax-col-head{color:#ff9d5c}
 .ax-col.offer .ax-col-head{color:var(--green)}
 .ax-col.rejected .ax-col-head{color:var(--pink)}
 .ax-col-body{display:flex;flex-direction:column;gap:8px;min-height:44px;flex:1}
@@ -270,12 +273,17 @@ body{
 .ax-card.dragging{opacity:.5}
 .ax-col.applied .ax-card{border-left-color:#5b8cff}
 .ax-col.screening .ax-card{border-left-color:var(--teal)}
+.ax-col.take-home .ax-card{border-left-color:#b9a5ff}
 .ax-col.interview .ax-card{border-left-color:var(--amber)}
+.ax-col.final-round .ax-card{border-left-color:#ff9d5c}
 .ax-col.offer .ax-card{border-left-color:var(--green)}
 .ax-col.rejected .ax-card{border-left-color:var(--pink)}
 .ax-card .role{font-size:12.5px;font-weight:700;color:var(--text);line-height:1.25}
 .ax-card .role a{color:var(--text-3);margin-left:4px;font-size:11px}
 .ax-card .meta{font-size:11px;color:var(--text-2);margin-top:3px}
+.ax-salary{font-size:11px;color:var(--green);font-weight:600;margin-top:4px}
+.ax-salary i{font-size:10px;margin-right:3px}
+.ax-notes{font-size:11px;color:var(--text-2);margin-top:4px;line-height:1.35;white-space:pre-wrap;word-break:break-word}
 .ax-card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
 .ax-move{display:flex;gap:4px}
 .ax-move button,.ax-card .del{width:24px;height:24px;border-radius:7px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;transition:all .15s}
@@ -1245,7 +1253,8 @@ pjUpdateCount();
 
 // ===== Application tracker (Supabase table: applications) =====
 const AX_TABLE='applications';
-const AX_STATUSES=['Applied','Screening','Interview','Offer','Rejected'];
+const AX_STATUSES=['Applied','Screening','Take-home','Interview','Final round','Offer','Rejected'];
+const axSlug=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 let axRows=[];
 function axMsg(t,k){ const el=document.getElementById('axSaveMsg'); if(el){el.textContent=t||'';el.className='pj-msg'+(k?' '+k:'');} }
 async function axAdd(){
@@ -1254,11 +1263,11 @@ async function axAdd(){
   const company=(document.getElementById('axCompany').value||'').trim();
   const role=(document.getElementById('axRole').value||'').trim();
   if(!company||!role){ axMsg('Preencha ao menos a empresa e o cargo.','err'); return; }
-  const payload={company,role,link:(document.getElementById('axLink').value||'').trim(),applied_date:document.getElementById('axDate').value||new Date().toISOString().slice(0,10),status:'Applied'};
+  const payload={company,role,link:(document.getElementById('axLink').value||'').trim(),salary:(document.getElementById('axSalary').value||'').trim(),notes:(document.getElementById('axNotes').value||'').trim(),applied_date:document.getElementById('axDate').value||new Date().toISOString().slice(0,10),status:'Applied'};
   try{
     const res=await sb.from(AX_TABLE).insert(payload);
     if(res.error)throw res.error;
-    document.getElementById('axCompany').value='';document.getElementById('axRole').value='';document.getElementById('axLink').value='';
+    ['axCompany','axRole','axLink','axSalary','axNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
     await axLoad(); axUpdateCount();
     axMsg('Aplicação adicionada.','ok');
   }catch(e){ console.warn('application save failed',e); axMsg('Erro ao salvar. A tabela "applications" existe no Supabase? (veja o SQL).','err'); }
@@ -1284,7 +1293,7 @@ async function axLoad(){
   if(!sb){ board.innerHTML='<div class="pj-empty">Cloud desconectado.</div>'; return; }
   board.innerHTML='<div class="pj-empty">Carregando…</div>';
   try{
-    const res=await sb.from(AX_TABLE).select('id,company,role,link,applied_date,status').order('applied_date',{ascending:false}).order('created_at',{ascending:false});
+    const res=await sb.from(AX_TABLE).select('id,company,role,link,salary,notes,applied_date,status').order('applied_date',{ascending:false}).order('created_at',{ascending:false});
     if(res.error)throw res.error;
     axRows=res.data||[]; axConfirmId=null; axRenderBoard();
   }catch(e){ console.warn('application load failed',e); board.innerHTML='<div class="pj-empty">Erro ao carregar — a tabela "applications" existe no Supabase?</div>'; }
@@ -1297,13 +1306,26 @@ function axCardHTML(r){
          <button title="Move back" onclick="event.stopPropagation();axMove('${r.id}',-1)" ${idx<=0?'disabled':''}><i class="fa-solid fa-chevron-left"></i></button>
          <button title="Move forward" onclick="event.stopPropagation();axMove('${r.id}',1)" ${idx>=AX_STATUSES.length-1?'disabled':''}><i class="fa-solid fa-chevron-right"></i></button>
        </div>
+       <button class="del" title="Edit salary & notes" onclick="event.stopPropagation();axEdit('${r.id}')"><i class="fa-solid fa-pen"></i></button>
        <button class="del" title="Excluir" onclick="event.stopPropagation();axAskDelete('${r.id}')"><i class="fa-solid fa-trash"></i></button>`;
   return `<div class="ax-card" draggable="true" data-id="${r.id}"
       ondragstart="axDragStart(event,'${r.id}')" ondragend="axDragEnd(event)">
     <div class="role">${pjEscape(r.role)}${r.link?` <a href="${pjEscape(r.link)}" target="_blank" rel="noopener" title="Open job link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>`:''}</div>
     <div class="meta">${pjEscape(r.company)} · ${r.applied_date||''}</div>
+    ${r.salary?`<div class="ax-salary"><i class="fa-solid fa-money-bill-wave"></i> ${pjEscape(r.salary)}</div>`:''}
+    ${r.notes?`<div class="ax-notes">${pjEscape(r.notes)}</div>`:''}
     <div class="ax-card-foot">${foot}</div>
   </div>`;
+}
+async function axEdit(id){
+  const r=axRows.find(x=>x.id===id); if(!r)return;
+  const salary=prompt('Salário / faixa (ex: $80k–100k, R$ 15k/mês):', r.salary||''); if(salary===null)return;
+  const notes=prompt('Anotações (contato, próximos passos, etc):', r.notes||''); if(notes===null)return;
+  const prev={salary:r.salary,notes:r.notes};
+  r.salary=salary.trim(); r.notes=notes.trim(); axRenderBoard();
+  if(!sb)return;
+  try{ const res=await sb.from(AX_TABLE).update({salary:r.salary,notes:r.notes}).eq('id',id); if(res.error)throw res.error; }
+  catch(e){ console.warn('application edit failed',e); r.salary=prev.salary; r.notes=prev.notes; axRenderBoard(); axMsg('Erro ao salvar a edição.','err'); }
 }
 function axRenderBoard(){
   const board=document.getElementById('axBoard'); if(!board)return;
@@ -1311,7 +1333,7 @@ function axRenderBoard(){
   board.innerHTML=AX_STATUSES.map(s=>{
     const rows=axRows.filter(r=>(r.status||'Applied')===s);
     const cards=rows.length?rows.map(axCardHTML).join(''):'<div class="ax-col-empty">—</div>';
-    return `<div class="ax-col ${s.toLowerCase()}" data-status="${s}"
+    return `<div class="ax-col ${axSlug(s)}" data-status="${s}"
         ondragover="axDragOver(event)" ondragleave="axDragLeave(event)" ondrop="axDrop(event,'${s}')">
       <div class="ax-col-head"><span>${s}</span><span class="cnt">${rows.length}</span></div>
       <div class="ax-col-body">${cards}</div>
@@ -1437,7 +1459,9 @@ function openModal(type,extra){
       <input type="text" id="axCompany" placeholder="Company">
       <input type="text" id="axRole" placeholder="Role (e.g. Senior .NET Engineer)">
       <input type="url" id="axLink" placeholder="Job link (optional)">
+      <input type="text" id="axSalary" placeholder="Salary (optional)">
       <input type="date" id="axDate" value="${today}" title="Applied date">
+      <input type="text" id="axNotes" placeholder="Notes (optional)" class="ax-notes-in">
       <button class="btn primary" onclick="axAdd()"><i class="fa-solid fa-plus"></i> Add</button>
     </div>
     <div id="axSaveMsg" class="pj-msg" style="margin-bottom:.6rem"></div>
