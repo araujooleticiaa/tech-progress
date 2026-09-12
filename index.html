@@ -69,6 +69,12 @@ body{
 .task.done .check{background:linear-gradient(135deg,var(--teal),var(--green));border-color:var(--teal);color:#04140f}
 .t-body{flex:1;min-width:0}
 .t-time{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.t-chip{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.05em;padding:2px 7px;border-radius:20px;margin-right:8px;vertical-align:middle;transform:translateY(-1px)}
+.t-chip.tech{background:rgba(124,91,255,.16);color:#b9a5ff;border:1px solid rgba(124,91,255,.4)}
+.t-chip.job{background:rgba(255,180,61,.16);color:var(--amber);border:1px solid rgba(255,180,61,.42)}
+.task.t-tech{border-left:2px solid rgba(124,91,255,.5)}
+.task.t-job{border-left:2px solid rgba(255,180,61,.55)}
+.task.t-tech .t-time,.task.t-job .t-time{color:var(--text-2)}
 .t-title{font-size:14px;font-weight:600;margin-bottom:2px}
 .task.done .t-title{color:var(--text-3);text-decoration:line-through}
 .task .pts{font-size:11px;font-weight:700;color:var(--amber);flex-shrink:0}
@@ -98,7 +104,8 @@ body{
 .hex-note{font-size:12.5px;color:var(--text-2);line-height:1.6}
 .hex-note b{color:var(--text);font-weight:600}
 .day-tabs{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
-.day-tab{flex:1;min-width:60px;padding:11px 8px;border-radius:12px;cursor:pointer;text-align:center;background:var(--card);border:1px solid var(--border);transition:all .2s}
+.day-tab{flex:1 1 0;min-width:64px;padding:9px 6px;border-radius:12px;cursor:pointer;text-align:center;background:var(--card);border:1px solid var(--border);transition:all .2s}
+.tabdot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#b9a5ff;vertical-align:middle;margin-left:1px}
 .day-tab:hover{border-color:var(--border-glow);background:var(--card-2)}
 .day-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none}
 .day-tab b{font-size:13px;font-weight:700;display:block}
@@ -178,8 +185,30 @@ body{
 .modal p{font-size:14px;color:var(--text-2);line-height:1.6;margin-bottom:1.3rem}
 .modal .m-list{list-style:none;margin-bottom:1.4rem}
 .modal .res-group{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:.2rem 0 .1rem}
+.hm-wrap{margin:0 0 1.3rem}
+.hm-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font-size:13px}
+.hm-head span{font-size:12px;color:var(--text-2)}
+.hm-grid{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:3px}
+.hm-cell{width:100%;aspect-ratio:1;border-radius:3px;background:var(--bg-2);border:1px solid var(--border)}
+.hm-done{background:var(--green);border-color:var(--green)}
+.hm-skip{background:rgba(255,180,61,.55);border-color:var(--amber)}
+.hm-next{background:transparent;border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.hm-legend{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:9px;font-size:11px;color:var(--text-3)}
+.hm-legend .hm-cell{width:11px;height:11px;aspect-ratio:auto;display:inline-block;margin-left:8px}
+.hm-legend .hm-cell:first-child{margin-left:0}
 .min-hint{font-size:12px;color:var(--text-2);background:rgba(255,180,61,.08);border:1px solid rgba(255,180,61,.22);border-radius:11px;padding:9px 13px;margin-bottom:12px}
 .min-hint i{color:var(--amber);margin-right:5px}
+.now-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:1.6rem;padding:1rem 1.3rem;border-radius:var(--radius);cursor:pointer;background:linear-gradient(135deg,rgba(91,140,255,.16),rgba(124,91,255,.12));border:1px solid rgba(124,91,255,.35);transition:transform .2s,border-color .2s}
+.now-cta:hover{transform:translateY(-2px);border-color:var(--accent)}
+.now-cta.done{background:linear-gradient(135deg,rgba(62,224,138,.14),rgba(40,217,176,.1));border-color:rgba(62,224,138,.4)}
+.now-cta .nc-main{display:flex;align-items:center;gap:14px;min-width:0}
+.now-cta .nc-main>i{width:40px;height:40px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 6px 18px rgba(91,140,255,.35)}
+.now-cta.done .nc-main>i{background:linear-gradient(135deg,var(--teal),var(--green));color:#04140f}
+.now-cta b{font-size:14.5px;font-weight:700;display:block}
+.now-cta .nc-main span{font-size:12px;color:var(--text-2);display:block;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-cta .nc-go{flex-shrink:0;font-size:12.5px;font-weight:700;color:var(--accent);white-space:nowrap}
+.now-cta.done .nc-go{color:var(--green)}
+@media(max-width:560px){.now-cta .nc-go{display:none}}
 .modal .m-list li{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);font-size:13.5px;align-items:flex-start}
 .modal .m-list li:last-child{border:none}
 .modal .m-list i{color:var(--teal);margin-top:3px;font-size:13px}
@@ -213,6 +242,26 @@ body{
 .pj-confirm button{padding:5px 10px;border-radius:8px;font-family:inherit;font-size:11px;font-weight:600;border:1px solid var(--border);background:var(--bg-2);color:var(--text);cursor:pointer}
 .pj-confirm button.danger{background:rgba(255,91,156,.15);border-color:var(--pink);color:var(--pink)}
 .pj-confirm button:hover{filter:brightness(1.15)}
+/* Application tracker */
+.ax-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ax-form-grid input,.ax-form-grid select{padding:9px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;height:38px;box-sizing:border-box}
+.ax-form-grid input:focus,.ax-form-grid select:focus{outline:none;border-color:var(--accent)}
+.ax-form-grid #axLink{grid-column:1/3}
+.ax-form-grid .btn{height:38px}
+.ax-stats{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.ax-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--bg-2);border:1px solid var(--border);color:var(--text-2)}
+.ax-item{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.ax-item:last-child{border:none}
+.ax-body{flex:1;min-width:0}
+.ax-role{color:var(--text);font-weight:600}
+.ax-role a{color:var(--text-3);margin-left:5px}
+.ax-meta{color:var(--text-2);margin-top:2px;font-size:11.5px}
+.ax-status-sel{flex-shrink:0;padding:5px 8px;border-radius:8px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:11px;font-weight:600;cursor:pointer}
+.ax-applied{border-color:rgba(91,140,255,.5);color:#9db6ff}
+.ax-screening{border-color:rgba(40,217,176,.5);color:var(--teal)}
+.ax-interview{border-color:rgba(255,180,61,.55);color:var(--amber)}
+.ax-offer{border-color:rgba(62,224,138,.6);color:var(--green)}
+.ax-rejected{border-color:rgba(255,91,156,.5);color:var(--pink)}
 @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.practice{grid-template-columns:repeat(2,1fr)}.cta-row{grid-template-columns:1fr}.phase-milestones{flex-direction:column}}
 @media(max-width:640px){.assess{flex-direction:column;align-items:flex-start}}
 .lock-screen{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:1.5rem}
@@ -244,7 +293,7 @@ body{
     </div>
     <div class="streak">
       <i class="fa-solid fa-fire"></i>
-      <div><b id="streakNum">0</b><span>of 180 studied</span></div>
+      <div><b id="streakNum">0</b><span id="streakLbl">day streak</span></div>
     </div>
   </div>
 
@@ -262,6 +311,8 @@ body{
     <div class="bar"><i id="barFill"></i></div>
     <div class="phase-milestones" id="phaseMs"></div>
   </div>
+
+  <div id="nowCta" onclick="jumpToNext()"></div>
 
   <div class="week-banner" id="weekBanner">
     <button class="wk-arrow" id="wkPrev" onclick="navWeek(-1)" aria-label="Previous week"><i class="fa-solid fa-chevron-left"></i></button>
@@ -312,6 +363,11 @@ body{
   <div class="sec-title"><i class="fa-solid fa-book-open"></i> Diário de frases<span class="day-badge" id="pjCountBadge">–</span></div>
   <div class="tasks" style="margin-bottom:1.6rem;padding:1rem 1.2rem">
     <button class="btn primary" onclick="openModal('phrases')"><i class="fa-solid fa-plus"></i> Adicionar frases</button>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-briefcase"></i> Application tracker<span class="day-badge" id="axCountBadge">–</span></div>
+  <div class="tasks" style="margin-bottom:1.6rem;padding:1rem 1.2rem">
+    <button class="btn primary" onclick="openModal('apps')"><i class="fa-solid fa-plus"></i> Track applications</button>
   </div>
 
   <div class="footer"><b>Backend Global</b> · Personalized 180-day program · English fluency + .NET/DSA/System Design interview prep + job search</div>
@@ -418,10 +474,10 @@ function techWeekFor(idx){ return TECH_WEEKS[Math.min(TECH_WEEKS.length-1,idx)];
 function injectTechTrack(days,idx){
   const tw=techWeekFor(idx);
   const it=tw.items||[];
-  const put=(label,time,title,steps,xp)=>{
+  const put=(label,time,title,steps,xp,track)=>{
     const d=days.find(x=>x.label===label);
     if(!d||!steps.length)return;
-    d.tasks.push({time,title,xp:xp||15,steps});
+    d.tasks.push({time,title,xp:xp||15,steps,track:track||'tech'});
     if(!/tech/.test(d.sub)) d.sub=d.sub+' + tech';
   };
   // Spread the week's tech items across three real slots instead of one Monday dump
@@ -442,7 +498,7 @@ function injectTechTrack(days,idx){
       'Ask for <b>1 referral</b> from your network',
       'Follow up on last week\'s applications',
       'Update your tracker (company · role · date · status)'
-    ],15);
+    ],15,'job');
   }
   return days;
 }
@@ -616,6 +672,30 @@ function dayXP(di){let x=0;DAYS[di].tasks.forEach((t,ti)=>{if(done.has(key(di,ti
 function weekXP(){let x=0;DAYS.forEach((d,di)=>x+=dayXP(di));return x}
 function completedDaysIn(idx){let c=0;const ds=buildDays(idx);ds.forEach((d,di)=>{if(isDayDone(idx,di))c++});return c}
 function totalCompleted(){let c=0;for(let i=0;i<WEEKS.length;i++)c+=completedDaysIn(i);return c}
+// Real streak: consecutive completed plan-days ending at the furthest day you've done.
+// A skipped or unfinished day breaks the run (min-logged days count — the streak is protected).
+function currentStreak(){
+  const seq=[]; // ordered completion flags across all 182 plan-days
+  for(let wi=0;wi<WEEKS.length;wi++){const ds=buildDays(wi);for(let di=0;di<ds.length;di++)seq.push(isDayDone(wi,di));}
+  let last=-1; for(let i=seq.length-1;i>=0;i--){ if(seq[i]){last=i;break;} }
+  if(last<0)return 0;
+  let run=0; for(let i=last;i>=0;i--){ if(seq[i])run++; else break; }
+  return run;
+}
+// GitHub-style map of all 180 days: columns = weeks, rows = days-of-week
+function heatmapHTML(){
+  const nwi=curWeekIdx(), ndi=nextDayIdx(nwi);
+  let cells='';
+  for(let wi=0;wi<WEEKS.length;wi++){
+    const ds=buildDays(wi), start=+WEEKS[wi].d.split('-')[0];
+    for(let di=0;di<ds.length;di++){
+      const dn=start+di;
+      const cls=isDayDone(wi,di)?'hm-done':done.has(skipKey(wi,di))?'hm-skip':(wi===nwi&&di===ndi)?'hm-next':'hm-empty';
+      cells+=`<span class="hm-cell ${cls}" title="Day ${Math.min(180,dn)} · week ${wi+1} ${ds[di].label}"></span>`;
+    }
+  }
+  return `<div class="hm-grid">${cells}</div>`;
+}
 function furthestDay(){
   let max=0;
   for(let wi=0;wi<WEEKS.length;wi++){
@@ -664,7 +744,9 @@ function updateProgress(){
   const studied=totalCompleted();               // days actually studied
   const owed=skippedCount();
   const dd=Math.max(1,studyDay);
-  document.getElementById('streakNum').textContent=Math.min(180,studied);    // fire = days studied (of 180)
+  const streak=currentStreak();                                              // fire = consecutive completed plan-days
+  document.getElementById('streakNum').textContent=streak;
+  document.getElementById('streakLbl').innerHTML=`day streak · <b style="color:var(--text-2)">${Math.min(180,studied)}</b>/180 done`;
   document.getElementById('dayVal').textContent=liveWeek+1;                  // card = current week number
   document.getElementById('dayTargetLbl').textContent='current week · of '+WEEKS.length+(owed>0?' · '+owed+' owed':'');
   const rp=PHASES[WEEKS[liveWeek].ph-1];
@@ -677,6 +759,33 @@ function updateProgress(){
   renderAssess();
   renderMakeup();
   renderPassive();
+  renderNowCta();
+}
+// ===== "What do I do now" — jump straight to your next unfinished day =====
+function renderNowCta(){
+  const el=document.getElementById('nowCta'); if(!el)return;
+  const nwi=curWeekIdx(), ndi=nextDayIdx(nwi);
+  const done180=totalCompleted()>=180 || resolvedCount()>=180;
+  if(done180){
+    el.className='now-cta done';
+    el.innerHTML=`<div class="nc-main"><i class="fa-solid fa-trophy"></i><div><b>You reached day 180 🎉</b><span>Keep any owed days going, or start applying full-time.</span></div></div><span class="nc-go">Review ↗</span>`;
+    return;
+  }
+  const ds=buildDays(nwi);
+  const label=ds[ndi]?ds[ndi].label:'Mon';
+  const dayNum=(+WEEKS[nwi].d.split('-')[0])+ndi;
+  const onIt=(weekIdx===nwi && cur===ndi);
+  el.className='now-cta';
+  el.innerHTML=`<div class="nc-main"><i class="fa-solid fa-play"></i>
+    <div><b>${onIt?'Today':'Continue'} · ${label}, week ${nwi+1} — day ${Math.min(180,dayNum)}/180</b>
+    <span>${pjEscapeSafe(WEEKS[nwi].t.replace(/<[^>]+>/g,''))}</span></div></div>
+    <span class="nc-go">${onIt?'Go to tasks':'Jump here'} ↗</span>`;
+}
+function pjEscapeSafe(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function jumpToNext(){
+  const nwi=curWeekIdx(), ndi=nextDayIdx(nwi);
+  weekIdx=nwi; cur=ndi; renderWeek();
+  document.getElementById('dayTabs')?.scrollIntoView({behavior:'smooth',block:'center'});
 }
 // ===== Passive input rotates with the current phase =====
 const PASSIVE=[
@@ -814,8 +923,14 @@ function renderTabs(){
   tabsEl.innerHTML=DAYS.map((d,i)=>{
     const ok=dayComplete(i);
     const sk=done.has(skipKey(weekIdx,i));
-    return `<div class="day-tab${i===cur?' active':''}${(weekIdx===liveWeek&&i===nextDayIdx(weekIdx))?' today':''}${ok?' complete':(sk?' skipped':'')}" onclick="pick(${i})">
-      <b>${d.label}</b><span>${ok?'<i class="fa-solid fa-circle-check"></i> done':(sk?'<i class="fa-solid fa-forward"></i> skipped':d.sub)}</span>
+    const isNext=weekIdx===liveWeek&&i===nextDayIdx(weekIdx);
+    const mins=(d.sub.match(/\d+/)||[''])[0];
+    const hasTech=/tech/.test(d.sub);
+    const status=ok?'<i class="fa-solid fa-circle-check"></i> done'
+      :sk?'<i class="fa-solid fa-forward"></i> skip'
+      :`${mins}m${hasTech?' <span class="tabdot"></span>':''}`;
+    return `<div class="day-tab${i===cur?' active':''}${isNext?' today':''}${ok?' complete':(sk?' skipped':'')}" onclick="pick(${i})">
+      <b>${d.label}</b><span>${status}</span>
     </div>`;
   }).join('');
 }
@@ -828,10 +943,11 @@ function renderTasks(){
   const complete=isDayDone(weekIdx,cur);
   listEl.innerHTML=d.tasks.map((t,i)=>{
     const isDone=done.has(key(cur,i));
-    return `<div class="task${isDone?' done':''}" onclick="toggle(${i})">
+    const chip=t.track==='tech'?'<span class="t-chip tech">Tech</span>':t.track==='job'?'<span class="t-chip job">Job</span>':'';
+    return `<div class="task${isDone?' done':''}${t.track?' t-'+t.track:''}" onclick="toggle(${i})">
       <div class="check"><i class="fa-solid fa-check"></i></div>
       <div class="t-body">
-        <div class="t-time">${t.time}</div>
+        <div class="t-time">${chip}${t.time}</div>
         <div class="t-title">${t.title}</div>
         <ul class="steps">${t.steps.map(s=>`<li>${s}</li>`).join('')}</ul>
       </div>
@@ -1102,6 +1218,78 @@ async function pjUpdateCount(){
 }
 pjUpdateCount();
 
+// ===== Application tracker (Supabase table: applications) =====
+const AX_TABLE='applications';
+const AX_STATUSES=['Applied','Screening','Interview','Offer','Rejected'];
+let axRows=[];
+function axMsg(t,k){ const el=document.getElementById('axSaveMsg'); if(el){el.textContent=t||'';el.className='pj-msg'+(k?' '+k:'');} }
+async function axAdd(){
+  axMsg('');
+  if(!sb){ axMsg('Cloud desconectado — não é possível salvar agora.','err'); return; }
+  const company=(document.getElementById('axCompany').value||'').trim();
+  const role=(document.getElementById('axRole').value||'').trim();
+  if(!company||!role){ axMsg('Preencha ao menos a empresa e o cargo.','err'); return; }
+  const payload={company,role,link:(document.getElementById('axLink').value||'').trim(),applied_date:document.getElementById('axDate').value||new Date().toISOString().slice(0,10),status:document.getElementById('axStatus').value||'Applied'};
+  try{
+    const res=await sb.from(AX_TABLE).insert(payload);
+    if(res.error)throw res.error;
+    document.getElementById('axCompany').value='';document.getElementById('axRole').value='';document.getElementById('axLink').value='';
+    await axLoad(); axUpdateCount();
+    axMsg('Aplicação adicionada.','ok');
+  }catch(e){ console.warn('application save failed',e); axMsg('Erro ao salvar. A tabela "applications" existe no Supabase? (veja o SQL).','err'); }
+}
+async function axSetStatus(id,status){
+  if(!sb)return;
+  try{ const res=await sb.from(AX_TABLE).update({status}).eq('id',id); if(res.error)throw res.error; await axLoad(); }
+  catch(e){ console.warn('application update failed',e); axMsg('Erro ao atualizar status.','err'); }
+}
+let axConfirmId=null;
+function axAskDelete(id){ axConfirmId=id; axRenderList(); }
+function axCancelDelete(){ axConfirmId=null; axRenderList(); }
+async function axDelete(id){
+  if(!sb)return;
+  try{ const res=await sb.from(AX_TABLE).delete().eq('id',id); if(res.error)throw res.error; axConfirmId=null; await axLoad(); axUpdateCount(); }
+  catch(e){ console.warn('application delete failed',e); axConfirmId=null; axRenderList(); axMsg('Erro ao excluir.','err'); }
+}
+async function axLoad(){
+  const listEl=document.getElementById('axList'); if(!listEl)return;
+  if(!sb){ listEl.innerHTML='<div class="pj-empty">Cloud desconectado.</div>'; return; }
+  listEl.innerHTML='<div class="pj-empty">Carregando…</div>';
+  try{
+    const res=await sb.from(AX_TABLE).select('id,company,role,link,applied_date,status').order('applied_date',{ascending:false}).order('created_at',{ascending:false});
+    if(res.error)throw res.error;
+    axRows=res.data||[]; axConfirmId=null; axRenderList(); axRenderStats();
+  }catch(e){ console.warn('application load failed',e); listEl.innerHTML='<div class="pj-empty">Erro ao carregar — a tabela "applications" existe no Supabase?</div>'; }
+}
+function axRenderStats(){
+  const el=document.getElementById('axStats'); if(!el)return;
+  const cEl=document.getElementById('axSavedCount'); if(cEl)cEl.textContent=`(${axRows.length})`;
+  if(axRows.length===0){ el.innerHTML=''; return; }
+  el.innerHTML=AX_STATUSES.map(s=>{const n=axRows.filter(r=>r.status===s).length;return `<span class="ax-pill ax-${s.toLowerCase()}">${n} ${s}</span>`;}).join('');
+}
+function axRenderList(){
+  const listEl=document.getElementById('axList'); if(!listEl)return;
+  if(axRows.length===0){ listEl.innerHTML='<div class="pj-empty">Nenhuma aplicação ainda. Adicione a primeira acima.</div>'; return; }
+  listEl.innerHTML=axRows.map(r=>`
+    <div class="ax-item">
+      <div class="ax-body">
+        <div class="ax-role">${pjEscape(r.role)}${r.link?` <a href="${pjEscape(r.link)}" target="_blank" rel="noopener" title="Open job link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>`:''}</div>
+        <div class="ax-meta">${pjEscape(r.company)} · ${r.applied_date||''}</div>
+      </div>
+      <select class="ax-status-sel ax-${(r.status||'applied').toLowerCase()}" onchange="axSetStatus('${r.id}',this.value)">${AX_STATUSES.map(s=>`<option value="${s}"${s===r.status?' selected':''}>${s}</option>`).join('')}</select>
+      ${axConfirmId===r.id
+        ? `<div class="pj-confirm"><span>Excluir?</span><button class="danger" onclick="axDelete('${r.id}')">Sim</button><button onclick="axCancelDelete()">Não</button></div>`
+        : `<button class="pj-icon-btn" onclick="axAskDelete('${r.id}')" title="Excluir"><i class="fa-solid fa-trash"></i></button>`}
+    </div>`).join('');
+}
+async function axUpdateCount(){
+  const el=document.getElementById('axCountBadge'); if(!el)return;
+  if(!sb){ el.textContent='cloud off'; return; }
+  try{ const res=await sb.from(AX_TABLE).select('id',{count:'exact',head:true}); if(res.error)throw res.error; el.textContent=(res.count??0)+' apps'; }
+  catch(e){ el.textContent='–'; }
+}
+axUpdateCount();
+
 weekIdx=curWeekIdx();
 cur=nextDayIdx(weekIdx);
 renderWeek();
@@ -1150,6 +1338,11 @@ function openModal(type,extra){
     html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     <div class="m-ic">📈</div><h2>Your progress</h2>
     <p><b>${Math.min(180,totalCompleted())} of 180 days studied</b> · Current week ${liveWeek+1} of ${WEEKS.length} · Phase ${P.n} (${P.nome}). You owe <b>${skippedCount()}</b> skipped day(s). This week: <b>${daysDone}/7 done</b> · <b>${weekXP()} XP</b>.</p>
+    <div class="hm-wrap">
+      <div class="hm-head"><b>Your 180-day map</b><span>${currentStreak()}-day streak 🔥</span></div>
+      ${heatmapHTML()}
+      <div class="hm-legend"><span class="hm-cell hm-done"></span> done <span class="hm-cell hm-skip"></span> skipped <span class="hm-cell hm-next"></span> next <span class="hm-cell hm-empty"></span> to do</div>
+    </div>
     <ul class="m-list">
       <li><i class="fa-solid fa-signal"></i><div><b>Current level: ${levelPlain}</b><small>Advances automatically each phase (up to B2 → C1 by day 180)</small></div></li>
       <li><i class="fa-solid fa-bullseye"></i><div><b>Phase ${P.n}: ${P.nome}</b><small>${P.n===1?'Understand 60% of a technical meeting':P.n===2?'Converse without hesitation':'Pass a technical interview in English'}</small></div></li>
@@ -1180,16 +1373,38 @@ function openModal(type,extra){
       <b style="font-size:13px">Frases salvas <span id="pjSavedCount"></span></b>
       <div id="pjSavedList" style="margin-top:8px"></div>
     </div>`;
+  }else if(type==='apps'){
+    const today=new Date().toISOString().slice(0,10);
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">💼</div><h2>Application tracker</h2>
+    <p>Log every role you apply to and move it through the pipeline. Saved to Supabase — safe across devices.</p>
+    <div class="pj-form">
+      <div class="ax-form-grid">
+        <input type="text" id="axCompany" placeholder="Company">
+        <input type="text" id="axRole" placeholder="Role (e.g. Senior .NET Engineer)">
+        <input type="url" id="axLink" placeholder="Job link (optional)">
+        <input type="date" id="axDate" value="${today}">
+        <select id="axStatus">${AX_STATUSES.map(s=>`<option value="${s}">${s}</option>`).join('')}</select>
+        <button class="btn primary" onclick="axAdd()"><i class="fa-solid fa-cloud-arrow-up"></i> Add</button>
+      </div>
+    </div>
+    <div id="axSaveMsg" class="pj-msg"></div>
+    <div class="ax-stats" id="axStats"></div>
+    <div style="margin-top:1rem;border-top:1px solid var(--border);padding-top:1rem">
+      <b style="font-size:13px">Applications <span id="axSavedCount"></span></b>
+      <div id="axList" style="margin-top:8px"></div>
+    </div>`;
   }else if(type==='chat'){
     html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     <div class="m-ic">💬</div><h2>Copied!</h2>
     <p>This prompt was copied to your clipboard. Paste it into Claude's chat to begin:</p>
     <ul class="m-list"><li><i class="fa-solid fa-quote-left"></i><div><b>${extra}</b></div></li></ul>`;
   }
-  modalBox.className='modal'+(type==='phrases'?' wide':'');
+  modalBox.className='modal'+((type==='phrases'||type==='apps')?' wide':'');
   modalBox.innerHTML=html;
   modalBg.classList.add('show');
   if(type==='phrases'){ pjRows=[]; pjRenderPreview(); pjLoadSaved(); }
+  if(type==='apps'){ axLoad(); }
 }
 function closeModal(){modalBg.classList.remove('show')}
 function resetProgress(){
