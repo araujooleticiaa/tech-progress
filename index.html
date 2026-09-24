@@ -209,6 +209,52 @@ body{
 .now-cta .nc-go{flex-shrink:0;font-size:12.5px;font-weight:700;color:var(--accent);white-space:nowrap}
 .now-cta.done .nc-go{color:var(--green)}
 @media(max-width:560px){.now-cta .nc-go{display:none}}
+/* Focus timer panel */
+.focus-panel{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;margin-bottom:1.6rem;display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap}
+.focus-ring{position:relative;width:96px;height:96px;flex-shrink:0}
+.focus-ring svg{transform:rotate(-90deg)}
+.focus-ring .fr-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.focus-ring .fr-big{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.focus-ring .fr-sub{font-size:10px;color:var(--text-3);margin-top:2px}
+.focus-mid{flex:1;min-width:180px}
+.focus-timer{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:600;letter-spacing:.02em}
+.focus-timer.running{color:var(--accent)}
+.focus-sub{font-size:12px;color:var(--text-2);margin-top:2px}
+.focus-btns{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
+.focus-btns button{padding:9px 15px;border-radius:10px;border:1px solid var(--border-strong);background:var(--bg-2);color:var(--text);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:7px}
+.focus-btns button:hover{border-color:var(--accent);color:var(--accent)}
+.focus-btns button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;color:#fff}
+.focus-btns button.stop{background:rgba(255,91,156,.14);border-color:var(--pink);color:var(--pink)}
+.focus-week{display:flex;gap:6px;align-items:flex-end;flex-shrink:0;height:74px}
+.fw-day{display:flex;flex-direction:column;align-items:center;gap:5px;width:26px}
+.fw-bar{width:14px;height:52px;background:var(--bg-2);border:1px solid var(--border);border-radius:4px;display:flex;align-items:flex-end;overflow:hidden}
+.fw-bar>i{display:block;width:100%;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:4px}
+.fw-day.today .fw-bar{border-color:var(--accent)}
+.fw-day span{font-size:9px;color:var(--text-3)}
+.fw-day.today span{color:var(--accent);font-weight:700}
+@media(max-width:620px){.focus-week{width:100%;justify-content:space-between;height:auto}}
+/* Comprehension (LCU) panel */
+.cl-panel{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;margin-bottom:1.6rem}
+.cl-panel.due{border-color:rgba(124,91,255,.45);background:linear-gradient(160deg,rgba(124,91,255,.1),var(--card-2))}
+.cl-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:.9rem}
+.cl-head b{font-size:14px}
+.cl-head span{font-size:12px;color:var(--text-2)}
+.cl-levels{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
+.cl-lv{flex:1;min-width:120px;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+.cl-lv b{font-size:12px;color:var(--text-2);font-weight:600}
+.cl-lv .v{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-top:3px}
+.cl-lv.l1 .v{color:#b9a5ff}.cl-lv.l2 .v{color:var(--teal)}.cl-lv.l3 .v{color:var(--amber)}
+.cl-trend{display:flex;gap:5px;align-items:flex-end;height:46px;margin-top:.4rem}
+.cl-tb{flex:1;min-width:6px;background:linear-gradient(180deg,var(--accent-2),var(--accent));border-radius:3px 3px 0 0;min-height:2px}
+.cl-empty{font-size:12.5px;color:var(--text-3)}
+.cl-edit{display:flex;flex-direction:column;gap:5px}
+.cl-edit label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-top:6px}
+.cl-edit input,.cl-edit textarea{padding:9px 11px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:13px;box-sizing:border-box;width:100%}
+.cl-edit textarea{resize:vertical}
+.cl-edit input:focus,.cl-edit textarea:focus{outline:none;border-color:var(--accent)}
+.cl-range-row{display:flex;align-items:center;gap:10px}
+.cl-range-row input[type=range]{flex:1;accent-color:var(--accent)}
+.cl-range-row .pct{width:48px;text-align:right;font-weight:700;font-family:'JetBrains Mono',monospace}
 .modal .m-list li{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);font-size:13.5px;align-items:flex-start}
 .modal .m-list li:last-child{border:none}
 .modal .m-list i{color:var(--teal);margin-top:3px;font-size:13px}
@@ -347,6 +393,9 @@ body{
 
   <div id="nowCta" onclick="jumpToNext()"></div>
 
+  <div class="sec-title"><i class="fa-solid fa-stopwatch"></i> Focus time · today<span class="day-badge" id="focusWeekBadge">–</span></div>
+  <div id="focusPanel" class="focus-panel"></div>
+
   <div class="week-banner" id="weekBanner">
     <button class="wk-arrow" id="wkPrev" onclick="navWeek(-1)" aria-label="Previous week"><i class="fa-solid fa-chevron-left"></i></button>
     <div class="wk-content"><div class="wb-tag" id="wkTag"></div><h3 id="wkTitle"></h3><p id="wkDesc"></p></div>
@@ -375,6 +424,9 @@ body{
 
   <div class="sec-title"><i class="fa-solid fa-clipboard-check"></i> Assessment · day-1 diagnostic, then every 21 days</div>
   <div id="assessCard" class="assess"></div>
+
+  <div class="sec-title"><i class="fa-solid fa-brain"></i> Comprehension · LCU weekly (every Sunday)<span class="day-badge" id="clBadge">–</span></div>
+  <div id="clPanel" class="cl-panel"></div>
 
   <div class="sec-title"><i class="fa-solid fa-dumbbell"></i> Quick practice</div>
   <div class="practice">
@@ -1372,6 +1424,138 @@ cur=nextDayIdx(weekIdx);
 renderWeek();
 syncFromCloud();
 
+// ===================== FOCUS TIME (Supabase table: time_log) =====================
+const FL_TABLE='time_log';
+const FOCUS_GOAL=120; // daily target in minutes (2h active study)
+function localISO(d){ d=d||new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
+function weekDates(base){ // Mon..Sun ISO for the week containing `base` (default today)
+  const d=base?new Date(base):new Date(); const wd=(d.getDay()+6)%7; // 0=Mon
+  const mon=new Date(d); mon.setDate(d.getDate()-wd);
+  return Array.from({length:7},(_,i)=>{const x=new Date(mon);x.setDate(mon.getDate()+i);return localISO(x);});
+}
+let flWeek={}, flRunning=false, flStart=null, flTimer=null;
+function fmtMin(m){ const h=Math.floor(m/60), mm=m%60; return h?`${h}h ${mm}m`:`${mm}m`; }
+function fmtClock(ms){ const s=Math.floor(ms/1000); const m=Math.floor(s/60), ss=s%60; return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
+async function flLoad(){
+  if(!sb){ renderFocus(); return; }
+  try{
+    const dates=weekDates();
+    const res=await sb.from(FL_TABLE).select('log_date,focused_min').gte('log_date',dates[0]).lte('log_date',dates[6]);
+    if(res.error)throw res.error;
+    flWeek={}; (res.data||[]).forEach(r=>flWeek[r.log_date]=r.focused_min||0);
+  }catch(e){ console.warn('time_log load failed',e); }
+  renderFocus();
+}
+async function flAdd(mins){
+  if(mins<=0)return;
+  const today=localISO();
+  const newTotal=(flWeek[today]||0)+mins;
+  flWeek[today]=newTotal; renderFocus();
+  if(!sb)return;
+  try{ const res=await sb.from(FL_TABLE).upsert({log_date:today,focused_min:newTotal,updated_at:new Date().toISOString()},{onConflict:'log_date'}); if(res.error)throw res.error; }
+  catch(e){ console.warn('time_log save failed',e); }
+}
+function flStartStop(){
+  if(flRunning){
+    const mins=Math.round((Date.now()-flStart)/60000);
+    flRunning=false; flStart=null; localStorage.removeItem('focus_start');
+    clearInterval(flTimer); flTimer=null;
+    flAdd(mins);
+  }else{
+    flStart=Date.now(); flRunning=true; localStorage.setItem('focus_start',String(flStart));
+    flTimer=setInterval(tickFocus,1000); tickFocus();
+  }
+  renderFocus();
+}
+function flQuick(){ flAdd(25); }
+function tickFocus(){
+  const el=document.getElementById('flClock'); if(el&&flRunning) el.textContent=fmtClock(Date.now()-flStart);
+}
+function renderFocus(){
+  const el=document.getElementById('focusPanel'); if(!el)return;
+  const today=localISO();
+  const mins=flWeek[today]||0;
+  const dates=weekDates();
+  const weekTotal=dates.reduce((a,d)=>a+(flWeek[d]||0),0);
+  const badge=document.getElementById('focusWeekBadge'); if(badge) badge.textContent=fmtMin(weekTotal)+' this week';
+  const pct=Math.min(100,Math.round(mins/FOCUS_GOAL*100));
+  const R=42, C=2*Math.PI*R, off=C*(1-pct/100);
+  const maxBar=Math.max(FOCUS_GOAL, ...dates.map(d=>flWeek[d]||0), 1);
+  const labels=['M','T','W','T','F','S','S'];
+  const bars=dates.map((d,i)=>{
+    const m=flWeek[d]||0; const h=Math.max(2,Math.round(m/maxBar*52));
+    return `<div class="fw-day${d===today?' today':''}"><div class="fw-bar"><i style="height:${h}px"></i></div><span>${labels[i]}</span></div>`;
+  }).join('');
+  el.innerHTML=`
+    <div class="focus-ring">
+      <svg width="96" height="96"><circle cx="48" cy="48" r="${R}" fill="none" stroke="var(--border)" stroke-width="8"/>
+      <circle cx="48" cy="48" r="${R}" fill="none" stroke="url(#fg)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/>
+      <defs><linearGradient id="fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent-2)"/></linearGradient></defs></svg>
+      <div class="fr-txt"><div class="fr-big">${fmtMin(mins)}</div><div class="fr-sub">of ${fmtMin(FOCUS_GOAL)} · ${pct}%</div></div>
+    </div>
+    <div class="focus-mid">
+      <div class="focus-timer${flRunning?' running':''}" id="flClock">${flRunning?fmtClock(Date.now()-flStart):'00:00'}</div>
+      <div class="focus-sub">${flRunning?'Timer running — stop to log the minutes':'Start a focus session, or quick-add a Pomodoro'}</div>
+      <div class="focus-btns">
+        <button class="${flRunning?'stop':'primary'}" onclick="flStartStop()"><i class="fa-solid fa-${flRunning?'stop':'play'}"></i> ${flRunning?'Stop & log':'Start'}</button>
+        <button onclick="flQuick()"><i class="fa-solid fa-plus"></i> 25 min</button>
+      </div>
+    </div>
+    <div class="focus-week">${bars}</div>`;
+}
+// resume a running timer after reload
+(function(){ const s=localStorage.getItem('focus_start'); if(s){ flStart=+s; flRunning=true; flTimer=setInterval(tickFocus,1000); } })();
+
+// ===================== COMPREHENSION · LCU (Supabase table: comprehension_log) =====================
+const CL_TABLE='comprehension_log';
+function sundayISO(base){ const w=weekDates(base); return w[6]; }
+let clRows=[];
+async function clLoad(){
+  if(!sb){ renderCL(); return; }
+  try{ const res=await sb.from(CL_TABLE).select('week_ending,n1,n2,n3,notes').order('week_ending',{ascending:true}); if(res.error)throw res.error; clRows=res.data||[]; }
+  catch(e){ console.warn('comprehension load failed',e); }
+  renderCL();
+}
+function clRenderTrend(){
+  if(!clRows.length)return '';
+  const vals=clRows.slice(-12).map(r=>{const a=[r.n1,r.n2,r.n3].filter(v=>v!=null);return a.length?a.reduce((x,y)=>x+y,0)/a.length:0;});
+  const mx=Math.max(100,...vals);
+  return '<div class="cl-trend">'+vals.map(v=>`<div class="cl-tb" style="height:${Math.max(2,Math.round(v/mx*44))}px" title="${Math.round(v)}%"></div>`).join('')+'</div>';
+}
+function renderCL(){
+  const el=document.getElementById('clPanel'); if(!el)return;
+  const sun=sundayISO();
+  const thisWeek=clRows.find(r=>r.week_ending===sun);
+  const isSunday=new Date().getDay()===0;
+  const due=isSunday && !thisWeek;
+  el.className='cl-panel'+(due?' due':'');
+  const badge=document.getElementById('clBadge');
+  if(badge) badge.textContent=due?'due today':(thisWeek?'logged':(clRows.length?'':'—'));
+  const latest=thisWeek||clRows[clRows.length-1];
+  const lv=(n,cls,lbl)=>`<div class="cl-lv ${cls}"><b>${lbl}</b><div class="v">${n==null?'–':n+'%'}</div></div>`;
+  el.innerHTML=`
+    <div class="cl-head">
+      <b>${due?'Log this week — it\'s Sunday 🗓️':(thisWeek?'This week logged ✓':'Perceived comprehension')}</b>
+      <span>${latest?('Last: week ending '+latest.week_ending):'From your LCU weekly report'}</span>
+    </div>
+    ${latest?`<div class="cl-levels">${lv(latest.n1,'l1','Nível 1 · no reading')}${lv(latest.n2,'l2','Nível 2 · sound↔text')}${lv(latest.n3,'l3','Nível 3 · with reading')}</div>`:'<div class="cl-empty">No entries yet — log your first LCU report on Sunday.</div>'}
+    ${clRenderTrend()}
+    <div style="margin-top:1rem"><button class="btn primary" onclick="openModal('lcu')"><i class="fa-solid fa-pen-to-square"></i> ${thisWeek?'Edit this week':'Log this week'}</button></div>`;
+}
+async function clSave(){
+  const sun=sundayISO();
+  const get=id=>{const v=document.getElementById(id).value; return v===''?null:Math.max(0,Math.min(100,+v));};
+  const payload={week_ending:sun,n1:get('clN1'),n2:get('clN2'),n3:get('clN3'),notes:(document.getElementById('clNotes').value||'').trim()};
+  const msg=document.getElementById('clMsg');
+  if(!sb){ if(msg)msg.textContent='Cloud desconectado.'; return; }
+  try{
+    const res=await sb.from(CL_TABLE).upsert(payload,{onConflict:'week_ending'}); if(res.error)throw res.error;
+    await clLoad(); closeModal();
+  }catch(e){ console.warn('comprehension save failed',e); if(msg)msg.innerHTML='<span style="color:var(--pink)">Erro ao salvar. A tabela "comprehension_log" existe?</span>'; }
+}
+
+flLoad(); clLoad();
+
 function ask(txt){
   if(typeof sendPrompt==='function'){sendPrompt(txt)}
   else{ navigator.clipboard?.writeText(txt); openModal('chat',txt); }
@@ -1466,6 +1650,22 @@ function openModal(type,extra){
     </div>
     <div id="axSaveMsg" class="pj-msg" style="margin-bottom:.6rem"></div>
     <div class="ax-board" id="axBoard"></div>`;
+  }else if(type==='lcu'){
+    const sun=sundayISO();
+    const cur=clRows.find(r=>r.week_ending===sun)||{};
+    const row=(id,cls,lbl,val)=>`<label>${lbl}</label><div class="cl-range-row"><input type="range" min="0" max="100" step="5" value="${val==null?60:val}" oninput="document.getElementById('${id}v').textContent=this.value+'%';document.getElementById('${id}').value=this.value"><input type="hidden" id="${id}" value="${val==null?60:val}"><span class="pct" id="${id}v">${val==null?60:val}%</span></div>`;
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">🧠</div><h2>LCU · week ending ${sun}</h2>
+    <p>From your LCU weekly report — your perceived comprehension at each reading level.</p>
+    <div class="cl-edit">
+      ${row('clN1','l1','Nível 1 · idioma ativo (no reading)',cur.n1)}
+      ${row('clN2','l2','Nível 2 · som ↔ escrita (intermediate)',cur.n2)}
+      ${row('clN3','l3','Nível 3 · com leitura (with reading)',cur.n3)}
+      <label>Notes (strategies, wins, what to improve)</label>
+      <textarea id="clNotes" rows="3">${pjEscape(cur.notes||'')}</textarea>
+    </div>
+    <div id="clMsg" class="pj-msg"></div>
+    <button class="btn primary" onclick="clSave()" style="width:100%;margin-top:.6rem"><i class="fa-solid fa-floppy-disk"></i> Save this week</button>`;
   }else if(type==='chat'){
     html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     <div class="m-ic">💬</div><h2>Copied!</h2>
