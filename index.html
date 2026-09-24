@@ -209,30 +209,36 @@ body{
 .now-cta .nc-go{flex-shrink:0;font-size:12.5px;font-weight:700;color:var(--accent);white-space:nowrap}
 .now-cta.done .nc-go{color:var(--green)}
 @media(max-width:560px){.now-cta .nc-go{display:none}}
-/* Focus timer panel */
-.focus-panel{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;margin-bottom:1.6rem;display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap}
-.focus-ring{position:relative;width:96px;height:96px;flex-shrink:0}
-.focus-ring svg{transform:rotate(-90deg)}
-.focus-ring .fr-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.focus-ring .fr-big{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1}
-.focus-ring .fr-sub{font-size:10px;color:var(--text-3);margin-top:2px}
-.focus-mid{flex:1;min-width:180px}
-.focus-timer{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:600;letter-spacing:.02em}
-.focus-timer.running{color:var(--accent)}
-.focus-sub{font-size:12px;color:var(--text-2);margin-top:2px}
-.focus-btns{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
-.focus-btns button{padding:9px 15px;border-radius:10px;border:1px solid var(--border-strong);background:var(--bg-2);color:var(--text);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:7px}
-.focus-btns button:hover{border-color:var(--accent);color:var(--accent)}
-.focus-btns button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;color:#fff}
-.focus-btns button.stop{background:rgba(255,91,156,.14);border-color:var(--pink);color:var(--pink)}
-.focus-week{display:flex;gap:6px;align-items:flex-end;flex-shrink:0;height:74px}
-.fw-day{display:flex;flex-direction:column;align-items:center;gap:5px;width:26px}
-.fw-bar{width:14px;height:52px;background:var(--bg-2);border:1px solid var(--border);border-radius:4px;display:flex;align-items:flex-end;overflow:hidden}
-.fw-bar>i{display:block;width:100%;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:4px}
-.fw-day.today .fw-bar{border-color:var(--accent)}
-.fw-day span{font-size:9px;color:var(--text-3)}
-.fw-day.today span{color:var(--accent);font-weight:700}
-@media(max-width:620px){.focus-week{width:100%;justify-content:space-between;height:auto}}
+/* Focus time — manual Toggl entries */
+.focus-panel{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;margin-bottom:1.6rem}
+.te-add{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.te-add select,.te-add input{padding:9px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;height:38px;box-sizing:border-box}
+.te-add select{flex:1;min-width:140px}
+.te-add input[type=time]{width:104px}
+.te-add input[type=date]{width:150px}
+.te-add select:focus,.te-add input:focus{outline:none;border-color:var(--accent)}
+.te-add .te-dash{color:var(--text-3);font-size:14px}
+.te-add .btn{height:38px}
+.te-tiles{display:flex;gap:10px;margin-top:1rem;flex-wrap:wrap}
+.te-tile{flex:1;min-width:150px;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:11px 13px;border-left:3px solid var(--border-strong)}
+.te-tile.active{border-left-color:var(--accent)}
+.te-tile.passive{border-left-color:var(--teal)}
+.te-tile b{font-size:12px;color:var(--text-2);font-weight:600}
+.te-tile .v{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:2px 0}
+.te-tile.active .v{color:var(--accent)}
+.te-tile.passive .v{color:var(--teal)}
+.te-tile span{font-size:11px;color:var(--text-3)}
+.te-list{margin-top:1rem;display:flex;flex-direction:column}
+.te-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.te-item:last-child{border:none}
+.te-proj{font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:20px}
+.te-item.active .te-proj{background:rgba(91,140,255,.16);color:#9db6ff}
+.te-item.passive .te-proj{background:rgba(40,217,176,.16);color:var(--teal)}
+.te-time{font-family:'JetBrains Mono',monospace;color:var(--text-2)}
+.te-dur{margin-left:auto;font-weight:700}
+.te-item button{width:24px;height:24px;border-radius:7px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-3);cursor:pointer;font-size:10px}
+.te-item button:hover{border-color:var(--pink);color:var(--pink)}
+.te-empty{font-size:12px;color:var(--text-3);padding:6px 0}
 /* Comprehension (LCU) panel */
 .cl-panel{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;margin-bottom:1.6rem}
 .cl-panel.due{border-color:rgba(124,91,255,.45);background:linear-gradient(160deg,rgba(124,91,255,.1),var(--card-2))}
@@ -1424,87 +1430,80 @@ cur=nextDayIdx(weekIdx);
 renderWeek();
 syncFromCloud();
 
-// ===================== FOCUS TIME (Supabase table: time_log) =====================
-const FL_TABLE='time_log';
-const FOCUS_GOAL=120; // daily target in minutes (2h active study)
+// ===================== FOCUS TIME (Supabase table: time_entries) =====================
+// Manual Toggl-style entries: project + start–end hour, duration computed, summed per project.
+const TE_TABLE='time_entries';
+const TE_PROJECTS=['Active study','Passive study'];
 function localISO(d){ d=d||new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
 function weekDates(base){ // Mon..Sun ISO for the week containing `base` (default today)
   const d=base?new Date(base):new Date(); const wd=(d.getDay()+6)%7; // 0=Mon
   const mon=new Date(d); mon.setDate(d.getDate()-wd);
   return Array.from({length:7},(_,i)=>{const x=new Date(mon);x.setDate(mon.getDate()+i);return localISO(x);});
 }
-let flWeek={}, flRunning=false, flStart=null, flTimer=null;
-function fmtMin(m){ const h=Math.floor(m/60), mm=m%60; return h?`${h}h ${mm}m`:`${mm}m`; }
-function fmtClock(ms){ const s=Math.floor(ms/1000); const m=Math.floor(s/60), ss=s%60; return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
-async function flLoad(){
+function fmtMin(m){ m=Math.round(m); const h=Math.floor(m/60), mm=m%60; return h?`${h}h ${mm}m`:`${mm}m`; }
+function hmToMin(s){ const m=/^(\d{1,2}):(\d{2})$/.exec((s||'').trim()); if(!m)return null; return (+m[1])*60+(+m[2]); }
+function durMin(start,end){ const a=hmToMin(start), b=hmToMin(end); if(a==null||b==null)return null; let d=b-a; if(d<0)d+=1440; return d; } // overnight-safe
+let teWeek=[];
+async function teLoad(){
   if(!sb){ renderFocus(); return; }
   try{
-    const dates=weekDates();
-    const res=await sb.from(FL_TABLE).select('log_date,focused_min').gte('log_date',dates[0]).lte('log_date',dates[6]);
-    if(res.error)throw res.error;
-    flWeek={}; (res.data||[]).forEach(r=>flWeek[r.log_date]=r.focused_min||0);
-  }catch(e){ console.warn('time_log load failed',e); }
+    const w=weekDates();
+    const res=await sb.from(TE_TABLE).select('id,entry_date,project,start_time,end_time,minutes').gte('entry_date',w[0]).lte('entry_date',w[6]);
+    if(res.error)throw res.error; teWeek=res.data||[];
+  }catch(e){ console.warn('time_entries load failed',e); }
   renderFocus();
 }
-async function flAdd(mins){
-  if(mins<=0)return;
-  const today=localISO();
-  const newTotal=(flWeek[today]||0)+mins;
-  flWeek[today]=newTotal; renderFocus();
-  if(!sb)return;
-  try{ const res=await sb.from(FL_TABLE).upsert({log_date:today,focused_min:newTotal,updated_at:new Date().toISOString()},{onConflict:'log_date'}); if(res.error)throw res.error; }
-  catch(e){ console.warn('time_log save failed',e); }
+async function teAdd(){
+  const project=document.getElementById('teProject').value;
+  const start=document.getElementById('teStart').value, end=document.getElementById('teEnd').value;
+  const date=document.getElementById('teDate').value||localISO();
+  const msgEl=document.getElementById('teMsg');
+  const setMsg=(t,k)=>{ if(msgEl){ msgEl.textContent=t||''; msgEl.className='pj-msg'+(k?' '+k:''); } };
+  setMsg('');
+  const mins=durMin(start,end);
+  if(!start||!end||mins==null){ setMsg('Informe início e fim (HH:MM).','err'); return; }
+  if(mins===0){ setMsg('Início e fim iguais — duração zero.','err'); return; }
+  if(!sb){ setMsg('Cloud desconectado.','err'); return; }
+  try{
+    const res=await sb.from(TE_TABLE).insert({entry_date:date,project,start_time:start,end_time:end,minutes:mins}); if(res.error)throw res.error;
+    document.getElementById('teStart').value=''; document.getElementById('teEnd').value='';
+    await teLoad();
+  }catch(e){ console.warn('time entry save failed',e); setMsg('Erro ao salvar. A tabela "time_entries" existe no Supabase?','err'); }
 }
-function flStartStop(){
-  if(flRunning){
-    const mins=Math.round((Date.now()-flStart)/60000);
-    flRunning=false; flStart=null; localStorage.removeItem('focus_start');
-    clearInterval(flTimer); flTimer=null;
-    flAdd(mins);
-  }else{
-    flStart=Date.now(); flRunning=true; localStorage.setItem('focus_start',String(flStart));
-    flTimer=setInterval(tickFocus,1000); tickFocus();
-  }
-  renderFocus();
-}
-function flQuick(){ flAdd(25); }
-function tickFocus(){
-  const el=document.getElementById('flClock'); if(el&&flRunning) el.textContent=fmtClock(Date.now()-flStart);
-}
+async function teDelete(id){ if(!sb)return; try{ const res=await sb.from(TE_TABLE).delete().eq('id',id); if(res.error)throw res.error; await teLoad(); }catch(e){ console.warn('time entry delete failed',e); } }
 function renderFocus(){
   const el=document.getElementById('focusPanel'); if(!el)return;
   const today=localISO();
-  const mins=flWeek[today]||0;
-  const dates=weekDates();
-  const weekTotal=dates.reduce((a,d)=>a+(flWeek[d]||0),0);
-  const badge=document.getElementById('focusWeekBadge'); if(badge) badge.textContent=fmtMin(weekTotal)+' this week';
-  const pct=Math.min(100,Math.round(mins/FOCUS_GOAL*100));
-  const R=42, C=2*Math.PI*R, off=C*(1-pct/100);
-  const maxBar=Math.max(FOCUS_GOAL, ...dates.map(d=>flWeek[d]||0), 1);
-  const labels=['M','T','W','T','F','S','S'];
-  const bars=dates.map((d,i)=>{
-    const m=flWeek[d]||0; const h=Math.max(2,Math.round(m/maxBar*52));
-    return `<div class="fw-day${d===today?' today':''}"><div class="fw-bar"><i style="height:${h}px"></i></div><span>${labels[i]}</span></div>`;
+  const sum=rows=>rows.reduce((a,r)=>a+(r.minutes||0),0);
+  const byP=(rows,p)=>rows.filter(r=>r.project===p);
+  const todays=teWeek.filter(r=>r.entry_date===today);
+  const badge=document.getElementById('focusWeekBadge'); if(badge) badge.textContent=fmtMin(sum(teWeek))+' this week';
+  const tiles=TE_PROJECTS.map((p,i)=>{
+    const tMin=sum(byP(todays,p)), wMin=sum(byP(teWeek,p));
+    return `<div class="te-tile ${i===0?'active':'passive'}"><b>${p}</b><div class="v">${fmtMin(tMin)}</div><span>today · <b>${fmtMin(wMin)}</b> this week</span></div>`;
   }).join('');
+  const list = todays.length
+    ? todays.slice().sort((a,b)=>(a.start_time||'').localeCompare(b.start_time||'')).map(r=>`
+      <div class="te-item ${r.project===TE_PROJECTS[0]?'active':'passive'}">
+        <span class="te-proj">${r.project===TE_PROJECTS[0]?'Active':'Passive'}</span>
+        <span class="te-time">${r.start_time}–${r.end_time}</span>
+        <span class="te-dur">${fmtMin(r.minutes)}</span>
+        <button onclick="teDelete('${r.id}')" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+      </div>`).join('')
+    : '<div class="te-empty">Sem entradas hoje — adicione seus blocos do Toggl acima.</div>';
   el.innerHTML=`
-    <div class="focus-ring">
-      <svg width="96" height="96"><circle cx="48" cy="48" r="${R}" fill="none" stroke="var(--border)" stroke-width="8"/>
-      <circle cx="48" cy="48" r="${R}" fill="none" stroke="url(#fg)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/>
-      <defs><linearGradient id="fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent-2)"/></linearGradient></defs></svg>
-      <div class="fr-txt"><div class="fr-big">${fmtMin(mins)}</div><div class="fr-sub">of ${fmtMin(FOCUS_GOAL)} · ${pct}%</div></div>
+    <div class="te-add">
+      <select id="teProject">${TE_PROJECTS.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
+      <input type="time" id="teStart" title="Início">
+      <span class="te-dash">→</span>
+      <input type="time" id="teEnd" title="Fim">
+      <input type="date" id="teDate" value="${today}" title="Data">
+      <button class="btn primary" onclick="teAdd()"><i class="fa-solid fa-plus"></i> Add</button>
     </div>
-    <div class="focus-mid">
-      <div class="focus-timer${flRunning?' running':''}" id="flClock">${flRunning?fmtClock(Date.now()-flStart):'00:00'}</div>
-      <div class="focus-sub">${flRunning?'Timer running — stop to log the minutes':'Start a focus session, or quick-add a Pomodoro'}</div>
-      <div class="focus-btns">
-        <button class="${flRunning?'stop':'primary'}" onclick="flStartStop()"><i class="fa-solid fa-${flRunning?'stop':'play'}"></i> ${flRunning?'Stop & log':'Start'}</button>
-        <button onclick="flQuick()"><i class="fa-solid fa-plus"></i> 25 min</button>
-      </div>
-    </div>
-    <div class="focus-week">${bars}</div>`;
+    <div id="teMsg" class="pj-msg" style="margin:.5rem 0 0"></div>
+    <div class="te-tiles">${tiles}</div>
+    <div class="te-list">${list}</div>`;
 }
-// resume a running timer after reload
-(function(){ const s=localStorage.getItem('focus_start'); if(s){ flStart=+s; flRunning=true; flTimer=setInterval(tickFocus,1000); } })();
 
 // ===================== COMPREHENSION · LCU (Supabase table: comprehension_log) =====================
 const CL_TABLE='comprehension_log';
@@ -1554,7 +1553,7 @@ async function clSave(){
   }catch(e){ console.warn('comprehension save failed',e); if(msg)msg.innerHTML='<span style="color:var(--pink)">Erro ao salvar. A tabela "comprehension_log" existe?</span>'; }
 }
 
-flLoad(); clLoad();
+teLoad(); clLoad();
 
 function ask(txt){
   if(typeof sendPrompt==='function'){sendPrompt(txt)}
