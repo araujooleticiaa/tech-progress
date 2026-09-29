@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corpo em Progresso · Treino, Caminhada & Remo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --bg:#0b0f1a;--bg-2:#121826;--card:#161d2e;--card-2:#1c2436;
+  --border:#252d40;--border-glow:#2f3b57;--text:#f1f4fa;--text-2:#9aa4bd;--text-3:#5e6884;
+  --accent:#5b8cff;--accent-2:#7c5bff;--teal:#28d9b0;--amber:#ffb43d;--pink:#ff5b9c;--green:#3ee08a;
+  --radius:16px;--radius-sm:11px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(124,91,255,.18), transparent 55%),
+    radial-gradient(1000px 500px at 0% 10%, rgba(40,217,176,.12), transparent 50%),
+    var(--bg);
+  color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1000px;margin:0 auto;padding:2.2rem 1.5rem 4rem}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:1rem}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,var(--teal),var(--accent));display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 28px rgba(40,217,176,.35)}
+.brand h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.brand p{font-size:13px;color:var(--text-2);margin-top:2px}
+.streak{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,rgba(255,180,61,.15),rgba(255,91,156,.12));border:1px solid rgba(255,180,61,.3);padding:10px 16px;border-radius:13px}
+.streak i{color:var(--amber);font-size:18px}
+.streak b{font-size:17px;font-weight:700}
+.streak span{font-size:12px;color:var(--text-2);display:block;line-height:1.2}
+#syncStatus{font-size:12px;color:var(--text-3);margin:0 0 1.4rem;display:flex;align-items:center;gap:7px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:1.6rem}
+.stat{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+.stat:hover{transform:translateY(-3px);border-color:var(--border-glow)}
+.stat .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
+.stat.a .ic{background:rgba(91,140,255,.15);color:var(--accent)}
+.stat.b .ic{background:rgba(40,217,176,.15);color:var(--teal)}
+.stat.c .ic{background:rgba(255,180,61,.15);color:var(--amber)}
+.stat.d .ic{background:rgba(62,224,138,.15);color:var(--green)}
+.stat .val{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.stat .lbl{font-size:12px;color:var(--text-2);margin-top:6px;font-weight:500}
+.sec-title{display:flex;align-items:center;gap:10px;margin:0 0 1rem;font-size:15px;font-weight:600}
+.sec-title i{color:var(--teal)}
+.sec-title .badge{margin-left:auto;font-size:11px;font-weight:600;color:var(--teal);background:rgba(40,217,176,.12);padding:5px 11px;border-radius:20px;border:1px solid rgba(40,217,176,.25)}
+.card{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.4rem;margin-bottom:1.6rem}
+/* Date nav */
+.date-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1.1rem}
+.date-nav button{width:38px;height:38px;border-radius:11px;border:1px solid var(--border);background:var(--bg-2);color:var(--text);font-size:14px;cursor:pointer;transition:all .2s}
+.date-nav button:hover:not(:disabled){background:var(--card-2);border-color:var(--border-glow)}
+.date-nav button:disabled{opacity:.3;cursor:not-allowed}
+.date-nav .dlabel{font-weight:700;min-width:170px;text-align:center;font-size:14px;text-transform:capitalize}
+.date-nav .dlabel small{display:block;font-size:11px;color:var(--teal);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+/* Habits */
+.habits{display:flex;flex-direction:column;gap:9px}
+.habit{display:flex;align-items:center;gap:14px;padding:1rem 1.1rem;border-radius:13px;cursor:pointer;transition:all .18s;background:var(--bg-2);border:1px solid var(--border);user-select:none}
+.habit:hover{border-color:var(--border-glow)}
+.habit.done{background:linear-gradient(135deg,rgba(40,217,176,.12),rgba(62,224,138,.08));border-color:rgba(62,224,138,.35)}
+.habit .h-ic{font-size:22px;width:34px;text-align:center;flex-shrink:0}
+.habit .h-body{flex:1;min-width:0}
+.habit .h-name{font-size:14px;font-weight:600}
+.habit.done .h-name{color:var(--text-2)}
+.habit .h-sub{font-size:11.5px;color:var(--text-3);margin-top:2px}
+.habit .check{width:26px;height:26px;border-radius:9px;border:2px solid var(--border-glow);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;color:transparent;font-size:12px}
+.habit.done .check{background:linear-gradient(135deg,var(--teal),var(--green));border-color:var(--teal);color:#04140f}
+.combo{margin-top:1rem;text-align:center;padding:12px;border-radius:13px;background:linear-gradient(135deg,rgba(255,180,61,.16),rgba(255,91,156,.1));border:1px dashed var(--amber);font-weight:700;font-size:13px;color:var(--amber);display:none}
+.combo.show{display:block}
+/* Heatmap */
+.hm-grid{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:3px}
+.hm-cell{width:100%;aspect-ratio:1;border-radius:3px;background:var(--bg-2);border:1px solid var(--border)}
+.hm-1{background:rgba(40,217,176,.28);border-color:rgba(40,217,176,.35)}
+.hm-2{background:rgba(40,217,176,.55);border-color:rgba(40,217,176,.6)}
+.hm-3{background:var(--green);border-color:var(--green)}
+.hm-today{box-shadow:0 0 0 2px var(--accent)}
+.hm-legend{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:11px;font-size:11px;color:var(--text-3)}
+.hm-legend .hm-cell{width:11px;height:11px;aspect-ratio:auto;display:inline-block;margin-left:8px}
+.hm-legend .hm-cell:first-child{margin-left:0}
+/* Trackers */
+.trk-grid{display:grid;grid-template-columns:1fr;gap:16px}
+.trk{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;display:flex;flex-direction:column}
+.trk-head{display:flex;align-items:center;gap:11px;margin-bottom:1rem}
+.trk-ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.trk.walk .trk-ic{background:rgba(40,217,176,.15);color:var(--teal)}
+.trk.row .trk-ic{background:rgba(91,140,255,.15);color:var(--accent)}
+.trk.lift .trk-ic{background:rgba(124,91,255,.15);color:#b9a5ff}
+.trk.weight .trk-ic{background:rgba(255,91,156,.15);color:var(--pink)}
+.trk-head h4{font-size:15px;font-weight:700}
+.trk-head span{font-size:11.5px;color:var(--text-2);display:block;margin-top:1px}
+.trk-summary{display:flex;gap:14px;margin-bottom:1rem;flex-wrap:wrap}
+.trk-kpi .num{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.trk-kpi .lbl{font-size:10.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+.trk.walk .trk-kpi .num{color:var(--teal)}
+.trk.row .trk-kpi .num{color:var(--accent)}
+.trk.lift .trk-kpi .num{color:#b9a5ff}
+.trk.weight .trk-kpi .num{color:var(--pink)}
+.spark{width:100%;height:44px;margin-bottom:1rem}
+.trk-form{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:.9rem}
+.trk-form input{flex:1 1 70px;min-width:0;padding:9px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;height:38px}
+.trk-form input:focus{outline:none;border-color:var(--accent)}
+.trk-form input[type=date]{flex:1 1 130px;font-family:'JetBrains Mono',monospace;font-size:11.5px}
+.trk-form .add{flex:0 0 auto;width:38px;height:38px;border-radius:9px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--teal),var(--accent));color:#04140f;font-size:14px;display:flex;align-items:center;justify-content:center}
+.trk-form .add:hover{filter:brightness(1.1)}
+.trk-list{list-style:none;display:flex;flex-direction:column;gap:2px;max-height:180px;overflow-y:auto}
+.trk-list li{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12.5px}
+.trk-list li:last-child{border:none}
+.trk-list .d{flex-shrink:0;width:56px;color:var(--text-3);font-family:'JetBrains Mono',monospace;font-size:11px}
+.trk-list .v{flex:1;color:var(--text);font-weight:600}
+.trk-list .v small{color:var(--text-2);font-weight:400;font-size:11px;margin-left:4px}
+.trk-list .del{flex-shrink:0;width:26px;height:26px;border-radius:7px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-3);cursor:pointer;font-size:10px}
+.trk-list .del:hover{border-color:var(--pink);color:var(--pink)}
+.trk-empty{font-size:12px;color:var(--text-3);text-align:center;padding:14px 4px;border:1px dashed var(--border);border-radius:9px}
+/* Jejum */
+.fast-card{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.6rem 1.4rem;margin-bottom:1.6rem;text-align:center}
+.fast-card.running{border-color:rgba(124,91,255,.5);box-shadow:0 0 0 1px rgba(124,91,255,.25),0 10px 40px -12px rgba(124,91,255,.5)}
+.fast-timer{font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:500;letter-spacing:.02em;line-height:1;margin:.3rem 0 .2rem;color:var(--text)}
+.fast-card.running .fast-timer{color:#b9a5ff}
+.fast-state{font-size:12.5px;color:var(--text-2);margin-bottom:1.3rem;min-height:16px}
+.fast-state b{color:var(--accent-2)}
+.fast-btn{padding:1rem 2.4rem;border-radius:14px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;border:none;color:#fff;transition:all .2s;display:inline-flex;align-items:center;gap:10px}
+.fast-btn.start{background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 8px 26px rgba(124,91,255,.4)}
+.fast-btn.stop{background:linear-gradient(135deg,var(--pink),#e83f82);box-shadow:0 8px 26px rgba(255,91,156,.4)}
+.fast-btn:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.fast-kpis{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.3rem;border-top:1px solid var(--border)}
+.fast-kpi .num{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.fast-kpi .lbl{font-size:10.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-top:5px}
+.fast-kpi.seq .num{color:var(--amber)}
+.fast-kpi.tot .num{color:var(--accent)}
+.fast-kpi.max .num{color:#b9a5ff}
+.fast-kpi.hrs .num{color:var(--teal)}
+.fast-hist{list-style:none;margin-top:1.3rem;padding-top:1.1rem;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:2px;text-align:left;max-height:190px;overflow-y:auto}
+.fast-hist li{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--border);font-size:12.5px}
+.fast-hist li:last-child{border:none}
+.fast-hist .d{flex-shrink:0;width:56px;color:var(--text-3);font-family:'JetBrains Mono',monospace;font-size:11px}
+.fast-hist .v{flex:1;color:var(--text);font-weight:600}
+.fast-hist .v small{color:var(--text-2);font-weight:400;margin-left:6px}
+.fast-hist .del{flex-shrink:0;width:26px;height:26px;border-radius:7px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-3);cursor:pointer;font-size:10px}
+.fast-hist .del:hover{border-color:var(--pink);color:var(--pink)}
+.fast-empty{font-size:12px;color:var(--text-3);text-align:center;padding:12px 4px}
+.fast-more{margin-top:.8rem;width:100%;padding:9px 12px;border-radius:10px;cursor:pointer;background:var(--bg-2);border:1px solid var(--border);color:var(--text-2);font-family:inherit;font-size:12.5px;font-weight:600;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.fast-more:hover{border-color:var(--border-glow);color:var(--text)}
+.fast-add{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:1.3rem;padding-top:1.3rem;border-top:1px solid var(--border)}
+.fast-add input{padding:9px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;height:38px;box-sizing:border-box}
+.fast-add input[type=time]{width:104px}
+.fast-add input[type=date]{width:150px;font-family:'JetBrains Mono',monospace;font-size:11.5px}
+.fast-add input:focus{outline:none;border-color:var(--accent)}
+.fast-add .fast-dash{color:var(--text-3);font-size:14px}
+.fast-add .fast-add-btn{height:38px;padding:0 16px;border-radius:9px;border:1px solid var(--border);background:var(--bg-2);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .15s}
+.fast-add .fast-add-btn:hover{border-color:var(--accent-2);color:#b9a5ff}
+.fast-msg{font-size:12px;margin-top:.7rem;min-height:14px}
+.fast-msg.err{color:var(--pink)}
+.fast-msg.ok{color:var(--green)}
+.footer{text-align:center;margin-top:2.5rem;font-size:12px;color:var(--text-3)}
+.footer b{color:var(--text-2)}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">🏋️‍♀️</div>
+      <div><h1>Corpo em Progresso</h1><p>Treino · Caminhada · Remo — um dia de cada vez · Leticia</p></div>
+    </div>
+    <div class="streak">
+      <i class="fa-solid fa-fire"></i>
+      <div><b id="streakNum">0</b><span id="streakLbl">dias seguidos</span></div>
+    </div>
+  </div>
+
+  <div id="syncStatus"><i class="fa-solid fa-cloud"></i><span>Conectando…</span></div>
+
+  <div class="stats">
+    <div class="stat a"><div class="ic"><i class="fa-solid fa-fire"></i></div><div class="val" id="streakVal">0</div><div class="lbl">dias seguidos</div></div>
+    <div class="stat b"><div class="ic"><i class="fa-solid fa-calendar-check"></i></div><div class="val" id="activeVal">0</div><div class="lbl">dias ativos</div></div>
+    <div class="stat c"><div class="ic"><i class="fa-solid fa-bolt"></i></div><div class="val" id="ptsVal">0</div><div class="lbl">pontos totais</div></div>
+    <div class="stat d"><div class="ic"><i class="fa-solid fa-percent"></i></div><div class="val" id="pctVal">0%</div><div class="lbl" id="pctLbl">hoje</div></div>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-list-check"></i> Hábitos do dia<span class="badge" id="dayBadge">0/0</span></div>
+  <div class="card">
+    <div class="date-nav">
+      <button id="prevDay"><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="dlabel" id="dateLabel"></div>
+      <button id="nextDay"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+    <div class="habits" id="habitsList"></div>
+    <div class="combo" id="combo">🔥 Dia completo! +20 pontos de bônus</div>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-hourglass-half"></i> Jejum<span class="badge" id="fastBadge">–</span></div>
+  <div class="fast-card" id="fastCard">
+    <div class="fast-timer" id="fastTimer">00:00:00</div>
+    <div class="fast-state" id="fastState">pronta pra começar</div>
+    <button class="fast-btn start" id="fastBtn"><i class="fa-solid fa-play"></i> Começar jejum</button>
+    <div class="fast-kpis">
+      <div class="fast-kpi seq"><div class="num" id="fastSeq">0</div><div class="lbl">sequência 🔥</div></div>
+      <div class="fast-kpi tot"><div class="num" id="fastTot">0</div><div class="lbl">jejuns</div></div>
+      <div class="fast-kpi max"><div class="num" id="fastMax">–</div><div class="lbl">maior jejum</div></div>
+      <div class="fast-kpi hrs"><div class="num" id="fastHrs">0</div><div class="lbl">horas totais</div></div>
+    </div>
+    <div class="fast-add">
+      <input type="date" id="fastDate" title="Data">
+      <input type="time" id="fastStartIn" title="Início do jejum">
+      <span class="fast-dash">→</span>
+      <input type="time" id="fastEndIn" title="Fim do jejum">
+      <button class="fast-add-btn" id="fastAddBtn"><i class="fa-solid fa-plus"></i> Adicionar manual</button>
+    </div>
+    <div id="fastMsg" class="fast-msg"></div>
+    <ul class="fast-hist" id="fastHist"></ul>
+    <button class="fast-more" id="fastMore" hidden></button>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-fire-flame-curved"></i> Consistência · últimos 180 dias</div>
+  <div class="card">
+    <div class="hm-grid" id="heatmap"></div>
+    <div class="hm-legend">
+      menos
+      <span class="hm-cell"></span><span class="hm-cell hm-1"></span><span class="hm-cell hm-2"></span><span class="hm-cell hm-3"></span>
+      mais · <span class="hm-cell hm-today" style="margin-left:8px"></span> hoje
+    </div>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-chart-line"></i> Peso</div>
+  <div class="trk-grid">
+    <div class="trk weight">
+      <div class="trk-head"><div class="trk-ic">⚖️</div><div><h4>Peso corporal</h4><span>ao longo do tempo</span></div></div>
+      <div class="trk-summary">
+        <div class="trk-kpi"><div class="num" id="wLatest">–</div><div class="lbl">atual (kg)</div></div>
+        <div class="trk-kpi"><div class="num" id="wDelta">–</div><div class="lbl">variação total</div></div>
+      </div>
+      <svg class="spark" id="weightSpark" viewBox="0 0 300 44" preserveAspectRatio="none"></svg>
+      <div class="trk-form">
+        <input type="date" id="weightDate">
+        <input type="number" id="weightKg" placeholder="peso (kg)" step="0.1" min="0" inputmode="decimal" style="flex:1 1 140px">
+        <button class="add" data-add="weight"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <ul class="trk-list" id="weightList"></ul>
+    </div>
+  </div>
+
+  <div class="footer">feito com <b>♥</b> pra Leticia evoluir um dia de cada vez</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================================================
+   Corpo em Progresso — treino / caminhada / remo
+   Offline-first (localStorage) + sync opcional via Supabase.
+   Hábitos -> tabela habit_logs (reaproveitada, person='leticia')
+   Trackers -> tabela fitness_log (nova; SQL no fim do arquivo)
+   ============================================================ */
+const PERSON='leticia';
+const HABITS=[
+  {id:'treino',   name:'Musculação',       sub:'treino de força',      icon:'💪'},
+  {id:'caminhada',name:'Caminhada',        sub:'sair pra andar',       icon:'🚶‍♀️'},
+  {id:'remo',     name:'Remo',             sub:'sessão de remo',       icon:'🚣‍♀️'},
+  {id:'dieta',    name:'Comer limpo',      sub:'sem furar a dieta',    icon:'🥗'},
+];
+
+/* ---------- helpers de data ---------- */
+function fmtLocal(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`;}
+function today(off=0){const d=new Date();d.setDate(d.getDate()+off);return fmtLocal(d);}
+function parseDate(s){return new Date(s+'T00:00:00');}
+function nf(n){return (Math.round(n*10)/10).toLocaleString('pt-BR');}
+
+/* ---------- estado ---------- */
+const LS_HABITS='cp_habits_v1', LS_TRK='cp_trackers_v1';
+let logs = JSON.parse(localStorage.getItem(LS_HABITS)||'{}');            // {date:{habitId:true}}
+let trackers = JSON.parse(localStorage.getItem(LS_TRK)||'null') || {weight:[]};
+if(!trackers.weight)trackers.weight=[];
+if(!trackers.fast)trackers.fast=[];
+let selDate = today();
+const LS_FAST_ACTIVE='cp_fast_active_v1';   // timestamp (ms) do jejum em andamento
+
+function saveHabits(){localStorage.setItem(LS_HABITS,JSON.stringify(logs));}
+function saveTrackers(){localStorage.setItem(LS_TRK,JSON.stringify(trackers));}
+function dayLog(date){if(!logs[date])logs[date]={};return logs[date];}
+function cid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
+
+/* ---------- métricas ---------- */
+function doneCount(date){const d=logs[date]||{};return HABITS.filter(h=>d[h.id]).length;}
+function dayPct(date){return Math.round(doneCount(date)/HABITS.length*100);}
+function isActive(date){return doneCount(date)>0;}
+function activeDays(){return Object.keys(logs).filter(isActive).length;}
+function totalPoints(){let p=0;Object.keys(logs).forEach(date=>{const c=doneCount(date);p+=c*10;if(c===HABITS.length)p+=20;});return p;}
+function streak(){
+  let s=0;
+  // permite o dia de hoje ainda estar vazio sem quebrar a sequência
+  let start = isActive(today()) ? 0 : 1;
+  for(let off=start;;off++){const date=today(-off);if(isActive(date))s++;else break;}
+  return s;
+}
+
+/* ---------- render: stats + hábitos ---------- */
+function renderStats(){
+  document.getElementById('streakNum').textContent=streak();
+  document.getElementById('streakVal').textContent=streak();
+  document.getElementById('activeVal').textContent=activeDays();
+  document.getElementById('ptsVal').textContent=totalPoints().toLocaleString('pt-BR');
+  const isToday=selDate===today();
+  document.getElementById('pctVal').textContent=dayPct(selDate)+'%';
+  document.getElementById('pctLbl').textContent=isToday?'hoje':'no dia';
+}
+function renderDateNav(){
+  const isToday=selDate===today();
+  const dt=parseDate(selDate);
+  const dnum=dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+  const wd=dt.toLocaleDateString('pt-BR',{weekday:'long'});
+  document.getElementById('dateLabel').innerHTML=`<small>${isToday?'hoje':wd}</small>${dnum}`;
+  document.getElementById('nextDay').disabled=isToday;
+}
+function renderHabits(){
+  const list=document.getElementById('habitsList');list.innerHTML='';
+  const d=dayLog(selDate);
+  HABITS.forEach(h=>{
+    const done=!!d[h.id];
+    const el=document.createElement('div');
+    el.className='habit'+(done?' done':'');
+    el.innerHTML=`<div class="h-ic">${h.icon}</div>
+      <div class="h-body"><div class="h-name">${h.name}</div><div class="h-sub">${h.sub}</div></div>
+      <div class="check"><i class="fa-solid fa-check"></i></div>`;
+    el.onclick=()=>toggleHabit(h.id);
+    list.appendChild(el);
+  });
+  const c=doneCount(selDate);
+  document.getElementById('dayBadge').textContent=`${c}/${HABITS.length}`;
+  document.getElementById('combo').classList.toggle('show',c===HABITS.length);
+}
+function toggleHabit(id){
+  const d=dayLog(selDate);
+  d[id]=!d[id];
+  if(!d[id])delete d[id];
+  saveHabits();
+  renderStats();renderHabits();renderHeatmap();
+  cloudToggleHabit(id,selDate,!!d[id]);
+}
+function changeDate(delta){
+  const nd=fmtLocal((()=>{const d=parseDate(selDate);d.setDate(d.getDate()+delta);return d;})());
+  if(nd>today())return;
+  selDate=nd;renderDateNav();renderStats();renderHabits();
+}
+
+/* ---------- heatmap 180 dias ---------- */
+function renderHeatmap(){
+  const el=document.getElementById('heatmap');
+  // alinhar para começar numa segunda-feira, 26 colunas (~182 dias)
+  const DAYS=182;
+  let cells='';
+  for(let i=DAYS-1;i>=0;i--){
+    const date=today(-i);
+    const c=doneCount(date);
+    const ratio=c/HABITS.length;
+    let cls='';
+    if(ratio>=1)cls='hm-3';else if(ratio>=.5)cls='hm-2';else if(ratio>0)cls='hm-1';
+    if(date===today())cls+=' hm-today';
+    cells+=`<span class="hm-cell ${cls}" title="${date} · ${c}/${HABITS.length}"></span>`;
+  }
+  el.innerHTML=cells;
+}
+
+/* ---------- trackers ---------- */
+function last7(entries){const cut=today(-6);return entries.filter(e=>e.date>=cut);}
+function sortByDate(arr){return [...arr].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:(a.cid<b.cid?1:-1));}
+function shortDate(d){return d.slice(8,10)+'/'+d.slice(5,7);}
+
+function sparkline(svgId,entries,valueFn){
+  const svg=document.getElementById(svgId);if(!svg)return;
+  const pts=[...entries].sort((a,b)=>a.date<b.date?-1:1).map(e=>valueFn(e)).filter(v=>v!=null&&!isNaN(v));
+  if(pts.length<2){svg.innerHTML=`<text x="150" y="26" fill="#5e6884" font-size="11" text-anchor="middle" font-family="Inter">sem dados suficientes</text>`;return;}
+  const W=300,H=44,pad=4;const min=Math.min(...pts),max=Math.max(...pts),range=(max-min)||1;
+  const step=(W-pad*2)/(pts.length-1);
+  const coords=pts.map((v,i)=>[pad+i*step, H-pad-((v-min)/range)*(H-pad*2)]);
+  const line=coords.map((c,i)=>(i?'L':'M')+c[0].toFixed(1)+' '+c[1].toFixed(1)).join(' ');
+  const area=line+` L ${coords[coords.length-1][0].toFixed(1)} ${H} L ${coords[0][0].toFixed(1)} ${H} Z`;
+  const grad=svgId+'g';
+  svg.innerHTML=`<defs><linearGradient id="${grad}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="currentColor" stop-opacity=".35"/><stop offset="100%" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
+    <path d="${area}" fill="url(#${grad})"/><path d="${line}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  svg.style.color=getComputedStyle(svg.closest('.trk').querySelector('.trk-kpi .num')).color;
+}
+
+function renderTrackers(){
+  /* Peso */
+  const chrono=[...trackers.weight].sort((a,b)=>a.date<b.date?-1:1);
+  document.getElementById('wLatest').textContent=chrono.length?nf(chrono[chrono.length-1].kg):'–';
+  if(chrono.length>=2){const dlt=chrono[chrono.length-1].kg-chrono[0].kg;document.getElementById('wDelta').textContent=(dlt>0?'+':'')+nf(dlt)+' kg';}
+  else document.getElementById('wDelta').textContent='–';
+  sparkline('weightSpark',trackers.weight,e=>+e.kg||0);
+  renderList('weightList',trackers.weight,e=>`${nf(e.kg||0)} kg`);
+}
+function renderList(id,entries,fmt){
+  const el=document.getElementById(id);
+  const rows=sortByDate(entries).slice(0,20);
+  if(!rows.length){el.innerHTML=`<div class="trk-empty">nenhum registro ainda</div>`;return;}
+  el.innerHTML=rows.map(e=>`<li><span class="d">${shortDate(e.date)}</span><span class="v">${fmt(e)}</span><button class="del" data-cid="${e.cid}">✕</button></li>`).join('');
+  el.querySelectorAll('.del').forEach(b=>b.onclick=()=>deleteEntry(b.dataset.cid));
+}
+
+function addEntry(kind){
+  const g=id=>document.getElementById(id);
+  const kg=parseFloat(g('weightKg').value);
+  if(!kg){return;}
+  const entry={cid:cid(),date:g('weightDate').value||today(),kg};
+  g('weightKg').value='';
+  trackers.weight.push(entry);
+  saveTrackers();renderTrackers();
+  cloudInsertEntry('weight',entry);
+}
+function deleteEntry(c){
+  const i=trackers.weight.findIndex(e=>e.cid===c);
+  if(i>=0)trackers.weight.splice(i,1);
+  saveTrackers();renderTrackers();
+  cloudDeleteEntry(c);
+}
+
+/* ============================================================
+   Jejum — cronômetro + sequência
+   ============================================================ */
+let fastTick=null, fastExpanded=false, fastBusy=false;
+const FAST_PREVIEW=3;
+function fastActiveStart(){const v=localStorage.getItem(LS_FAST_ACTIVE);return v?+v:null;}
+function fmtDur(sec){
+  sec=Math.max(0,Math.floor(sec));
+  const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60;
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+function fmtHours(sec){const h=sec/3600;return (Math.round(h*10)/10).toLocaleString('pt-BR');}
+// sequência = dias consecutivos (até hoje, com folga pra hoje) com pelo menos 1 jejum concluído
+function fastStreak(){
+  const days=new Set(trackers.fast.map(e=>e.date));
+  let s=0, start=days.has(today())?0:1;
+  for(let off=start;;off++){if(days.has(today(-off)))s++;else break;}
+  return s;
+}
+async function startFast(){
+  if(fastActiveStart())return;
+  fastBusy=true;
+  const startMs=Date.now();
+  localStorage.setItem(LS_FAST_ACTIVE,String(startMs));
+  renderFast();
+  await cloudStartFast(startMs);
+  fastBusy=false;
+}
+async function stopFast(){
+  const st=fastActiveStart();if(!st)return;
+  fastBusy=true;
+  const end=Date.now();
+  const dur=Math.round((end-st)/1000); // segundos
+  localStorage.removeItem(LS_FAST_ACTIVE);
+  await cloudStopFast();
+  if(dur>=60){ // ignora toques acidentais (< 1 min)
+    const entry={cid:cid(),date:fmtLocal(new Date(st)),dur,start:new Date(st).toISOString(),end:new Date(end).toISOString()};
+    trackers.fast.push(entry);
+    saveTrackers();
+    await cloudInsertFast(entry);
+  }
+  fastBusy=false;
+  renderFast();renderStats();
+}
+function addFastManual(){
+  const g=id=>document.getElementById(id);
+  const msg=g('fastMsg');
+  const setMsg=(t,k)=>{msg.textContent=t||'';msg.className='fast-msg'+(k?' '+k:'');};
+  const date=g('fastDate').value||today();
+  const start=g('fastStartIn').value, end=g('fastEndIn').value;
+  if(!start||!end){setMsg('Informe início e fim (HH:MM).','err');return;}
+  const startMs=new Date(date+'T'+start).getTime();
+  let endMs=new Date(date+'T'+end).getTime();
+  if(endMs<=startMs)endMs+=86400000; // vira a noite
+  const dur=Math.round((endMs-startMs)/1000);
+  if(dur<60){setMsg('Duração muito curta.','err');return;}
+  const entry={cid:cid(),date,dur,start:new Date(startMs).toISOString(),end:new Date(endMs).toISOString()};
+  trackers.fast.push(entry);
+  saveTrackers();cloudInsertFast(entry);
+  g('fastStartIn').value='';g('fastEndIn').value='';
+  setMsg('Jejum de '+fmtDur(dur)+' adicionado.','ok');
+  renderFast();renderStats();
+}
+function deleteFast(c){
+  const i=trackers.fast.findIndex(e=>e.cid===c);
+  if(i>=0)trackers.fast.splice(i,1);
+  saveTrackers();renderFast();
+  cloudDeleteEntry(c);
+}
+function renderFast(){
+  const st=fastActiveStart();
+  const card=document.getElementById('fastCard');
+  const btn=document.getElementById('fastBtn');
+  const state=document.getElementById('fastState');
+  const timer=document.getElementById('fastTimer');
+  card.classList.toggle('running',!!st);
+  if(st){
+    btn.className='fast-btn stop';btn.innerHTML='<i class="fa-solid fa-stop"></i> Parar e registrar';
+    const started=new Date(st);
+    state.innerHTML=`em jejum desde <b>${started.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</b>`;
+    timer.textContent=fmtDur((Date.now()-st)/1000);
+    if(!fastTick)fastTick=setInterval(()=>{const s=fastActiveStart();if(s)timer.textContent=fmtDur((Date.now()-s)/1000);},1000);
+  }else{
+    btn.className='fast-btn start';btn.innerHTML='<i class="fa-solid fa-play"></i> Começar jejum';
+    state.textContent='pronta pra começar';
+    timer.textContent='00:00:00';
+    if(fastTick){clearInterval(fastTick);fastTick=null;}
+  }
+  // KPIs
+  const list=trackers.fast;
+  document.getElementById('fastSeq').textContent=fastStreak();
+  document.getElementById('fastTot').textContent=list.length;
+  const max=list.reduce((m,e)=>Math.max(m,e.dur||0),0);
+  document.getElementById('fastMax').textContent=max?fmtDur(max):'–';
+  const totSec=list.reduce((s,e)=>s+(e.dur||0),0);
+  document.getElementById('fastHrs').textContent=fmtHours(totSec);
+  document.getElementById('fastBadge').textContent=list.length?fastStreak()+' 🔥':'–';
+  // histórico — mostra só os 3 mais recentes, com botão "Mostrar mais"
+  const hist=document.getElementById('fastHist');
+  const more=document.getElementById('fastMore');
+  const all=sortByDate(list);
+  if(!all.length){
+    hist.innerHTML=`<div class="fast-empty">nenhum jejum registrado ainda</div>`;
+    more.hidden=true;
+  }else{
+    const rows=fastExpanded?all:all.slice(0,FAST_PREVIEW);
+    hist.innerHTML=rows.map(e=>{
+      const t=new Date(e.start);
+      const hh=t.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      return `<li><span class="d">${shortDate(e.date)}</span><span class="v">${fmtDur(e.dur)}<small>início ${hh}</small></span><button class="del" data-fc="${e.cid}">✕</button></li>`;
+    }).join('');
+    hist.querySelectorAll('.del').forEach(b=>b.onclick=()=>deleteFast(b.dataset.fc));
+    if(all.length>FAST_PREVIEW){
+      more.hidden=false;
+      const hidden=all.length-FAST_PREVIEW;
+      more.innerHTML=fastExpanded
+        ? '<i class="fa-solid fa-chevron-up"></i> Mostrar menos'
+        : `<i class="fa-solid fa-chevron-down"></i> Mostrar mais (${hidden})`;
+    }else{more.hidden=true;}
+  }
+}
+
+/* ---------- render geral ---------- */
+function renderAll(){renderStats();renderDateNav();renderHabits();renderHeatmap();renderTrackers();renderFast();}
+
+/* ---------- eventos ---------- */
+document.getElementById('prevDay').onclick=()=>changeDate(-1);
+document.getElementById('nextDay').onclick=()=>changeDate(1);
+document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addEntry(b.dataset.add));
+document.getElementById('weightDate').value=today();
+document.getElementById('fastBtn').onclick=()=>{fastActiveStart()?stopFast():startFast();};
+document.getElementById('fastMore').onclick=()=>{fastExpanded=!fastExpanded;renderFast();};
+document.getElementById('fastAddBtn').onclick=addFastManual;
+document.getElementById('fastDate').value=today();
+
+/* ============================================================
+   Supabase — sync opcional entre dispositivos
+   ============================================================ */
+const SB_URL='https://ysnwsrndphmgdtynwxtu.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlzbndzcm5kcGhtZ2R0eW53eHR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MTIxODEsImV4cCI6MjEwMDQ4ODE4MX0.HzO38CqXLw0JIa0B2uDEzA5CWRSYsuMdbCjRCJgICag';
+const T_HABITS='habit_logs', T_TRK='fitness_log';
+let sb=null, trkOk=true;
+function setSync(icon,msg,color){const el=document.getElementById('syncStatus');if(el)el.innerHTML=`<i class="fa-solid ${icon}" ${color?`style="color:${color}"`:''}></i><span>${msg}</span>`;}
+try{if(window.supabase)sb=window.supabase.createClient(SB_URL,SB_KEY);}catch(e){console.warn(e);}
+if(!sb)setSync('fa-cloud-slash','offline — salvando só neste navegador','var(--text-3)');
+
+async function cloudToggleHabit(habitId,date,isDone){
+  if(!sb)return;
+  const {error}=isDone
+    ? await sb.from(T_HABITS).upsert({person:PERSON,habit_id:habitId,log_date:date,done:true},{onConflict:'person,habit_id,log_date'})
+    : await sb.from(T_HABITS).delete().match({person:PERSON,habit_id:habitId,log_date:date});
+  setSync(error?'fa-triangle-exclamation':'fa-cloud','sincronizado',error?'var(--amber)':'var(--teal)');
+}
+async function cloudInsertEntry(kind,e){
+  if(!sb||!trkOk)return;
+  const row={cid:e.cid,kind,entry_date:e.date,num1:e.kg,num2:null,label:null};
+  const {error}=await sb.from(T_TRK).insert(row);
+  if(error){trkOk=false;console.warn('fitness_log indisponível:',error.message);}
+}
+async function cloudInsertFast(e){
+  if(!sb||!trkOk)return;
+  const {error}=await sb.from(T_TRK).insert({cid:e.cid,kind:'fast',entry_date:e.date,num1:e.dur,num2:null,label:e.start});
+  if(error){trkOk=false;console.warn('fitness_log indisponível:',error.message);}
+}
+// jejum em andamento (linha única compartilhada entre aparelhos)
+const FAST_ACTIVE_CID='fast-active-'+PERSON;
+async function cloudStartFast(startMs){
+  if(!sb||!trkOk)return;
+  const {error}=await sb.from(T_TRK).upsert({cid:FAST_ACTIVE_CID,kind:'fast_active',entry_date:today(),num1:startMs,num2:null,label:new Date(startMs).toISOString()},{onConflict:'cid'});
+  if(error){trkOk=false;console.warn('fitness_log indisponível:',error.message);}
+}
+async function cloudStopFast(){if(!sb||!trkOk)return;await sb.from(T_TRK).delete().eq('cid',FAST_ACTIVE_CID);}
+async function cloudDeleteEntry(c){if(!sb||!trkOk)return;await sb.from(T_TRK).delete().eq('cid',c);}
+
+async function loadCloud(){
+  if(!sb)return;
+  setSync('fa-cloud-arrow-down','sincronizando…','var(--text-2)');
+  // hábitos
+  const h=await sb.from(T_HABITS).select('habit_id,log_date,done').eq('person',PERSON).eq('done',true);
+  if(!h.error){
+    logs={};
+    (h.data||[]).forEach(r=>{if(!logs[r.log_date])logs[r.log_date]={};logs[r.log_date][r.habit_id]=true;});
+    saveHabits();
+  }
+  // trackers
+  const t=await sb.from(T_TRK).select('cid,kind,entry_date,num1,num2,label');
+  if(t.error){trkOk=false;}
+  else{
+    const nw={weight:[],fast:[]};
+    let activeRow=null;
+    (t.data||[]).forEach(r=>{
+      if(r.kind==='weight')nw.weight.push({cid:r.cid,date:r.entry_date,kg:+r.num1||0});
+      else if(r.kind==='fast')nw.fast.push({cid:r.cid,date:r.entry_date,dur:+r.num1||0,start:r.label||r.entry_date+'T00:00:00'});
+      else if(r.kind==='fast_active')activeRow=r;
+    });
+    trackers=nw;saveTrackers();
+    // nuvem é a fonte da verdade pro timer em andamento (não mexe durante start/stop local)
+    if(!fastBusy){
+      if(activeRow){const ms=+activeRow.num1||Date.parse(activeRow.label);if(ms)localStorage.setItem(LS_FAST_ACTIVE,String(ms));}
+      else localStorage.removeItem(LS_FAST_ACTIVE);
+    }
+  }
+  renderAll();
+  setSync(trkOk?'fa-cloud':'fa-cloud','sincronizado'+(trkOk?'':' (trackers só neste navegador — crie a tabela fitness_log)'),trkOk?'var(--teal)':'var(--amber)');
+}
+function subscribe(){
+  if(!sb)return;
+  sb.channel('cp_changes')
+    .on('postgres_changes',{event:'*',schema:'public',table:T_HABITS},()=>loadCloud())
+    .on('postgres_changes',{event:'*',schema:'public',table:T_TRK},()=>loadCloud())
+    .subscribe();
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadCloud();});
+setInterval(()=>{if(!document.hidden)loadCloud();},25000);
+
+/* ---------- boot ---------- */
+renderAll();
+loadCloud().then(subscribe);
+</script>
+
+<!--
+  ============================================================
+  SQL para criar a tabela dos trackers no Supabase (só uma vez).
+  Guarda peso corporal (kind='weight') e jejuns (kind='fast').
+  Cole no SQL Editor do projeto e rode. Sem isso, tudo funciona
+  normalmente, mas só neste navegador.
+  ============================================================
+
+  create table if not exists public.fitness_log (
+    cid         text primary key,
+    kind        text not null,
+    entry_date  date not null,
+    num1        numeric,
+    num2        numeric,
+    label       text,
+    created_at  timestamptz default now()
+  );
+  alter table public.fitness_log enable row level security;
+  create policy "anon full access" on public.fitness_log
+    for all using (true) with check (true);
+-->
+<a href="../index.html" title="Back to hub" style="position:fixed;bottom:14px;left:14px;z-index:400;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:20px;background:rgba(18,24,38,.9);border:1px solid rgba(255,255,255,.14);color:#cfd6e6;text-decoration:none;font:600 12px/1 'Inter',sans-serif;backdrop-filter:blur(6px);box-shadow:0 6px 20px rgba(0,0,0,.4)"><span style="font-size:14px">⌂</span> Hub</a>
+</body>
+</html>

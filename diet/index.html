@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dieta · Leticia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --bg:#181310;--bg-2:#211a14;--card:#261f17;--card-2:#2e251a;
+  --border:#3d3226;--border-glow:#4f4130;--text:#f8f1e4;--text-2:#c3ac8b;--text-3:#8a7a5e;
+  --accent:#ffb020;--accent-2:#ff7a29;--teal:#ffcf5c;--amber:#ff5b3d;
+  --radius:16px;--radius-sm:11px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(255,176,32,.14), transparent 55%),
+    radial-gradient(1000px 500px at 0% 10%, rgba(255,122,41,.10), transparent 50%),
+    var(--bg);
+  color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:840px;margin:0 auto;padding:2.2rem 1.5rem 4rem}
+.top{display:flex;align-items:center;gap:14px;margin-bottom:1.4rem}
+.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 24px rgba(255,176,32,.3);flex-shrink:0}
+.top h1{font-size:21px;font-weight:700;letter-spacing:-.02em}
+.top p{font-size:12.5px;color:var(--text-2);margin-top:2px}
+
+.day-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.4rem}
+.day-tab{flex:1;min-width:56px;padding:10px 6px;border-radius:12px;cursor:pointer;text-align:center;background:var(--card);border:1px solid var(--border);transition:all .2s}
+.day-tab:hover{border-color:var(--border-glow);background:var(--card-2)}
+.day-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none}
+.day-tab b{font-size:13px;font-weight:700;display:block}
+.day-tab span{font-size:10px;color:var(--text-3)}
+.day-tab.active b,.day-tab.active span{color:#231a08}
+.day-tab.today{position:relative}
+.day-tab.today::after{content:'';position:absolute;top:7px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+
+.day-head{margin-bottom:1.3rem}
+.day-head h2{font-size:19px;font-weight:700;letter-spacing:-.01em}
+.day-head p{font-size:12.5px;color:var(--text-2);margin-top:3px;display:flex;align-items:center;gap:8px}
+.day-head .badge{font-size:10.5px;font-weight:700;color:var(--teal);background:rgba(255,207,92,.14);padding:3px 10px;border-radius:20px;border:1px solid rgba(255,207,92,.3)}
+.mode-toggle{display:flex;gap:8px;margin-top:.9rem}
+.mode-btn{flex:1;padding:10px;border-radius:11px;border:1px solid var(--border);background:var(--card);color:var(--text-2);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:7px}
+.mode-btn:hover{border-color:var(--border-glow);color:var(--text)}
+.mode-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:#231a08}
+
+.meal{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.3rem;margin-bottom:1rem}
+.meal-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--border)}
+.meal-body{flex:1;min-width:0}
+.m-time{font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.m-title{font-size:15px;font-weight:700}
+.m-kcal{font-size:13px;font-weight:700;color:var(--amber);flex-shrink:0;white-space:nowrap}
+
+.food-lines{display:flex;flex-direction:column;gap:14px;margin-bottom:.9rem}
+.food-line{font-size:13px;color:var(--text-2);line-height:1.6}
+.food-line b{color:var(--text);font-weight:600}
+.food-line .kc{color:var(--text-3);font-size:11.5px}
+
+.choice-group{}
+.choice-title{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.choice-title .choice-sub{text-transform:none;font-weight:500;letter-spacing:0;color:var(--text-3);opacity:.8}
+.choice-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.choice-list li{display:flex;align-items:baseline;gap:9px;font-size:13px;color:var(--text);padding:6px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border)}
+.choice-tag{flex-shrink:0;font-size:10px;font-weight:800;letter-spacing:.03em;color:#231a08;background:var(--teal);padding:2px 7px;border-radius:6px;min-width:26px;text-align:center}
+.choice-tag.ou{background:transparent;color:var(--text-3);border:1px solid var(--border);}
+.choice-list .kc{margin-left:auto;flex-shrink:0;color:var(--amber);font-weight:600;font-size:11.5px;white-space:nowrap}
+.note-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.note-list li{font-size:12.5px;color:var(--text-2);line-height:1.6;padding-left:18px;position:relative}
+.note-list li::before{content:'';position:absolute;left:2px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--teal);opacity:.7}
+.note-list li.req::before{background:var(--amber)}
+
+.meal-macros{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--text-2);padding-top:.8rem;border-top:1px solid var(--border)}
+.meal-macros b{color:var(--text)}
+.meal-macros-note{font-size:10.5px;color:var(--text-3);margin-top:5px}
+
+.footer{text-align:center;margin-top:2rem;font-size:11px;color:var(--text-3);line-height:1.6}
+.footer b{color:var(--text-2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo">🥗</div>
+    <div><h1>Dieta</h1><p>Modo Goggins · jejum até 18h · refeição única · alta proteína · Leticia</p></div>
+  </div>
+
+  <div class="day-tabs" id="dayTabs"></div>
+
+  <div class="day-head">
+    <h2 id="dayTitle"></h2>
+    <p id="dayTreino"><span class="badge" id="dayBadge"></span><span id="dayTreinoText"></span></p>
+    <div class="mode-toggle">
+      <button type="button" class="mode-btn" id="modeTreinoBtn" onclick="setMode('treino')"><i class="fa-solid fa-dumbbell"></i> Treinei</button>
+      <button type="button" class="mode-btn" id="modeLivreBtn" onclick="setMode('livre')"><i class="fa-solid fa-couch"></i> Não treinei</button>
+    </div>
+  </div>
+
+  <div id="mealsWrap"></div>
+
+  <div class="footer"><b>Dieta</b> · calorias calculadas com a Tabela TACO (UNICAMP) · macros no rodapé de cada refeição usam a 1ª opção de cada "escolha 1" listada</div>
+</div>
+
+<script>
+// ===== BASE DE ALIMENTOS (Tabela TACO / UNICAMP, valores por 100g) =====
+const FOODS = {
+  lombo:          { label:'Lombo Suíno Grelhado',              per100:{kcal:210, p:35.7, c:0.0,  g:6.4} },
+  frango:         { label:'Frango Peito Grelhado',             per100:{kcal:159, p:32.0, c:0.0,  g:2.5} },
+  frangoSobrecoxa:{ label:'Frango Sobrecoxa (com pele) Assada', per100:{kcal:260, p:28.7, c:0.0,  g:15.2} },
+  peixe:          { label:'Peixe Branco Grelhado',             per100:{kcal:96,  p:20.1, c:0.0,  g:1.7} },
+  ovo:            { label:'Ovo cozido',                        per100:{kcal:146, p:13.3, c:0.6,  g:9.5} },
+  arrozBranco:    { label:'Arroz Branco Cozido',                per100:{kcal:128, p:2.5,  c:28.1, g:0.2} },
+  arrozIntegral:  { label:'Arroz Integral Cozido',              per100:{kcal:124, p:2.6,  c:25.8, g:1.0} },
+  batataInglesa:  { label:'Batata Inglesa Cozida',              per100:{kcal:52,  p:1.2,  c:11.9, g:0.1} },
+  batataDoce:     { label:'Batata Doce Cozida',                 per100:{kcal:77,  p:0.6,  c:18.4, g:0.1} },
+  feijao:         { label:'Feijão Carioca Cozido',              per100:{kcal:76,  p:4.8,  c:13.6, g:0.5} },
+  abobora:        { label:'Abóbora Cozida',                     per100:{kcal:40,  p:1.4,  c:9.6,  g:0.1} }
+};
+function foodMacros(key,grams){
+  const f=FOODS[key].per100, r=grams/100;
+  return {kcal:f.kcal*r, p:f.p*r, c:f.c*r, g:f.g*r};
+}
+// Meta: 108g proteína/dia (1,8g/kg x 60kg de massa magra), igual em dias com treino e sem treino.
+// Modo Goggins: jejum até 18h (só café preto) e refeição única às 18h, sem pão,
+// carboidrato só em dia de treino. Treino ~1.000 kcal, sem treino ~810 kcal.
+const PROT_TREINO = {lombo:225, frango:245, peixe:395};
+const PROT_LIVRE  = {lombo:260, frango:280, peixe:460};
+
+// ===== DIAS =====
+const reqVeg=(txt)=>({text:`Vegetais (obrigatório): ${txt}`,req:true});
+const reqFibra={text:'Fibra (obrigatório): 1 colher de sopa de psyllium em 400ml água',req:true};
+
+function proteinChoices(prot){
+  return [
+    {key:'lombo',grams:prot.lombo,label:`${prot.lombo}g de Lombo Suíno Grelhado`},
+    {key:'frango',grams:prot.frango,label:`${prot.frango}g de Frango Peito Grelhado`},
+    {key:'frangoSobrecoxa',grams:prot.frango,label:`${prot.frango}g de Frango Sobrecoxa (com pele) Assada`},
+    {key:'peixe',grams:prot.peixe,label:`${prot.peixe}g de Peixe Branco Grelhado`}
+  ];
+}
+function jejumMeal(){
+  return { time:'Até 18:00', title:'Jejum',
+    freeNotes:[
+      {text:'Só café preto sem açúcar (e água à vontade) — nada de café depois das 14h'},
+      {text:'Eletrólitos todo dia: sal na comida, potássio e magnésio',req:true},
+      {text:'Dia de muita fome: pode comer os 3 ovos cozidos antes (de preferência logo após a musculação) e tirar eles da refeição das 18h'}
+    ] };
+}
+function refeicaoUnicaMeal(prot, carbList){
+  const m = { time:'18:00', title:'Refeição única',
+    eggsFixed:{grams:150,label:'3 ovos inteiros (cozidos ou mexidos, sem óleo extra)'},
+    protein:{choices:proteinChoices(prot)},
+    feijao:{grams:60},
+    freeNotes:[reqVeg('2-4 xícaras de vegetais cozidos e/ou salada crua à vontade'), reqFibra] };
+  if(carbList) m.carb = {choices:carbList};
+  return m;
+}
+
+const carbSegSex = [
+  {key:'arrozBranco',grams:250,label:'250g de Arroz Branco Cozido (8 colheres cheias)'},
+  {key:'batataInglesa',grams:350,label:'350g de Batata Inglesa Cozida (1 batata grande + 1 média)'},
+  {key:'batataDoce',grams:300,label:'300g de Batata Doce Cozida (1 batata grande + 1 média)'},
+  {key:'abobora',grams:610,label:'610g de Abóbora Cozida (cerca de 5 xícaras)'}
+];
+const carbMeio = [
+  {key:'arrozBranco',grams:200,label:'200g de Arroz Branco Cozido (6 colheres cheias)'},
+  {key:'batataInglesa',grams:290,label:'290g de Batata Inglesa Cozida (1 batata grande)'},
+  {key:'batataDoce',grams:250,label:'250g de Batata Doce Cozida (1 batata grande)'},
+  {key:'abobora',grams:500,label:'500g de Abóbora Cozida (cerca de 4 xícaras)'}
+];
+
+// Cardápio "sem treino" — usado em qualquer dia da semana em que você não treinar
+const mealsLivre = [jejumMeal(), refeicaoUnicaMeal(PROT_LIVRE, null)];
+function mealsTreino(carbList){
+  return [jejumMeal(), refeicaoUnicaMeal(PROT_TREINO, carbList)];
+}
+
+const DAYS = [
+ {key:'seg', label:'Segunda', short:'SEG', treinoDesc:'Jiu Jitsu + Musculação + Esteira', defaultMode:'treino', mealsTreino:mealsTreino(carbSegSex)},
+ {key:'ter', label:'Terça',   short:'TER', treinoDesc:'Dia de treino',            defaultMode:'treino', mealsTreino:mealsTreino(carbMeio)},
+ {key:'qua', label:'Quarta',  short:'QUA', treinoDesc:'Dia de treino',            defaultMode:'treino', mealsTreino:mealsTreino(carbMeio)},
+ {key:'qui', label:'Quinta',  short:'QUI', treinoDesc:'Dia de treino',            defaultMode:'treino', mealsTreino:mealsTreino(carbMeio)},
+ {key:'sex', label:'Sexta',   short:'SEX', treinoDesc:'Musculação',               defaultMode:'treino', mealsTreino:mealsTreino(carbSegSex)},
+ {key:'sab', label:'Sábado',  short:'SÁB', treinoDesc:'Treinou no fim de semana', defaultMode:'livre',  mealsTreino:mealsTreino(carbMeio)},
+ {key:'dom', label:'Domingo', short:'DOM', treinoDesc:'Treinou no fim de semana', defaultMode:'livre',  mealsTreino:mealsTreino(carbMeio)}
+];
+
+// ===== CÁLCULO (só pra mostrar o macro de referência de cada refeição) =====
+function altKcal(choice){ return Math.round(foodMacros(choice.key, choice.grams).kcal); }
+function choicesLine(title, choices){
+  const items = choices.map((c,i)=>`<li>
+      <span class="choice-tag${i>0?' ou':''}">${i===0?'opção':'ou'}</span>
+      <span>${c.label}</span>
+      <span class="kc">${altKcal(c)} kcal</span>
+    </li>`).join('');
+  return `<div class="choice-group">
+    <div class="choice-title">${title} <span class="choice-sub">(escolha 1)</span></div>
+    <ul class="choice-list">${items}</ul>
+  </div>`;
+}
+function mealDefaultMacros(meal){
+  let t={kcal:0,p:0,c:0,g:0};
+  function add(key,grams){ const m=foodMacros(key,grams); t.kcal+=m.kcal;t.p+=m.p;t.c+=m.c;t.g+=m.g; }
+  if(meal.eggsFixed) add('ovo', meal.eggsFixed.grams);
+  if(meal.protein){ const c=meal.protein.choices[0]; add(c.key,c.grams); }
+  if(meal.carb){ const c=meal.carb.choices[0]; add(c.key,c.grams); }
+  if(meal.feijao) add('feijao', meal.feijao.grams);
+  return { kcal:Math.round(t.kcal), p:Math.round(t.p*10)/10, c:Math.round(t.c*10)/10, g:Math.round(t.g*10)/10 };
+}
+
+// ===== RENDER (somente leitura) =====
+const tabsEl=document.getElementById('dayTabs');
+const mealsWrap=document.getElementById('mealsWrap');
+function jsWeekdayToKey(d){return ['dom','seg','ter','qua','qui','sex','sab'][d]}
+const TODAY_KEY = jsWeekdayToKey(new Date().getDay());
+let curIdx = DAYS.findIndex(d=>d.key===TODAY_KEY);
+if(curIdx<0) curIdx=0;
+
+// modo (treino/livre) escolhido pra cada dia — começa no padrão, mas qualquer dia pode virar o outro
+let dayMode = {};
+DAYS.forEach(d=>{ dayMode[d.key]=d.defaultMode; });
+function curMode(day){ return dayMode[day.key]||day.defaultMode; }
+function curMeals(day){ return curMode(day)==='treino' ? day.mealsTreino : mealsLivre; }
+function setMode(mode){
+  dayMode[DAYS[curIdx].key]=mode;
+  renderAll();
+}
+
+function renderTabs(){
+  tabsEl.innerHTML=DAYS.map((d,i)=>`<div class="day-tab${i===curIdx?' active':''}${d.key===TODAY_KEY?' today':''}" onclick="pick(${i})">
+      <b>${d.short}</b><span>${curMode(d)==='treino'?'treino':'livre'}</span>
+    </div>`).join('');
+}
+function renderHead(day){
+  const mode=curMode(day);
+  document.getElementById('dayTitle').textContent = day.label + (day.key===TODAY_KEY?' · hoje':'');
+  document.getElementById('dayBadge').textContent = mode==='treino' ? 'Dia de treino' : 'Sem treino';
+  document.getElementById('dayTreinoText').textContent = mode==='treino' ? day.treinoDesc : 'Dia livre / descanso';
+  document.getElementById('modeTreinoBtn').classList.toggle('active', mode==='treino');
+  document.getElementById('modeLivreBtn').classList.toggle('active', mode==='livre');
+}
+function renderMeals(day){
+  const meals = curMeals(day);
+  mealsWrap.innerHTML = meals.map(meal=>{
+    const mac = mealDefaultMacros(meal);
+    let lines='';
+    if(meal.eggsFixed) lines+=`<div class="food-line">${meal.eggsFixed.label} <span class="kc">(${Math.round(foodMacros('ovo',meal.eggsFixed.grams).kcal)} kcal)</span></div>`;
+    if(meal.protein) lines+=choicesLine('Proteína', meal.protein.choices);
+    if(meal.carb) lines+=choicesLine('Carboidrato', meal.carb.choices);
+    if(meal.feijao) lines+=`<div class="food-line"><b>Leguminosa:</b> ${meal.feijao.grams}g de Feijão Carioca Cozido <span class="kc">(${Math.round(foodMacros('feijao',meal.feijao.grams).kcal)} kcal)</span></div>`;
+
+    const notesHtml = (meal.freeNotes||[]).map(n=>`<li${n.req?' class="req"':''}>${n.text}</li>`).join('');
+
+    return `<div class="meal">
+      <div class="meal-top">
+        <div class="meal-body">
+          <div class="m-time">${meal.time||''}</div>
+          <div class="m-title">${meal.title}</div>
+        </div>
+        <div class="m-kcal">${mac.kcal} kcal</div>
+      </div>
+      <div class="food-lines">${lines}${notesHtml?`<ul class="note-list">${notesHtml}</ul>`:''}</div>
+      <div class="meal-macros">
+        <span><b>${mac.p}g</b> proteína</span>
+        <span><b>${mac.c}g</b> carboidrato</span>
+        <span><b>${mac.g}g</b> gordura</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+function renderAll(){
+  const day=DAYS[curIdx];
+  renderTabs();
+  renderHead(day);
+  renderMeals(day);
+}
+function pick(i){ curIdx=i; renderAll(); }
+renderAll();
+</script>
+<a href="../index.html" title="Back to hub" style="position:fixed;bottom:14px;left:14px;z-index:400;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:20px;background:rgba(18,24,38,.9);border:1px solid rgba(255,255,255,.14);color:#cfd6e6;text-decoration:none;font:600 12px/1 'Inter',sans-serif;backdrop-filter:blur(6px);box-shadow:0 6px 20px rgba(0,0,0,.4)"><span style="font-size:14px">⌂</span> Hub</a>
+</body>
+</html>
