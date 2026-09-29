@@ -70,6 +70,22 @@ body{
 .choice-tag{flex-shrink:0;font-size:10px;font-weight:800;letter-spacing:.03em;color:#231a08;background:var(--teal);padding:2px 7px;border-radius:6px;min-width:26px;text-align:center}
 .choice-tag.ou{background:transparent;color:var(--text-3);border:1px solid var(--border);}
 .choice-list .kc{margin-left:auto;flex-shrink:0;color:var(--amber);font-weight:600;font-size:11.5px;white-space:nowrap}
+/* itens clicáveis */
+.food-line.click{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;background:var(--bg-2);border:1px solid var(--border);cursor:pointer;transition:all .15s;color:var(--text)}
+.food-line.click:hover{border-color:var(--border-glow)}
+.food-line.click .ck{flex-shrink:0;width:20px;height:20px;border-radius:6px;border:1px solid var(--border-glow);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:10px;color:transparent;transition:all .15s}
+.food-line.click:not(.off) .ck{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:#231a08}
+.food-line.click .fl-txt{flex:1;min-width:0}
+.food-line.click.off{opacity:.5}
+.food-line.click.off .fl-txt{text-decoration:line-through}
+.food-line.click .kc{color:var(--amber);font-weight:600;font-size:11.5px;white-space:nowrap;flex-shrink:0}
+.sel-list li{cursor:pointer;transition:all .15s;align-items:center}
+.sel-list li:hover{border-color:var(--border-glow)}
+.sel-list li .radio{flex-shrink:0;width:17px;height:17px;border-radius:50%;border:2px solid var(--border-glow);position:relative;transition:all .15s}
+.sel-list li.sel{border-color:var(--accent);background:rgba(255,176,32,.1)}
+.sel-list li.sel .radio{border-color:var(--accent)}
+.sel-list li.sel .radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
+.sel-list li.sel .kc{color:var(--accent)}
 .note-list{list-style:none;display:flex;flex-direction:column;gap:5px}
 .note-list li{font-size:12.5px;color:var(--text-2);line-height:1.6;padding-left:18px;position:relative}
 .note-list li::before{content:'';position:absolute;left:2px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--teal);opacity:.7}
@@ -103,7 +119,7 @@ body{
 
   <div id="mealsWrap"></div>
 
-  <div class="footer"><b>Dieta</b> · calorias calculadas com a Tabela TACO (UNICAMP) · macros no rodapé de cada refeição usam a 1ª opção de cada "escolha 1" listada</div>
+  <div class="footer"><b>Dieta</b> · calorias pela Tabela TACO (UNICAMP) · clique na proteína pra selecionar e nos itens fixos pra marcar/desmarcar — o total recalcula sozinho · vegetais e fibra são à vontade (não contam)</div>
 </div>
 
 <script>
@@ -161,56 +177,60 @@ function refeicaoUnicaMeal(prot, carbList){
   return m;
 }
 
-const carbSegSex = [
-  {key:'arrozBranco',grams:250,label:'250g de Arroz Branco Cozido (8 colheres cheias)'},
-  {key:'batataInglesa',grams:350,label:'350g de Batata Inglesa Cozida (1 batata grande + 1 média)'},
-  {key:'batataDoce',grams:300,label:'300g de Batata Doce Cozida (1 batata grande + 1 média)'},
-  {key:'abobora',grams:610,label:'610g de Abóbora Cozida (cerca de 5 xícaras)'}
-];
-const carbMeio = [
-  {key:'arrozBranco',grams:200,label:'200g de Arroz Branco Cozido (6 colheres cheias)'},
-  {key:'batataInglesa',grams:290,label:'290g de Batata Inglesa Cozida (1 batata grande)'},
-  {key:'batataDoce',grams:250,label:'250g de Batata Doce Cozida (1 batata grande)'},
-  {key:'abobora',grams:500,label:'500g de Abóbora Cozida (cerca de 4 xícaras)'}
-];
-
-// Cardápio "sem treino" — usado em qualquer dia da semana em que você não treinar
-const mealsLivre = [jejumMeal(), refeicaoUnicaMeal(PROT_LIVRE, null)];
-function mealsTreino(carbList){
-  return [jejumMeal(), refeicaoUnicaMeal(PROT_TREINO, carbList)];
-}
+// Mesmo cardápio todo dia: refeição única às 18h, SEM carboidrato (o carb ~9g vem só do feijão + ovos).
+// Treino x sem treino muda apenas a quantidade da proteína.
+const mealsLivre  = [jejumMeal(), refeicaoUnicaMeal(PROT_LIVRE, null)];
+const mealsTreinoAll = [jejumMeal(), refeicaoUnicaMeal(PROT_TREINO, null)];
 
 const DAYS = [
- {key:'seg', label:'Segunda', short:'SEG', treinoDesc:'Jiu Jitsu + Musculação + Esteira', defaultMode:'treino', mealsTreino:mealsTreino(carbSegSex)},
- {key:'ter', label:'Terça',   short:'TER', treinoDesc:'Dia de treino',            defaultMode:'treino', mealsTreino:mealsTreino(carbMeio)},
- {key:'qua', label:'Quarta',  short:'QUA', treinoDesc:'Dia de treino',            defaultMode:'treino', mealsTreino:mealsTreino(carbMeio)},
- {key:'qui', label:'Quinta',  short:'QUI', treinoDesc:'Dia de treino',            defaultMode:'treino', mealsTreino:mealsTreino(carbMeio)},
- {key:'sex', label:'Sexta',   short:'SEX', treinoDesc:'Musculação',               defaultMode:'treino', mealsTreino:mealsTreino(carbSegSex)},
- {key:'sab', label:'Sábado',  short:'SÁB', treinoDesc:'Treinou no fim de semana', defaultMode:'livre',  mealsTreino:mealsTreino(carbMeio)},
- {key:'dom', label:'Domingo', short:'DOM', treinoDesc:'Treinou no fim de semana', defaultMode:'livre',  mealsTreino:mealsTreino(carbMeio)}
+ {key:'seg', label:'Segunda', short:'SEG', treinoDesc:'Jiu Jitsu + Musculação + Esteira', defaultMode:'treino', mealsTreino:mealsTreinoAll},
+ {key:'ter', label:'Terça',   short:'TER', treinoDesc:'Dia de treino',            defaultMode:'treino', mealsTreino:mealsTreinoAll},
+ {key:'qua', label:'Quarta',  short:'QUA', treinoDesc:'Dia de treino',            defaultMode:'treino', mealsTreino:mealsTreinoAll},
+ {key:'qui', label:'Quinta',  short:'QUI', treinoDesc:'Dia de treino',            defaultMode:'treino', mealsTreino:mealsTreinoAll},
+ {key:'sex', label:'Sexta',   short:'SEX', treinoDesc:'Musculação',               defaultMode:'treino', mealsTreino:mealsTreinoAll},
+ {key:'sab', label:'Sábado',  short:'SÁB', treinoDesc:'Treinou no fim de semana', defaultMode:'livre',  mealsTreino:mealsTreinoAll},
+ {key:'dom', label:'Domingo', short:'DOM', treinoDesc:'Treinou no fim de semana', defaultMode:'livre',  mealsTreino:mealsTreinoAll}
 ];
 
-// ===== CÁLCULO (só pra mostrar o macro de referência de cada refeição) =====
-function altKcal(choice){ return Math.round(foodMacros(choice.key, choice.grams).kcal); }
-function choicesLine(title, choices){
-  const items = choices.map((c,i)=>`<li>
-      <span class="choice-tag${i>0?' ou':''}">${i===0?'opção':'ou'}</span>
-      <span>${c.label}</span>
-      <span class="kc">${altKcal(c)} kcal</span>
-    </li>`).join('');
-  return `<div class="choice-group">
-    <div class="choice-title">${title} <span class="choice-sub">(escolha 1)</span></div>
-    <ul class="choice-list">${items}</ul>
+// ===== SELEÇÃO INTERATIVA + CÁLCULO AO VIVO =====
+function altKcal(key,grams){ return Math.round(foodMacros(key,grams).kcal); }
+
+const SEL_KEY='diet_sel_v1';
+let sel={};
+try{ sel=JSON.parse(localStorage.getItem(SEL_KEY)||'{}'); }catch(e){ sel={}; }
+function daySel(){ const k=DAYS[curIdx].key; if(!sel[k]) sel[k]={prot:0,eggs:true,feijao:true}; return sel[k]; }
+function saveSel(){ try{ localStorage.setItem(SEL_KEY, JSON.stringify(sel)); }catch(e){} }
+function pickProt(i){ daySel().prot=i; saveSel(); renderAll(); }
+function toggleItem(which){ const s=daySel(); s[which]=!s[which]; saveSel(); renderAll(); }
+
+// total da refeição conforme o que está selecionado/marcado
+function selectedMacros(meal){
+  const s=daySel();
+  let t={kcal:0,p:0,c:0,g:0};
+  const add=(key,grams)=>{const m=foodMacros(key,grams);t.kcal+=m.kcal;t.p+=m.p;t.c+=m.c;t.g+=m.g;};
+  if(meal.eggsFixed && s.eggs) add('ovo', meal.eggsFixed.grams);
+  if(meal.protein){ const c=meal.protein.choices[s.prot]||meal.protein.choices[0]; add(c.key,c.grams); }
+  if(meal.feijao && s.feijao) add('feijao', meal.feijao.grams);
+  return { kcal:Math.round(t.kcal), p:Math.round(t.p*10)/10, c:Math.round(t.c*10)/10, g:Math.round(t.g*10)/10 };
+}
+function checkRow(label, kc, on, which){
+  return `<div class="food-line click${on?'':' off'}" onclick="toggleItem('${which}')">
+    <span class="ck"><i class="fa-solid fa-check"></i></span>
+    <span class="fl-txt">${label}</span>
+    <span class="kc">${kc} kcal</span>
   </div>`;
 }
-function mealDefaultMacros(meal){
-  let t={kcal:0,p:0,c:0,g:0};
-  function add(key,grams){ const m=foodMacros(key,grams); t.kcal+=m.kcal;t.p+=m.p;t.c+=m.c;t.g+=m.g; }
-  if(meal.eggsFixed) add('ovo', meal.eggsFixed.grams);
-  if(meal.protein){ const c=meal.protein.choices[0]; add(c.key,c.grams); }
-  if(meal.carb){ const c=meal.carb.choices[0]; add(c.key,c.grams); }
-  if(meal.feijao) add('feijao', meal.feijao.grams);
-  return { kcal:Math.round(t.kcal), p:Math.round(t.p*10)/10, c:Math.round(t.c*10)/10, g:Math.round(t.g*10)/10 };
+function proteinBlock(choices){
+  const s=daySel();
+  const items=choices.map((c,i)=>`<li class="${i===s.prot?'sel':''}" onclick="pickProt(${i})">
+      <span class="radio"></span>
+      <span>${c.label}</span>
+      <span class="kc">${altKcal(c.key,c.grams)} kcal</span>
+    </li>`).join('');
+  return `<div class="choice-group">
+    <div class="choice-title">Proteína <span class="choice-sub">(escolha 1 · clique pra selecionar)</span></div>
+    <ul class="choice-list sel-list">${items}</ul>
+  </div>`;
 }
 
 // ===== RENDER (somente leitura) =====
@@ -247,12 +267,13 @@ function renderHead(day){
 function renderMeals(day){
   const meals = curMeals(day);
   mealsWrap.innerHTML = meals.map(meal=>{
-    const mac = mealDefaultMacros(meal);
+    const isMeal = !!(meal.eggsFixed||meal.protein);
+    const mac = isMeal ? selectedMacros(meal) : {kcal:0,p:0,c:0,g:0};
+    const s = daySel();
     let lines='';
-    if(meal.eggsFixed) lines+=`<div class="food-line">${meal.eggsFixed.label} <span class="kc">(${Math.round(foodMacros('ovo',meal.eggsFixed.grams).kcal)} kcal)</span></div>`;
-    if(meal.protein) lines+=choicesLine('Proteína', meal.protein.choices);
-    if(meal.carb) lines+=choicesLine('Carboidrato', meal.carb.choices);
-    if(meal.feijao) lines+=`<div class="food-line"><b>Leguminosa:</b> ${meal.feijao.grams}g de Feijão Carioca Cozido <span class="kc">(${Math.round(foodMacros('feijao',meal.feijao.grams).kcal)} kcal)</span></div>`;
+    if(meal.eggsFixed) lines+=checkRow(meal.eggsFixed.label, altKcal('ovo',meal.eggsFixed.grams), s.eggs, 'eggs');
+    if(meal.protein) lines+=proteinBlock(meal.protein.choices);
+    if(meal.feijao) lines+=checkRow('60g de Feijão Carioca Cozido (leguminosa)', altKcal('feijao',meal.feijao.grams), s.feijao, 'feijao');
 
     const notesHtml = (meal.freeNotes||[]).map(n=>`<li${n.req?' class="req"':''}>${n.text}</li>`).join('');
 
@@ -265,11 +286,12 @@ function renderMeals(day){
         <div class="m-kcal">${mac.kcal} kcal</div>
       </div>
       <div class="food-lines">${lines}${notesHtml?`<ul class="note-list">${notesHtml}</ul>`:''}</div>
-      <div class="meal-macros">
+      ${isMeal?`<div class="meal-macros">
         <span><b>${mac.p}g</b> proteína</span>
         <span><b>${mac.c}g</b> carboidrato</span>
         <span><b>${mac.g}g</b> gordura</span>
-      </div>
+        <span class="meal-macros-note">clique nos itens pra recalcular · vegetais e fibra não contam calorias</span>
+      </div>`:''}
     </div>`;
   }).join('');
 }
