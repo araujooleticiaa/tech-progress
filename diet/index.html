@@ -90,6 +90,7 @@ body{
 .qty{display:inline-flex;align-items:center;gap:2px;flex-shrink:0;font-size:11px;color:var(--text-3);cursor:default}
 .qty input{width:52px;padding:5px 6px;border-radius:7px;background:var(--card);border:1px solid var(--border-glow);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right;-moz-appearance:textfield}
 .qty input:focus{outline:none;border-color:var(--accent)}
+.qty .qty-un{font-size:11px;color:var(--text-3)}
 .qty.custom input{border-color:var(--accent);color:var(--accent)}
 .qty-reset{margin-left:3px;width:20px;height:20px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text-3);cursor:pointer;font-size:9px;display:inline-flex;align-items:center;justify-content:center}
 .qty-reset:hover{border-color:var(--accent);color:var(--accent)}
@@ -176,19 +177,27 @@ function jejumMeal(){
       {text:'Dia de muita fome: pode comer os 3 ovos cozidos antes (de preferência logo após a musculação) e tirar eles da refeição das 18h'}
     ] };
 }
+// Opções de carboidrato (dia de treino) — escolha 1, gramas editáveis. Padrões ~equivalentes a 100g de arroz.
+const CARBS = [
+  {key:'arrozBranco',   grams:100},
+  {key:'arrozIntegral', grams:110},
+  {key:'batataInglesa', grams:235},
+  {key:'batataDoce',    grams:150},
+  {key:'abobora',       grams:290}
+];
 function refeicaoUnicaMeal(prot, opts){
   const m = { time:'18:00', title:'Refeição única',
     eggsFixed:{grams:150,label:'3 ovos inteiros (cozidos ou mexidos, sem óleo extra)'},
     protein:{choices:proteinChoices(prot)},
     feijao:{grams:60},
     freeNotes:[reqVeg('2-4 xícaras de vegetais cozidos e/ou salada crua à vontade'), reqFibra] };
-  if(opts && opts.rice) m.rice = {grams:opts.rice}; // arroz só nos dias de treino
+  if(opts && opts.carb) m.carbGroup = {choices:opts.carb}; // carboidrato só nos dias de treino
   return m;
 }
 
-// Refeição única às 18h. Dia de treino ganha 100g de arroz branco; sem treino é sem carbo (o carb ~9g vem só do feijão + ovos).
+// Refeição única às 18h. Dia de treino ganha 1 carboidrato (escolha 1); sem treino é sem carbo (o carb ~9g vem só do feijão + ovos).
 const mealsLivre     = [jejumMeal(), refeicaoUnicaMeal(PROT_LIVRE, null)];
-const mealsTreinoAll = [jejumMeal(), refeicaoUnicaMeal(PROT_TREINO, {rice:100})];
+const mealsTreinoAll = [jejumMeal(), refeicaoUnicaMeal(PROT_TREINO, {carb:CARBS})];
 
 const DAYS = [
  {key:'seg', label:'Segunda', short:'SEG', treinoDesc:'Jiu Jitsu + Musculação + Esteira', defaultMode:'treino', mealsTreino:mealsTreinoAll},
@@ -206,10 +215,15 @@ function altKcal(key,grams){ return Math.round(foodMacros(key,grams).kcal); }
 const SEL_KEY='diet_sel_v1';
 let sel={};
 try{ sel=JSON.parse(localStorage.getItem(SEL_KEY)||'{}'); }catch(e){ sel={}; }
-function daySel(){ const k=DAYS[curIdx].key; if(!sel[k]) sel[k]={prot:0,eggs:true,feijao:true,rice:true}; if(sel[k].rice===undefined)sel[k].rice=true; return sel[k]; }
+const EGG_G=50; // 1 ovo inteiro ≈ 50g
+function daySel(){ const k=DAYS[curIdx].key; if(!sel[k]) sel[k]={prot:0,eggs:true,feijao:true,carb:0}; if(sel[k].carb===undefined)sel[k].carb=0; return sel[k]; }
 function saveSel(){ try{ localStorage.setItem(SEL_KEY, JSON.stringify(sel)); }catch(e){} }
 function pickProt(i){ daySel().prot=i; saveSel(); renderAll(); }
+function pickCarb(i){ daySel().carb=i; saveSel(); renderAll(); }
 function toggleItem(which){ const s=daySel(); s[which]=!s[which]; saveSel(); renderAll(); }
+// ovos são contados em UNIDADES (não gramas)
+function eggCount(){ const s=daySel(); return (s.g && s.g.eggsN!=null) ? s.g.eggsN : 3; }
+function setEggs(val){ const s=daySel(); if(!s.g)s.g={}; const n=parseInt(val,10); if(isNaN(n)||n<0) delete s.g.eggsN; else s.g.eggsN=n; saveSel(); recalcLive(); }
 // gramatura editável: usa a do plano por padrão, ou o override que você digitar
 function gramsFor(gKey, def){ const s=daySel(); return (s.g && s.g[gKey]!=null) ? s.g[gKey] : def; }
 function isCustom(gKey){ const s=daySel(); return !!(s.g && s.g[gKey]!=null); }
@@ -226,7 +240,8 @@ function recalcLive(){
   document.querySelectorAll('#mealsWrap .meal').forEach((mealEl,mi)=>{
     const meal=meals[mi]; if(!meal||!(meal.eggsFixed||meal.protein))return;
     mealEl.querySelectorAll('.kc[data-kc]').forEach(sp=>{
-      sp.textContent=altKcal(sp.dataset.food, gramsFor(sp.dataset.kc, +sp.dataset.def))+' kcal';
+      const grams = sp.dataset.eggs ? eggCount()*EGG_G : gramsFor(sp.dataset.kc, +sp.dataset.def);
+      sp.textContent=altKcal(sp.dataset.food, grams)+' kcal';
     });
     const mac=selectedMacros(meal);
     const kcEl=mealEl.querySelector('.m-kcal'); if(kcEl)kcEl.textContent=mac.kcal+' kcal';
@@ -240,9 +255,9 @@ function selectedMacros(meal){
   const s=daySel();
   let t={kcal:0,p:0,c:0,g:0};
   const add=(key,grams)=>{const m=foodMacros(key,grams);t.kcal+=m.kcal;t.p+=m.p;t.c+=m.c;t.g+=m.g;};
-  if(meal.eggsFixed && s.eggs) add('ovo', gramsFor('eggs', meal.eggsFixed.grams));
+  if(meal.eggsFixed && s.eggs) add('ovo', eggCount()*EGG_G);
   if(meal.protein){ const c=meal.protein.choices[s.prot]||meal.protein.choices[0]; add(c.key, gramsFor('prot:'+c.key, c.grams)); }
-  if(meal.rice && s.rice!==false) add('arrozBranco', gramsFor('rice', meal.rice.grams));
+  if(meal.carbGroup){ const c=meal.carbGroup.choices[s.carb||0]||meal.carbGroup.choices[0]; add(c.key, gramsFor('carb:'+c.key, c.grams)); }
   if(meal.feijao && s.feijao) add('feijao', gramsFor('feijao', meal.feijao.grams));
   return { kcal:Math.round(t.kcal), p:Math.round(t.p*10)/10, c:Math.round(t.c*10)/10, g:Math.round(t.g*10)/10 };
 }
@@ -275,6 +290,33 @@ function proteinBlock(choices){
   }).join('');
   return `<div class="choice-group">
     <div class="choice-title">Proteína <span class="choice-sub">(escolha 1 · clique pra selecionar · edite os gramas)</span></div>
+    <ul class="choice-list sel-list">${items}</ul>
+  </div>`;
+}
+function eggsRow(on){
+  const n=eggCount(), grams=n*EGG_G, kc=altKcal('ovo',grams), cust=(daySel().g&&daySel().g.eggsN!=null);
+  return `<div class="food-line click${on?'':' off'}" onclick="toggleItem('eggs')">
+    <span class="ck"><i class="fa-solid fa-check"></i></span>
+    <span class="fl-txt">${n} ${n===1?'ovo inteiro':'ovos inteiros'} (cozidos ou mexidos, sem óleo extra)</span>
+    <span class="qty${cust?' custom':''}" onclick="event.stopPropagation()">
+      <input type="number" min="0" step="1" value="${n}" oninput="setEggs(this.value)" onchange="renderMeals(DAYS[curIdx])"><span class="qty-un">ovos</span>${cust?`<button class="qty-reset" title="Voltar a 3 ovos" onclick="(function(){const s=daySel();if(s.g)delete s.g.eggsN;saveSel();renderAll();})()"><i class="fa-solid fa-rotate-left"></i></button>`:''}
+    </span>
+    <span class="kc" data-kc="eggs" data-food="ovo" data-def="150" data-eggs="1">${kc} kcal</span>
+  </div>`;
+}
+function carbBlock(choices){
+  const s=daySel();
+  const items=choices.map((c,i)=>{
+    const kc=altKcal(c.key, gramsFor('carb:'+c.key, c.grams));
+    return `<li class="${i===(s.carb||0)?'sel':''}" onclick="pickCarb(${i})">
+      <span class="radio"></span>
+      <span class="fl-txt">${FOODS[c.key].label}</span>
+      ${qtyInput('carb:'+c.key, c.grams)}
+      <span class="kc" data-kc="carb:${c.key}" data-food="${c.key}" data-def="${c.grams}">${kc} kcal</span>
+    </li>`;
+  }).join('');
+  return `<div class="choice-group">
+    <div class="choice-title">Carboidrato <span class="choice-sub">(só no treino · escolha 1 · edite os gramas)</span></div>
     <ul class="choice-list sel-list">${items}</ul>
   </div>`;
 }
@@ -317,9 +359,9 @@ function renderMeals(day){
     const mac = isMeal ? selectedMacros(meal) : {kcal:0,p:0,c:0,g:0};
     const s = daySel();
     let lines='';
-    if(meal.eggsFixed) lines+=checkRow(meal.eggsFixed.label, 'ovo', 'eggs', meal.eggsFixed.grams, s.eggs, 'eggs');
+    if(meal.eggsFixed) lines+=eggsRow(s.eggs);
     if(meal.protein) lines+=proteinBlock(meal.protein.choices);
-    if(meal.rice) lines+=checkRow('Arroz Branco Cozido (dia de treino)', 'arrozBranco', 'rice', meal.rice.grams, s.rice!==false, 'rice');
+    if(meal.carbGroup) lines+=carbBlock(meal.carbGroup.choices);
     if(meal.feijao) lines+=checkRow('Feijão Carioca Cozido (leguminosa)', 'feijao', 'feijao', meal.feijao.grams, s.feijao, 'feijao');
 
     const notesHtml = (meal.freeNotes||[]).map(n=>`<li${n.req?' class="req"':''}>${n.text}</li>`).join('');
