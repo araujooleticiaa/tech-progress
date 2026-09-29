@@ -599,8 +599,18 @@ async function loadCloud(){
   // hábitos
   const h=await sb.from(T_HABITS).select('habit_id,log_date,done').eq('person',PERSON).eq('done',true);
   if(!h.error){
-    logs={};
-    (h.data||[]).forEach(r=>{if(!logs[r.log_date])logs[r.log_date]={};logs[r.log_date][r.habit_id]=true;});
+    // cloud rows
+    const cloud={};
+    (h.data||[]).forEach(r=>{if(!cloud[r.log_date])cloud[r.log_date]={};cloud[r.log_date][r.habit_id]=true;});
+    // merge with whatever is already local (never blow away local progress with an empty cloud)
+    const local=logs||{};
+    const merged={};
+    [...Object.keys(local),...Object.keys(cloud)].forEach(d=>{merged[d]=Object.assign({},local[d]||{},cloud[d]||{});});
+    // push local-only checks up to the cloud so they become durable
+    Object.keys(local).forEach(d=>Object.keys(local[d]||{}).forEach(hid=>{
+      if(local[d][hid] && !(cloud[d]&&cloud[d][hid])) cloudToggleHabit(hid,d,true);
+    }));
+    logs=merged;
     saveHabits();
   }
   // trackers
@@ -614,7 +624,19 @@ async function loadCloud(){
       else if(r.kind==='fast')nw.fast.push({cid:r.cid,date:r.entry_date,dur:+r.num1||0,start:r.label||r.entry_date+'T00:00:00'});
       else if(r.kind==='fast_active')activeRow=r;
     });
-    trackers=nw;saveTrackers();
+    const cloudCids=new Set([...nw.weight,...nw.fast].map(x=>x.cid));
+    const localT=trackers||{weight:[],fast:[]};
+    const localCount=(localT.weight||[]).length+(localT.fast||[]).length;
+    if(cloudCids.size===0 && localCount>0){
+      // cloud empty but we have local entries — push them up, keep local
+      (localT.weight||[]).forEach(e=>cloudInsertEntry('weight',e));
+      (localT.fast||[]).forEach(e=>cloudInsertFast(e));
+    }else{
+      // union: cloud + any local-only entries (then upload the local-only ones)
+      (localT.weight||[]).forEach(e=>{if(!cloudCids.has(e.cid)){nw.weight.push(e);cloudInsertEntry('weight',e);}});
+      (localT.fast||[]).forEach(e=>{if(!cloudCids.has(e.cid)){nw.fast.push(e);cloudInsertFast(e);}});
+      trackers=nw;saveTrackers();
+    }
     // nuvem é a fonte da verdade pro timer em andamento (não mexe durante start/stop local)
     if(!fastBusy){
       if(activeRow){const ms=+activeRow.num1||Date.parse(activeRow.label);if(ms)localStorage.setItem(LS_FAST_ACTIVE,String(ms));}
