@@ -146,8 +146,8 @@ body{
 .fast-more:hover{border-color:var(--border-glow);color:var(--text)}
 .fast-add{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:1.3rem;padding-top:1.3rem;border-top:1px solid var(--border)}
 .fast-add input{padding:9px 10px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;height:38px;box-sizing:border-box}
-.fast-add input[type=time]{width:104px}
-.fast-add input[type=date]{width:150px;font-family:'JetBrains Mono',monospace;font-size:11.5px}
+.fast-add input[type=datetime-local]{width:200px;font-family:'JetBrains Mono',monospace;font-size:11.5px}
+.fast-add .fast-cap{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--text-3)}
 .fast-add input:focus{outline:none;border-color:var(--accent)}
 .fast-add .fast-dash{color:var(--text-3);font-size:14px}
 .fast-add .fast-add-btn{height:38px;padding:0 16px;border-radius:9px;border:1px solid var(--border);background:var(--bg-2);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .15s}
@@ -205,10 +205,8 @@ body{
       <div class="fast-kpi hrs"><div class="num" id="fastHrs">0</div><div class="lbl">horas totais</div></div>
     </div>
     <div class="fast-add">
-      <input type="date" id="fastDate" title="Data">
-      <input type="time" id="fastStartIn" title="Início do jejum">
-      <span class="fast-dash">→</span>
-      <input type="time" id="fastEndIn" title="Fim do jejum">
+      <span class="fast-cap">Início</span><input type="datetime-local" id="fastStartDT" title="Início do jejum (data e hora)">
+      <span class="fast-cap">Fim</span><input type="datetime-local" id="fastEndDT" title="Fim do jejum (data e hora)">
       <button class="fast-add-btn" id="fastAddBtn"><i class="fa-solid fa-plus"></i> Adicionar manual</button>
     </div>
     <div id="fastMsg" class="fast-msg"></div>
@@ -430,6 +428,13 @@ function fmtDur(sec){
   const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60;
   return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
 }
+function fmtDurLong(sec){ // dias+horas para jejuns longos; HH:MM:SS para curtos
+  sec=Math.max(0,Math.floor(sec));
+  const d=Math.floor(sec/86400), h=Math.floor(sec%86400/3600), m=Math.floor(sec%3600/60);
+  if(d>0)return d+'d'+(h?' '+h+'h':'')+(m?' '+m+'m':'');
+  const s=sec%60;
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
 function fmtHours(sec){const h=sec/3600;return (Math.round(h*10)/10).toLocaleString('pt-BR');}
 // sequência = dias consecutivos (até hoje, com folga pra hoje) com pelo menos 1 jejum concluído
 function fastStreak(){
@@ -467,19 +472,18 @@ function addFastManual(){
   const g=id=>document.getElementById(id);
   const msg=g('fastMsg');
   const setMsg=(t,k)=>{msg.textContent=t||'';msg.className='fast-msg'+(k?' '+k:'');};
-  const date=g('fastDate').value||today();
-  const start=g('fastStartIn').value, end=g('fastEndIn').value;
-  if(!start||!end){setMsg('Informe início e fim (HH:MM).','err');return;}
-  const startMs=new Date(date+'T'+start).getTime();
-  let endMs=new Date(date+'T'+end).getTime();
-  if(endMs<=startMs)endMs+=86400000; // vira a noite
-  const dur=Math.round((endMs-startMs)/1000);
+  const sv=g('fastStartDT').value, ev=g('fastEndDT').value;
+  if(!sv||!ev){setMsg('Informe início e fim (data e hora).','err');return;}
+  const startMs=new Date(sv).getTime(), endMs=new Date(ev).getTime();
+  if(isNaN(startMs)||isNaN(endMs)){setMsg('Data/hora inválida.','err');return;}
+  if(endMs<=startMs){setMsg('O fim precisa ser depois do início.','err');return;}
+  const dur=Math.round((endMs-startMs)/1000); // suporta vários dias
   if(dur<60){setMsg('Duração muito curta.','err');return;}
-  const entry={cid:cid(),date,dur,start:new Date(startMs).toISOString(),end:new Date(endMs).toISOString()};
+  const entry={cid:cid(),date:fmtLocal(new Date(startMs)),dur,start:new Date(startMs).toISOString(),end:new Date(endMs).toISOString()};
   trackers.fast.push(entry);
   saveTrackers();cloudInsertFast(entry);
-  g('fastStartIn').value='';g('fastEndIn').value='';
-  setMsg('Jejum de '+fmtDur(dur)+' adicionado.','ok');
+  g('fastEndDT').value='';
+  setMsg('Jejum de '+fmtDurLong(dur)+' adicionado.','ok');
   renderFast();renderStats();
 }
 function deleteFast(c){
@@ -512,7 +516,7 @@ function renderFast(){
   document.getElementById('fastSeq').textContent=fastStreak();
   document.getElementById('fastTot').textContent=list.length;
   const max=list.reduce((m,e)=>Math.max(m,e.dur||0),0);
-  document.getElementById('fastMax').textContent=max?fmtDur(max):'–';
+  document.getElementById('fastMax').textContent=max?fmtDurLong(max):'–';
   const totSec=list.reduce((s,e)=>s+(e.dur||0),0);
   document.getElementById('fastHrs').textContent=fmtHours(totSec);
   document.getElementById('fastBadge').textContent=list.length?fastStreak()+' 🔥':'–';
@@ -526,9 +530,10 @@ function renderFast(){
   }else{
     const rows=fastExpanded?all:all.slice(0,FAST_PREVIEW);
     hist.innerHTML=rows.map(e=>{
-      const t=new Date(e.start);
-      const hh=t.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-      return `<li><span class="d">${shortDate(e.date)}</span><span class="v">${fmtDur(e.dur)}<small>início ${hh}</small></span><button class="del" data-fc="${e.cid}">✕</button></li>`;
+      const s=new Date(e.start), en=e.end?new Date(e.end):null;
+      const dt=x=>x.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+x.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      const range=en?`${dt(s)} → ${dt(en)}`:`início ${s.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`;
+      return `<li><span class="d">${shortDate(e.date)}</span><span class="v">${fmtDurLong(e.dur)}<small>${range}</small></span><button class="del" data-fc="${e.cid}">✕</button></li>`;
     }).join('');
     hist.querySelectorAll('.del').forEach(b=>b.onclick=()=>deleteFast(b.dataset.fc));
     if(all.length>FAST_PREVIEW){
@@ -552,7 +557,7 @@ document.getElementById('weightDate').value=today();
 document.getElementById('fastBtn').onclick=()=>{fastActiveStart()?stopFast():startFast();};
 document.getElementById('fastMore').onclick=()=>{fastExpanded=!fastExpanded;renderFast();};
 document.getElementById('fastAddBtn').onclick=addFastManual;
-document.getElementById('fastDate').value=today();
+(function(){const n=new Date();n.setSeconds(0,0);const p=x=>String(x).padStart(2,'0');const v=`${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())}T${p(n.getHours())}:${p(n.getMinutes())}`;const el=document.getElementById('fastStartDT');if(el)el.value=v;})();
 
 /* ============================================================
    Supabase — sync opcional entre dispositivos
