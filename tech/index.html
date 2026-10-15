@@ -568,10 +568,10 @@ const WEEKS=[
 // injectTechTrack() spreads each week's items across Mon/Wed/Fri + a Sat pattern-log,
 // and adds a weekly job-search sprint during phase 3. Lean by design: no per-topic clock.
 const TECH_WEEKS=[
- /* wk1  d1-7   */ {t:'Setup + OOP Review',foco:'the 4 pillars of OOP',items:['Set up LeetCode (C#) + submit a warm-up solution','The 4 pillars of OOP + SOLID, in English','LeetCode: "Two Sum" (brute force → Dictionary)','LeetCode: "Valid Anagram"','Explain OOP & SOLID out loud in English']},
- /* wk2  d8-14  */ {t:'Design Patterns',foco:'Singleton, Factory, Builder, Repository, Observer, Strategy',items:['Creational patterns — study + find them in your code','Structural/Behavioral patterns — study','Explain Factory & Repository in English','LeetCode: "Contains Duplicate"','LeetCode: "Group Anagrams"']},
- /* wk3  d15-21 */ {t:'Async/Await and Concurrency',foco:'thread, task, blocking, race condition',items:['Async/await fundamentals (I/O vs CPU bound)','Deadlock & race condition — relate to a real bug','Concurrency vs Parallelism, out loud','LeetCode: "Reverse String"','LeetCode: "First Unique Character in a String"']},
- /* wk4  d22-28 */ {t:'Databases',foco:'ACID, indexing, normalization',items:['SQL vs NoSQL + ACID','Database vocabulary (indexing, normalization, FK)','Explain how an index works, in English','LeetCode: "Majority Element"','LeetCode: "Product of Array Except Self"']},
+ /* wk1  d1-7   */ {t:'Setup + OOP Review',known:true,foco:'the 4 pillars of OOP',items:['Set up LeetCode (C#) + submit a warm-up solution','The 4 pillars of OOP + SOLID, in English','LeetCode: "Two Sum" (brute force → Dictionary)','LeetCode: "Valid Anagram"','Explain OOP & SOLID out loud in English']},
+ /* wk2  d8-14  */ {t:'Design Patterns',known:true,foco:'Singleton, Factory, Builder, Repository, Observer, Strategy',items:['Creational patterns — study + find them in your code','Structural/Behavioral patterns — study','Explain Factory & Repository in English','LeetCode: "Contains Duplicate"','LeetCode: "Group Anagrams"']},
+ /* wk3  d15-21 */ {t:'Async/Await and Concurrency',known:true,foco:'thread, task, blocking, race condition',items:['Async/await fundamentals (I/O vs CPU bound)','Deadlock & race condition — relate to a real bug','Concurrency vs Parallelism, out loud','LeetCode: "Reverse String"','LeetCode: "First Unique Character in a String"']},
+ /* wk4  d22-28 */ {t:'Databases',known:true,foco:'ACID, indexing, normalization',items:['SQL vs NoSQL + ACID','Database vocabulary (indexing, normalization, FK)','Explain how an index works, in English','LeetCode: "Majority Element"','LeetCode: "Product of Array Except Self"']},
  /* wk5  d29-35 */ {t:'Hash Maps / Dictionaries',foco:'hashing, collisions, O(1)',items:['Why is a Hash Map O(1) on average? Collisions','Dictionary<K,V> deep dive (TryGetValue, Big-O)','LeetCode: "Top K Frequent Elements"','LeetCode: "Valid Sudoku"','When to reach for a hash map vs brute force']},
  /* wk6  d36-42 */ {t:'Stacks and Queues',foco:'LIFO vs FIFO',items:['LIFO vs FIFO + vocabulary (push/pop/enqueue)','Real production use cases, in English','LeetCode: "Valid Parentheses"','LeetCode: "Min Stack"','LeetCode: "Implement Queue using Stacks"']},
  /* wk7  d43-49 */ {t:'Linked Lists',foco:'node, pointer, traversal',items:['Node, pointer, traversal + LL vs Array trade-offs','LeetCode: "Reverse Linked List"','LeetCode: "Merge Two Sorted Lists"','LeetCode: "Linked List Cycle"','LeetCode: "Middle of the Linked List"']},
@@ -607,10 +607,19 @@ function injectTechTrack(days,idx){
     d.tasks.push({time,title,xp:xp||15,steps,track:track||'tech'});
     if(!/tech/.test(d.sub)) d.sub=d.sub+' + tech';
   };
+  if(tw.known){
+    // You already do this daily as a senior .NET dev — skip the theory, keep the English terms + pile on the LeetCode reps (your rusty area)
+    const leet=it.filter(s=>/LeetCode/i.test(s));
+    const english=it.find(s=>/English|out loud|Explain/i.test(s));
+    put('Mon','~5 min · Tech track · quick refresh ✓',`You already know this — just map "${tw.foco}" to its English terms`,[english||it[1]].filter(Boolean),5);
+    put('Wed','~25 min · Tech track · LeetCode reps',`${tw.t} — solve (your weak spot, slow down and nail it)`,leet.slice(0,2),20);
+    put('Fri','~20 min · Tech track · solve & explain',`${tw.t} — one more, then narrate your approach in English`,[leet[2]||'Re-solve the hardest one from Wed, timed','Explain your approach out loud in English'].filter(Boolean),15);
+  } else {
   // Spread the week's tech items across three real slots instead of one Monday dump
   put('Mon','~20 min · Tech track · study',`${tw.t}: ${tw.foco}`,[it[0],it[1]].filter(Boolean),20);
   put('Wed','~20 min · Tech track · practice',`${tw.t} — practice`,[it[2],it[3]].filter(Boolean),15);
   put('Fri','~20 min · Tech track · solve & explain',`${tw.t} — solve, then explain in English`,[it[4]].filter(Boolean),15);
+  }
   // Spaced repetition for the tech side (mirrors the English Anki loop)
   put('Sat','~15 min · Tech track · pattern log','Revisit & log patterns',[
     'Re-solve 1 problem from a PREVIOUS week, from memory',
