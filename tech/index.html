@@ -357,6 +357,32 @@ body{
 .lock-box input{width:100%;padding:.9rem 1rem;border-radius:12px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:18px;text-align:center;letter-spacing:.3em;margin-bottom:.6rem}
 .lock-box input:focus{outline:none;border-color:var(--accent)}
 .lock-box .lock-err{font-size:12.5px;color:var(--pink);min-height:16px;margin-bottom:.8rem}
+/* Exercícios */
+.ex-wrap{margin-bottom:1.6rem}
+.ex-video{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:1rem}
+.ex-video label{display:block;font-size:12px;color:var(--text-2);margin-bottom:7px}
+.ex-video label i{color:#ff5b5b;margin-right:5px}
+.ex-video input{width:100%;padding:10px 12px;border-radius:10px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:13px}
+.ex-video input:focus{outline:none;border-color:var(--accent)}
+.ex-suggest{font-size:12.5px;color:var(--text-2);background:rgba(91,140,255,.08);border:1px solid rgba(91,140,255,.22);border-radius:11px;padding:9px 13px;margin-bottom:1rem}
+.ex-suggest b{color:var(--accent)}
+.ex-phase{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:1rem 0 .5rem}
+.ex-card{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:.7rem;transition:border-color .2s}
+.ex-card.sug{border-color:rgba(91,140,255,.45);box-shadow:0 0 0 1px rgba(91,140,255,.15) inset}
+.ex-card .ex-head{display:flex;align-items:center;gap:11px}
+.ex-card .ex-ic{width:38px;height:38px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--bg-2)}
+.ex-card .ex-name{font-size:14px;font-weight:700}
+.ex-card .ex-desc{font-size:12px;color:var(--text-2);margin-top:2px;line-height:1.45}
+.ex-card .ex-badge{margin-left:auto;flex-shrink:0;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);background:rgba(91,140,255,.14);border:1px solid rgba(91,140,255,.3);padding:2px 8px;border-radius:20px}
+.ex-card .ex-in{margin-top:10px}
+.ex-card .ex-in input,.ex-card .ex-in textarea{width:100%;padding:9px 11px;border-radius:9px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;box-sizing:border-box}
+.ex-card .ex-in textarea{resize:vertical;line-height:1.4}
+.ex-card .ex-in input:focus,.ex-card .ex-in textarea:focus{outline:none;border-color:var(--accent)}
+.ex-card .ex-foot{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.ex-card .ex-gen{padding:9px 15px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.ex-card .ex-gen:hover{filter:brightness(1.08)}
+.ex-card .ex-bank{padding:9px 13px;border-radius:10px;border:1px solid var(--border-strong);background:var(--bg-2);color:var(--text-2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.ex-card .ex-bank:hover{border-color:var(--teal);color:var(--teal)}
 </style>
 </head>
 <body>
@@ -424,6 +450,16 @@ body{
   <div class="day-tabs" id="dayTabs"></div>
   <div id="makeupBar"></div>
   <div class="tasks" id="taskList"></div>
+
+  <div class="sec-title"><i class="fa-solid fa-dumbbell"></i> Exercícios · gere e estude com a IA</div>
+  <div class="ex-wrap">
+    <div class="ex-video">
+      <label for="exVideo"><i class="fa-brands fa-youtube"></i> Vídeo de hoje (cole uma vez — os exercícios de vídeo usam este link)</label>
+      <input type="url" id="exVideo" placeholder="https://youtube.com/..." oninput="exSaveVideo()">
+    </div>
+    <div id="exSuggest" class="ex-suggest"></div>
+    <div id="exList"></div>
+  </div>
 
   <div class="sec-title"><i class="fa-solid fa-headphones"></i> Passive input · 4h while you work</div>
   <div class="tasks" style="margin-bottom:1.6rem" id="passiveBox"></div>
@@ -999,6 +1035,7 @@ function renderWeek(){
   document.getElementById('wkPrev').disabled=weekIdx===0;
   document.getElementById('wkNext').disabled=weekIdx===WEEKS.length-1;
   renderTabs();renderTasks();updateXP();
+  if(typeof renderExSuggest==='function') renderExSuggest();
 }
 function renderPhase(){
   const P=PHASES[WEEKS[weekIdx].ph-1];
@@ -1559,6 +1596,106 @@ function ask(txt){
   if(typeof sendPrompt==='function'){sendPrompt(txt)}
   else{ navigator.clipboard?.writeText(txt); openModal('chat',txt); }
 }
+
+// ===================== EXERCÍCIOS (biblioteca de prompts) =====================
+let exVideo = localStorage.getItem('ex_video') || '';
+function exSaveVideo(){ exVideo=document.getElementById('exVideo').value.trim(); localStorage.setItem('ex_video',exVideo); }
+function exLevel(){ return levelPlain||'A1→A2'; }
+function exQLang(){ return /A1|A2/.test(exLevel()) ? 'português' : 'inglês'; }
+function exVid(){ return exVideo || '[cole o link do vídeo no campo "Vídeo de hoje" acima]'; }
+function exWeekFoco(){ return (WEEKS[weekIdx]&&WEEKS[weekIdx].foco)||'o foco da semana'; }
+function openPhrases(){ openModal('phrases'); }
+
+const EXERCISES=[
+ {id:'priming',ph:'Antes de assistir',ic:'🧭',name:'Priming',input:null,
+  desc:'Prepara a compreensão ANTES de assistir: blocos, vocab/expressões por bloco, timeline e o que vai aparecer.',
+  build:()=>`Estou assistindo este vídeo para imersão em inglês (nível ${exLevel()}): ${exVid()}\n\nAntes de eu assistir, me prepare:\n1) Divida o vídeo em blocos de acontecimento, em ordem.\n2) Para cada bloco: 5 vocabulários-chave, 2-3 expressões idiomáticas ou colocações, e 1-2 linhas de contexto (do que se trata, quem fala, situação).\n3) Uma timeline/capítulos (divisão por blocos de contexto).\n4) Elementos de apoio: nomes próprios, lugares, termos técnicos ou recorrentes que vão aparecer — só sinalize "isso vai aparecer", sem traduzir tudo.`},
+ {id:'vocab',ph:'Depois de assistir',ic:'📚',name:'Vocabulário & Frases',input:null,bank:true,
+  desc:'Minera o vídeo: 25-30 vocabulários + 15-20 frases do dia a dia, com tradução, padrão gramatical e protip.',
+  build:()=>`Acabei de assistir este vídeo e estou usando para imersão em inglês (nível ${exLevel()}): ${exVid()}\n\nExtraia 25 a 30 vocabulários-chave para a compreensão e 15 a 20 frases altamente engajáveis e memoráveis que são ditas no dia a dia. Inclua a tradução logo abaixo de cada item, me diga o principal padrão gramatical e um protip para lembrar do conteúdo. Adeque as frases ao meu nível (${exLevel()}).`},
+ {id:'quiz',ph:'Depois de assistir',ic:'✅',name:'Quiz',input:null,
+  desc:'Quiz interativo de compreensão (geral, expressões e cloze) com timestamps nas respostas.',
+  build:()=>`Crie um quiz interativo de 5 a 10 perguntas de múltipla escolha para eu estudar inglês usando este vídeo: ${exVid()}\n\nFoque em compreensão auditiva, expressões usadas no vídeo e preenchimento de lacunas (cloze). Baseie-se estritamente no áudio e na transcrição do vídeo. Faça as perguntas e opções em ${exQLang()} e inclua o timestamp (minutagem) na explicação de cada resposta (certa ou errada), pra eu voltar e ouvir de novo. Use a ferramenta interativa de quiz.`},
+ {id:'gramatica',ph:'Depois de assistir',ic:'🔧',name:'Gramática Intencional',input:null,
+  desc:'Extrai um padrão gramatical recorrente do vídeo e gera 30-50 frases com ele.',
+  build:()=>`Estou estudando inglês no nível ${exLevel()}. Neste vídeo: ${exVid()} (foco gramatical da minha semana: "${exWeekFoco()}"), extraia um padrão gramatical recorrente e me entregue 30 a 50 frases usando esse padrão.`},
+ {id:'diario',ph:'Depois de assistir',ic:'🎙️',name:'Diário de Listening',input:'textarea',inLabel:'Explique em inglês o que você entendeu dos ~5 min (pode ser bem simples):',
+  desc:'Assiste ~5 min, explica o que entendeu em inglês, e a IA corrige e aponta o que faltou.',
+  build:(v)=>`Assisti ~5 minutos deste vídeo: ${exVid()}\n\nAqui está, em inglês, o que eu entendi:\n"${v||'[escreva aqui o que você entendeu]'}"\n\nCorrija meu inglês (gramática e vocabulário), aponte o que entendi errado ou deixei passar em relação ao vídeo, e me dê formas melhores e mais naturais de dizer. Nível ${exLevel()}.`},
+ {id:'construcao',ph:'Produção',ic:'✍️',name:'Construção de Frases',input:'textarea',bank:true,inLabel:'Lista de palavras + contexto/emoção (ou deixe em branco pra IA escolher):',
+  desc:'A partir de uma lista de palavras + um contexto/emoção, gera 3 frases por palavra + um padrão com 10 frases.',
+  build:(v)=>`Estou estudando inglês no nível ${exLevel()}.\n\n${v?`Base: ${v}`:'Escolha um contexto, objeto/personagem, ação ou emoção comum do dia a dia, e uma lista de 15 palavras frequentes.'}\n\nMe entregue: 3 frases usando cada palavra no contexto escolhido, e um padrão gramatical com pelo menos 10 frases. Se eu não tiver fornecido lista, contexto ou padrão, escolha os mais comuns do dia a dia.`},
+ {id:'dialogo',ph:'Produção',ic:'💬',name:'Diálogo (shadowing)',input:'textarea',inLabel:'Tópico (ex: trilhas e aventuras) OU descreva seu dia:',
+  desc:'Gera um diálogo natural estilo "áudios de WhatsApp" pra shadowing/role-play — por tópico ou baseado no seu dia.',
+  build:(v)=>`Me gere um diálogo em inglês entre dois nativos ${v?`sobre: ${v}`:'sobre um assunto comum do dia a dia'}. Vocabulário adequado ao nível ${exLevel()}, formato "áudios de WhatsApp", no mínimo 15 linhas de diálogo. Se eu descrevi o meu dia, baseie a conversa nele (um deles pode estar cansado da rotina puxada).`}
+];
+
+// quais exercícios sugerir em cada dia da semana (rótulo do dia selecionado)
+const EX_BY_DAY={
+ Mon:['priming','vocab','gramatica','quiz'],
+ Tue:['dialogo'],
+ Wed:['priming','quiz','diario'],
+ Thu:['diario','dialogo','construcao'],
+ Fri:['construcao','vocab'],
+ Sat:['priming','vocab'],
+ Sun:['construcao']
+};
+function exGen(id){
+  const ex=EXERCISES.find(e=>e.id===id); if(!ex)return;
+  let v='';
+  if(ex.input){ const el=document.getElementById('exin-'+id); v=el?el.value.trim():''; }
+  ask(ex.build(v));
+}
+function exCardHTML(ex,sug){
+  const inEl = ex.input==='textarea'
+    ? `<div class="ex-in"><label style="font-size:11px;color:var(--text-3);display:block;margin-bottom:4px">${ex.inLabel||''}</label><textarea id="exin-${ex.id}" rows="2" placeholder=""></textarea></div>`
+    : ex.input==='input'
+    ? `<div class="ex-in"><input id="exin-${ex.id}" type="text" placeholder="${ex.inLabel||''}"></div>` : '';
+  const bankBtn = ex.bank ? `<button class="ex-bank" onclick="openPhrases()" title="Salvar o que gerar no Diário de frases"><i class="fa-solid fa-book-bookmark"></i> → Diário de frases</button>` : '';
+  const usesVideo = !ex.input || ex.id==='diario';
+  return `<div class="ex-card${sug?' sug':''}">
+    <div class="ex-head">
+      <div class="ex-ic">${ex.ic}</div>
+      <div><div class="ex-name">${ex.name}</div><div class="ex-desc">${ex.desc}</div></div>
+      ${sug?'<span class="ex-badge">hoje</span>':''}
+    </div>
+    ${inEl}
+    <div class="ex-foot">
+      <button class="ex-gen" onclick="exGen('${ex.id}')"><i class="fa-solid fa-wand-magic-sparkles"></i> Gerar prompt</button>
+      ${bankBtn}
+    </div>
+  </div>`;
+}
+function renderExercises(){
+  const el=document.getElementById('exList'); if(!el)return;
+  const vEl=document.getElementById('exVideo'); if(vEl&&!vEl.value) vEl.value=exVideo;
+  const phases=['Antes de assistir','Depois de assistir','Produção'];
+  el.innerHTML=phases.map(ph=>{
+    const cards=EXERCISES.filter(e=>e.ph===ph).map(e=>exCardHTML(e,false)).join('');
+    return `<div class="ex-phase">${ph}</div>${cards}`;
+  }).join('');
+}
+function renderExSuggest(){
+  if(!window.exReady)return; // evita rodar antes das definições (TDZ no load inicial)
+  const el=document.getElementById('exSuggest'); if(!el)return;
+  const label=(DAYS[cur]&&DAYS[cur].label)||'Mon';
+  const ids=EX_BY_DAY[label]||[];
+  const names=ids.map(id=>{const e=EXERCISES.find(x=>x.id===id);return e?`${e.ic} ${e.name}`:null;}).filter(Boolean);
+  el.innerHTML=`<b>Sugeridos para ${label}:</b> ${names.join(' · ')||'—'}`;
+  // destaca os cards sugeridos
+  document.querySelectorAll('#exList .ex-card').forEach((c,i)=>{
+    const name=c.querySelector('.ex-name')?.textContent;
+    const isSug=ids.some(id=>{const e=EXERCISES.find(x=>x.id===id);return e&&e.name===name;});
+    c.classList.toggle('sug',isSug);
+    let badge=c.querySelector('.ex-badge');
+    if(isSug && !badge){ const b=document.createElement('span'); b.className='ex-badge'; b.textContent='hoje'; c.querySelector('.ex-head').appendChild(b); }
+    if(!isSug && badge) badge.remove();
+  });
+}
+window.exReady=true;
+renderExercises();
+renderExSuggest();
+
 const modalBg=document.getElementById('modalBg'),modalBox=document.getElementById('modalBox');
 function openModal(type,extra){
   let html='';
