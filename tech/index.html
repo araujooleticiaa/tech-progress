@@ -492,6 +492,34 @@ body{
     <button class="btn primary" onclick="openModal('phrases')"><i class="fa-solid fa-plus"></i> Adicionar frases</button>
   </div>
 
+  <style>
+  .ch-wrap{margin-bottom:1.6rem}
+  .ch-head{display:flex;align-items:center;gap:10px;margin-bottom:.9rem}
+  .ch-head .btn{margin-left:auto}
+  .ch-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:14px;align-items:start}
+  .ch-col{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1rem .9rem;min-width:0}
+  .ch-col-head{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:.7rem;padding:0 .2rem}
+  .ch-col-head .ch-count{margin-left:auto;font-size:11px;font-weight:600;color:var(--text-3);background:var(--bg-2);padding:2px 8px;border-radius:20px}
+  .ch-list{display:flex;flex-direction:column;gap:6px}
+  .ch-chip{display:flex;align-items:center;gap:9px;padding:.55rem .6rem;border-radius:11px;background:var(--bg-2);border:1px solid var(--border);transition:border-color .2s,transform .2s}
+  .ch-chip:hover{border-color:var(--border-strong);transform:translateX(2px)}
+  .ch-chip > i{color:#ff5b5b;font-size:15px;flex-shrink:0}
+  .ch-chip a{flex:1;min-width:0;color:var(--text);text-decoration:none;font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ch-chip a:hover{color:var(--accent)}
+  .ch-chip button{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:12px;padding:3px 4px;border-radius:7px;flex-shrink:0}
+  .ch-chip button:hover{color:var(--text);background:var(--card-2)}
+  .ch-chip .ch-del:hover{color:var(--pink)}
+  .ch-empty{font-size:12px;color:var(--text-3);padding:.4rem .2rem}
+  .ch-cat-input{position:relative}
+  </style>
+  <div class="ch-wrap">
+    <div class="ch-head">
+      <div class="sec-title" style="margin:0"><i class="fa-brands fa-youtube"></i> Canais &amp; Recursos<span class="day-badge" id="chCountBadge">–</span></div>
+      <button class="btn primary" onclick="openModal('channels')"><i class="fa-solid fa-plus"></i> Adicionar canal</button>
+    </div>
+    <div class="ch-board" id="chBoard"><div class="ch-empty">Carregando…</div></div>
+  </div>
+
   <div class="sec-title"><i class="fa-solid fa-briefcase"></i> Application tracker<span class="day-badge" id="axCountBadge">–</span></div>
   <div class="tasks" style="margin-bottom:1.6rem;padding:1rem 1.2rem">
     <a class="btn primary" href="applications.html"><i class="fa-solid fa-table-columns"></i> Open the Kanban board</a>
@@ -1355,6 +1383,141 @@ async function pjUpdateCount(){
 }
 pjUpdateCount();
 
+// ===== Canais & Recursos (Supabase table: channels) =====
+const CH_TABLE='channels';
+// Categories render in this order; any custom ones the user adds show after, alphabetically.
+const CH_CATS=['.NET / Tech','Better Life','Training','Audiobooks','Aleatórios'];
+const CH_EMOJI={'.NET / Tech':'🖥️','Better Life':'🌱','Training':'🏋️','Audiobooks':'🎧','Aleatórios':'🎲'};
+// Seeded once if the table is empty and we haven't seeded before. Editable afterwards.
+const CH_DEFAULTS=[
+  ['.NET / Tech','https://www.youtube.com/@Fireship/videos'],
+  ['.NET / Tech','https://www.youtube.com/@NETRocks-pr4iv/videos'],
+  ['.NET / Tech','https://www.youtube.com/@shanselman'],
+  ['.NET / Tech','https://www.youtube.com/@letphil/videos'],
+  ['.NET / Tech','https://www.youtube.com/@JomaTech'],
+  ['.NET / Tech','https://www.youtube.com/@clem'],
+  ['.NET / Tech','https://www.youtube.com/@hellomayuko'],
+  ['.NET / Tech','https://www.youtube.com/@ThePrimeTimeagen'],
+  ['.NET / Tech','https://www.youtube.com/@fknight/videos'],
+  ['.NET / Tech','https://www.youtube.com/@nickchapsas/videos'],
+  ['.NET / Tech','https://www.youtube.com/@vsyrakis'],
+  ['Better Life','https://www.youtube.com/@clarkkegley'],
+  ['Better Life','https://www.youtube.com/@quamobiz'],
+  ['Better Life','https://www.youtube.com/@DanZakaria'],
+  ['Training','https://www.youtube.com/@just-merk'],
+  ['Training','https://www.youtube.com/@finlayedwards6877'],
+  ['Audiobooks','https://www.youtube.com/@eeaudiobooks/'],
+  ['Aleatórios','https://www.youtube.com/@30MinEnglishPod'],
+];
+let chRows=[];
+function chEscape(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function chHandle(url){
+  try{ const m=String(url).match(/@([^/?#]+)/); if(m)return '@'+m[1];
+    const h=new URL(url).hostname.replace(/^www\./,''); return h; }
+  catch(e){ return url||'link'; }
+}
+function chLabel(r){ return (r.label&&r.label.trim())||chHandle(r.url); }
+function chCatOrder(cat){ const i=CH_CATS.indexOf(cat); return i<0?999:i; }
+function chMsg(t,k){ const el=document.getElementById('chSaveMsg'); if(el){el.textContent=t||'';el.className='pj-msg'+(k?' '+k:'');} }
+function chRenderBoard(){
+  const board=document.getElementById('chBoard'); if(!board)return;
+  if(chRows.length===0){ board.innerHTML='<div class="ch-empty">Nenhum canal ainda. Clique em "Adicionar canal".</div>'; return; }
+  const cats=[...new Set(chRows.map(r=>r.category))].sort((a,b)=>{
+    const oa=chCatOrder(a),ob=chCatOrder(b); return oa!==ob?oa-ob:a.localeCompare(b);
+  });
+  board.innerHTML=cats.map(cat=>{
+    const items=chRows.filter(r=>r.category===cat);
+    return `<div class="ch-col">
+      <div class="ch-col-head"><span>${CH_EMOJI[cat]||'📺'}</span><span>${chEscape(cat)}</span><span class="ch-count">${items.length}</span></div>
+      <div class="ch-list">${items.map(r=>`
+        <div class="ch-chip">
+          <i class="fa-brands fa-youtube"></i>
+          <a href="${chEscape(r.url)}" target="_blank" rel="noopener" title="${chEscape(r.url)}">${chEscape(chLabel(r))}</a>
+          <button onclick="chCopy('${r.id}')" title="Copiar link"><i class="fa-solid fa-copy"></i></button>
+          <button class="ch-del" onclick="chDelete('${r.id}')" title="Excluir"><i class="fa-solid fa-trash"></i></button>
+        </div>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+function chCopy(id){
+  const r=chRows.find(x=>String(x.id)===String(id)); if(!r)return;
+  try{ navigator.clipboard.writeText(r.url); }catch(e){}
+}
+function chUpdateCount(){
+  const el=document.getElementById('chCountBadge'); if(!el)return;
+  el.textContent = sb ? (chRows.length+' canais') : 'cloud off';
+}
+async function chSeedIfEmpty(){
+  if(!sb) return;
+  if(localStorage.getItem('ch_seeded')==='1') return;
+  try{
+    const payload=CH_DEFAULTS.map(([category,url])=>({category,url,label:''}));
+    const res=await sb.from(CH_TABLE).insert(payload);
+    if(res.error)throw res.error;
+    localStorage.setItem('ch_seeded','1');
+  }catch(e){ console.warn('channel seed failed',e); }
+}
+async function chLoad(){
+  const board=document.getElementById('chBoard'); if(!board)return;
+  if(!sb){ board.innerHTML='<div class="ch-empty">Cloud desconectado — conecte o Supabase para ver os canais.</div>'; chUpdateCount(); return; }
+  try{
+    let res=await sb.from(CH_TABLE).select('id,category,url,label,created_at').order('created_at',{ascending:true});
+    if(res.error)throw res.error;
+    if((res.data||[]).length===0 && localStorage.getItem('ch_seeded')!=='1'){
+      await chSeedIfEmpty();
+      res=await sb.from(CH_TABLE).select('id,category,url,label,created_at').order('created_at',{ascending:true});
+      if(res.error)throw res.error;
+    }
+    chRows=res.data||[];
+    chRenderBoard();
+    chUpdateCount();
+  }catch(e){
+    console.warn('channel load failed',e);
+    board.innerHTML='<div class="ch-empty">Erro ao carregar — a tabela "channels" existe no Supabase? (veja o SQL fornecido)</div>';
+  }
+}
+async function chAdd(){
+  chMsg('');
+  if(!sb){ chMsg('Cloud desconectado — não é possível salvar agora.','err'); return; }
+  const cat=(document.getElementById('chCat').value||'').trim();
+  const url=(document.getElementById('chUrl').value||'').trim();
+  const label=(document.getElementById('chLabelInput').value||'').trim();
+  if(!cat){ chMsg('Escolha ou digite um tema (coluna).','err'); return; }
+  if(!url){ chMsg('Cole a URL do canal.','err'); return; }
+  const btn=document.getElementById('chAddBtn');
+  if(btn){ btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Salvando…'; }
+  try{
+    const res=await sb.from(CH_TABLE).insert([{category:cat,url,label}]);
+    if(res.error)throw res.error;
+    document.getElementById('chUrl').value='';
+    document.getElementById('chLabelInput').value='';
+    await chLoad();
+    chRenderCatList();
+    chMsg('Canal adicionado ✓','ok');
+  }catch(e){
+    console.warn('channel add failed',e);
+    chMsg('Erro ao salvar no Supabase. A tabela "channels" existe?','err');
+  }finally{
+    if(btn){ btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-plus"></i> Adicionar'; }
+  }
+}
+async function chDelete(id){
+  if(!sb)return;
+  const r=chRows.find(x=>String(x.id)===String(id));
+  if(r && !confirm('Excluir "'+chLabel(r)+'"?')) return;
+  try{
+    const res=await sb.from(CH_TABLE).delete().eq('id',id);
+    if(res.error)throw res.error;
+    await chLoad();
+  }catch(e){ console.warn('channel delete failed',e); }
+}
+function chRenderCatList(){
+  const dl=document.getElementById('chCatOptions'); if(!dl)return;
+  const cats=[...new Set([...CH_CATS, ...chRows.map(r=>r.category)])];
+  dl.innerHTML=cats.map(c=>`<option value="${chEscape(c)}">`).join('');
+}
+chLoad();
+
 // ===== Application tracker (Supabase table: applications) =====
 const AX_TABLE='applications';
 const AX_STATUSES=['Applied','Screening','Take-home','Interview','Final round','Offer','Rejected'];
@@ -1737,6 +1900,23 @@ function openModal(type,extra){
       <li><i class="fa-solid fa-dollar-sign"></i><div><b><a href="https://www.levels.fyi/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">levels.fyi</a></b><small>Real compensation data — prep your salary negotiation</small></div></li>
       <li><i class="fa-solid fa-globe"></i><div><b><a href="https://remoteok.com/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">RemoteOK</a></b><small>Remote-only board — filter for .NET / C# / backend</small></div></li>
     </ul>`;
+  }else if(type==='channels'){
+    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="m-ic">📺</div><h2>Adicionar canal</h2>
+    <p>Cole o link de um canal (YouTube, podcast, etc.) e escolha um tema. Digite um tema novo para criar uma coluna nova. Salva no Supabase.</p>
+    <div class="pj-form">
+      <label for="chCat">Tema (coluna)</label>
+      <input type="text" id="chCat" list="chCatOptions" placeholder="Ex: .NET / Tech — ou digite um tema novo" autocomplete="off">
+      <datalist id="chCatOptions"></datalist>
+      <label for="chUrl" style="margin-top:.6rem">URL do canal</label>
+      <input type="text" id="chUrl" placeholder="https://www.youtube.com/@canal">
+      <label for="chLabelInput" style="margin-top:.6rem">Nome (opcional — se vazio, uso o @handle)</label>
+      <input type="text" id="chLabelInput" placeholder="Ex: Nick Chapsas">
+      <div style="display:flex;align-items:center;gap:10px;margin-top:.8rem">
+        <button class="btn primary" id="chAddBtn" onclick="chAdd()"><i class="fa-solid fa-plus"></i> Adicionar</button>
+        <span class="pj-msg" id="chSaveMsg"></span>
+      </div>
+    </div>`;
   }else if(type==='progress'){
     const daysDone=DAYS.filter((d,i)=>dayComplete(i)).length;
     const P=PHASES[WEEKS[weekOfDay(Math.max(1,studyDay))].ph-1];
@@ -1822,6 +2002,7 @@ function openModal(type,extra){
   modalBg.classList.add('show');
   if(type==='phrases'){ pjRows=[]; pjRenderPreview(); pjLoadSaved(); }
   if(type==='apps'){ axLoad(); }
+  if(type==='channels'){ chRenderCatList(); }
 }
 function closeModal(){modalBg.classList.remove('show')}
 function resetProgress(){
