@@ -493,31 +493,21 @@ body{
   </div>
 
   <style>
-  .ch-wrap{margin-bottom:1.6rem}
-  .ch-head{display:flex;align-items:center;gap:10px;margin-bottom:.9rem}
-  .ch-head .btn{margin-left:auto}
-  .ch-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:14px;align-items:start}
-  .ch-col{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1rem .9rem;min-width:0}
-  .ch-col-head{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:.7rem;padding:0 .2rem}
-  .ch-col-head .ch-count{margin-left:auto;font-size:11px;font-weight:600;color:var(--text-3);background:var(--bg-2);padding:2px 8px;border-radius:20px}
-  .ch-list{display:flex;flex-direction:column;gap:6px}
-  .ch-chip{display:flex;align-items:center;gap:9px;padding:.55rem .6rem;border-radius:11px;background:var(--bg-2);border:1px solid var(--border);transition:border-color .2s,transform .2s}
-  .ch-chip:hover{border-color:var(--border-strong);transform:translateX(2px)}
-  .ch-chip > i{color:#ff5b5b;font-size:15px;flex-shrink:0}
-  .ch-chip a{flex:1;min-width:0;color:var(--text);text-decoration:none;font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ch-chip a:hover{color:var(--accent)}
-  .ch-chip button{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:12px;padding:3px 4px;border-radius:7px;flex-shrink:0}
-  .ch-chip button:hover{color:var(--text);background:var(--card-2)}
-  .ch-chip .ch-del:hover{color:var(--pink)}
-  .ch-empty{font-size:12px;color:var(--text-3);padding:.4rem .2rem}
-  .ch-cat-input{position:relative}
+  .ch-group{font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.05em;margin:1.3rem 0 .6rem;display:flex;align-items:center;gap:8px}
+  .ch-group:first-child{margin-top:0}
+  .ch-group .n{margin-left:auto;font-size:11px;color:var(--text-3);background:var(--bg-2);padding:2px 8px;border-radius:20px;text-transform:none;letter-spacing:0;font-weight:600}
+  .ch-item{display:flex;align-items:center;gap:11px;padding:.6rem .75rem;border-radius:11px;background:var(--bg-2);border:1px solid var(--border);margin-bottom:6px;transition:border-color .2s}
+  .ch-item:hover{border-color:var(--border-strong)}
+  .ch-item > i{color:#ff5b5b;font-size:16px;flex-shrink:0}
+  .ch-item a{flex:1;min-width:0;color:var(--text);text-decoration:none;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ch-item a:hover{color:var(--accent)}
+  .ch-item button{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:13px;padding:5px 7px;border-radius:8px;flex-shrink:0}
+  .ch-item button:hover{color:var(--text);background:var(--card)}
+  .ch-item .ch-del:hover{color:var(--pink)}
   </style>
-  <div class="ch-wrap">
-    <div class="ch-head">
-      <div class="sec-title" style="margin:0"><i class="fa-brands fa-youtube"></i> Canais &amp; Recursos<span class="day-badge" id="chCountBadge">–</span></div>
-      <button class="btn primary" onclick="openModal('channels')"><i class="fa-solid fa-plus"></i> Adicionar canal</button>
-    </div>
-    <div class="ch-board" id="chBoard"><div class="ch-empty">Carregando…</div></div>
+  <div class="sec-title"><i class="fa-brands fa-youtube"></i> Canais &amp; Recursos<span class="day-badge" id="chCountBadge">–</span></div>
+  <div class="tasks" style="margin-bottom:1.6rem;padding:1rem 1.2rem">
+    <button class="btn primary" onclick="openModal('channels')"><i class="fa-brands fa-youtube"></i> Ver canais &amp; adicionar</button>
   </div>
 
   <div class="sec-title"><i class="fa-solid fa-briefcase"></i> Application tracker<span class="day-badge" id="axCountBadge">–</span></div>
@@ -1419,33 +1409,36 @@ function chHandle(url){
 function chLabel(r){ return (r.label&&r.label.trim())||chHandle(r.url); }
 function chCatOrder(cat){ const i=CH_CATS.indexOf(cat); return i<0?999:i; }
 function chMsg(t,k){ const el=document.getElementById('chSaveMsg'); if(el){el.textContent=t||'';el.className='pj-msg'+(k?' '+k:'');} }
-function chRenderBoard(){
-  const board=document.getElementById('chBoard'); if(!board)return;
-  if(chRows.length===0){ board.innerHTML='<div class="ch-empty">Nenhum canal ainda. Clique em "Adicionar canal".</div>'; return; }
+function chRenderModalList(){
+  const box=document.getElementById('chModalList'); if(!box)return;
+  if(chRows.length===0){ box.innerHTML='<div class="pj-empty">Nenhum canal ainda. Adicione o primeiro acima.</div>'; return; }
   const cats=[...new Set(chRows.map(r=>r.category))].sort((a,b)=>{
     const oa=chCatOrder(a),ob=chCatOrder(b); return oa!==ob?oa-ob:a.localeCompare(b);
   });
-  board.innerHTML=cats.map(cat=>{
+  box.innerHTML=cats.map(cat=>{
     const items=chRows.filter(r=>r.category===cat);
-    return `<div class="ch-col">
-      <div class="ch-col-head"><span>${CH_EMOJI[cat]||'📺'}</span><span>${chEscape(cat)}</span><span class="ch-count">${items.length}</span></div>
-      <div class="ch-list">${items.map(r=>`
-        <div class="ch-chip">
+    return `<div class="ch-group"><span>${CH_EMOJI[cat]||'📺'}</span><span>${chEscape(cat)}</span><span class="n">${items.length}</span></div>`+
+      items.map(r=>`
+        <div class="ch-item">
           <i class="fa-brands fa-youtube"></i>
           <a href="${chEscape(r.url)}" target="_blank" rel="noopener" title="${chEscape(r.url)}">${chEscape(chLabel(r))}</a>
           <button onclick="chCopy('${r.id}')" title="Copiar link"><i class="fa-solid fa-copy"></i></button>
           <button class="ch-del" onclick="chDelete('${r.id}')" title="Excluir"><i class="fa-solid fa-trash"></i></button>
-        </div>`).join('')}</div>
-    </div>`;
+        </div>`).join('');
   }).join('');
 }
 function chCopy(id){
   const r=chRows.find(x=>String(x.id)===String(id)); if(!r)return;
-  try{ navigator.clipboard.writeText(r.url); }catch(e){}
+  try{ navigator.clipboard.writeText(r.url); chMsg('Link copiado ✓','ok'); }catch(e){}
 }
-function chUpdateCount(){
+async function chUpdateCount(){
   const el=document.getElementById('chCountBadge'); if(!el)return;
-  el.textContent = sb ? (chRows.length+' canais') : 'cloud off';
+  if(!sb){ el.textContent='cloud off'; return; }
+  try{
+    const res=await sb.from(CH_TABLE).select('id',{count:'exact',head:true});
+    if(res.error)throw res.error;
+    el.textContent=(res.count??0)+' canais';
+  }catch(e){ el.textContent='–'; }
 }
 async function chSeedIfEmpty(){
   if(!sb) return;
@@ -1457,9 +1450,10 @@ async function chSeedIfEmpty(){
     localStorage.setItem('ch_seeded','1');
   }catch(e){ console.warn('channel seed failed',e); }
 }
-async function chLoad(){
-  const board=document.getElementById('chBoard'); if(!board)return;
-  if(!sb){ board.innerHTML='<div class="ch-empty">Cloud desconectado — conecte o Supabase para ver os canais.</div>'; chUpdateCount(); return; }
+async function chLoadModal(){
+  const box=document.getElementById('chModalList'); if(!box)return;
+  if(!sb){ box.innerHTML='<div class="pj-empty">Cloud desconectado — conecte o Supabase para ver os canais.</div>'; return; }
+  box.innerHTML='<div class="pj-empty">Carregando…</div>';
   try{
     let res=await sb.from(CH_TABLE).select('id,category,url,label,created_at').order('created_at',{ascending:true});
     if(res.error)throw res.error;
@@ -1469,11 +1463,12 @@ async function chLoad(){
       if(res.error)throw res.error;
     }
     chRows=res.data||[];
-    chRenderBoard();
+    chRenderModalList();
+    chRenderCatList();
     chUpdateCount();
   }catch(e){
     console.warn('channel load failed',e);
-    board.innerHTML='<div class="ch-empty">Erro ao carregar — a tabela "channels" existe no Supabase? (veja o SQL fornecido)</div>';
+    box.innerHTML='<div class="pj-empty">Erro ao carregar — a tabela "channels" existe no Supabase? (veja o SQL fornecido)</div>';
   }
 }
 async function chAdd(){
@@ -1491,8 +1486,7 @@ async function chAdd(){
     if(res.error)throw res.error;
     document.getElementById('chUrl').value='';
     document.getElementById('chLabelInput').value='';
-    await chLoad();
-    chRenderCatList();
+    await chLoadModal();
     chMsg('Canal adicionado ✓','ok');
   }catch(e){
     console.warn('channel add failed',e);
@@ -1508,7 +1502,7 @@ async function chDelete(id){
   try{
     const res=await sb.from(CH_TABLE).delete().eq('id',id);
     if(res.error)throw res.error;
-    await chLoad();
+    await chLoadModal();
   }catch(e){ console.warn('channel delete failed',e); }
 }
 function chRenderCatList(){
@@ -1516,7 +1510,7 @@ function chRenderCatList(){
   const cats=[...new Set([...CH_CATS, ...chRows.map(r=>r.category)])];
   dl.innerHTML=cats.map(c=>`<option value="${chEscape(c)}">`).join('');
 }
-chLoad();
+chUpdateCount();
 
 // ===== Application tracker (Supabase table: applications) =====
 const AX_TABLE='applications';
@@ -1916,7 +1910,8 @@ function openModal(type,extra){
         <button class="btn primary" id="chAddBtn" onclick="chAdd()"><i class="fa-solid fa-plus"></i> Adicionar</button>
         <span class="pj-msg" id="chSaveMsg"></span>
       </div>
-    </div>`;
+    </div>
+    <div id="chModalList" style="margin-top:1.4rem"><div class="pj-empty">Carregando…</div></div>`;
   }else if(type==='progress'){
     const daysDone=DAYS.filter((d,i)=>dayComplete(i)).length;
     const P=PHASES[WEEKS[weekOfDay(Math.max(1,studyDay))].ph-1];
@@ -1997,12 +1992,12 @@ function openModal(type,extra){
     <p>This prompt was copied to your clipboard. Paste it into Claude's chat to begin:</p>
     <ul class="m-list"><li><i class="fa-solid fa-quote-left"></i><div><b>${extra}</b></div></li></ul>`;
   }
-  modalBox.className='modal'+(type==='phrases'?' wide':type==='apps'?' kanban':'');
+  modalBox.className='modal'+(type==='phrases'||type==='channels'?' wide':type==='apps'?' kanban':'');
   modalBox.innerHTML=html;
   modalBg.classList.add('show');
   if(type==='phrases'){ pjRows=[]; pjRenderPreview(); pjLoadSaved(); }
   if(type==='apps'){ axLoad(); }
-  if(type==='channels'){ chRenderCatList(); }
+  if(type==='channels'){ chRenderCatList(); chLoadModal(); }
 }
 function closeModal(){modalBg.classList.remove('show')}
 function resetProgress(){
