@@ -494,30 +494,9 @@ body{
     <button class="btn primary" onclick="openModal('phrases')"><i class="fa-solid fa-plus"></i> Adicionar frases</button>
   </div>
 
-  <style>
-  .ch-group{font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.05em;margin:1.3rem 0 .6rem;display:flex;align-items:center;gap:8px}
-  .ch-group:first-child{margin-top:0}
-  .ch-group .n{margin-left:auto;font-size:11px;color:var(--text-3);background:var(--bg-2);padding:2px 8px;border-radius:20px;text-transform:none;letter-spacing:0;font-weight:600}
-  .ch-item{display:flex;align-items:center;gap:11px;padding:.6rem .75rem;border-radius:11px;background:var(--bg-2);border:1px solid var(--border);margin-bottom:6px;transition:border-color .2s}
-  .ch-item:hover{border-color:var(--border-strong)}
-  .ch-item > i{color:#ff5b5b;font-size:16px;flex-shrink:0}
-  .ch-item a{flex:1;min-width:0;color:var(--text);text-decoration:none;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ch-item a:hover{color:var(--accent)}
-  .ch-item button{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:13px;padding:5px 7px;border-radius:8px;flex-shrink:0}
-  .ch-item button:hover{color:var(--text);background:var(--card)}
-  .ch-item .ch-del:hover{color:var(--pink)}
-  #chModalList{max-height:min(44vh,400px);overflow-y:auto;padding:.2rem .5rem .2rem .2rem;margin-top:1.1rem;border-top:1px solid var(--border);padding-top:1.1rem}
-  #chModalList::-webkit-scrollbar{width:8px}
-  #chModalList::-webkit-scrollbar-track{background:transparent}
-  #chModalList::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:20px}
-  #chModalList::-webkit-scrollbar-thumb:hover{background:var(--text-3)}
-  #chModalList{scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
-  .ch-group{padding:.3rem .2rem;margin:1.1rem 0 .5rem}
-  .ch-group:first-child{margin-top:0}
-  </style>
   <div class="sec-title"><i class="fa-brands fa-youtube"></i> Canais &amp; Recursos<span class="day-badge" id="chCountBadge">–</span></div>
   <div class="tasks" style="margin-bottom:1.6rem;padding:1rem 1.2rem">
-    <button class="btn primary" onclick="openModal('channels')"><i class="fa-brands fa-youtube"></i> Ver canais &amp; adicionar</button>
+    <a class="btn primary" href="channels.html"><i class="fa-brands fa-youtube"></i> Ver canais &amp; adicionar</a>
   </div>
 
   <div class="sec-title"><i class="fa-solid fa-briefcase"></i> Application tracker<span class="day-badge" id="axCountBadge">–</span></div>
@@ -1383,64 +1362,8 @@ async function pjUpdateCount(){
 }
 pjUpdateCount();
 
-// ===== Canais & Recursos (Supabase table: channels) =====
+// ===== Canais & Recursos (list lives in channels.html; here only the count badge) =====
 const CH_TABLE='channels';
-// Categories render in this order; any custom ones the user adds show after, alphabetically.
-const CH_CATS=['.NET / Tech','Better Life','Training','Audiobooks','Aleatórios'];
-const CH_EMOJI={'.NET / Tech':'🖥️','Better Life':'🌱','Training':'🏋️','Audiobooks':'🎧','Aleatórios':'🎲'};
-// Seeded once if the table is empty and we haven't seeded before. Editable afterwards.
-const CH_DEFAULTS=[
-  ['.NET / Tech','https://www.youtube.com/@Fireship/videos'],
-  ['.NET / Tech','https://www.youtube.com/@NETRocks-pr4iv/videos'],
-  ['.NET / Tech','https://www.youtube.com/@shanselman'],
-  ['.NET / Tech','https://www.youtube.com/@letphil/videos'],
-  ['.NET / Tech','https://www.youtube.com/@JomaTech'],
-  ['.NET / Tech','https://www.youtube.com/@clem'],
-  ['.NET / Tech','https://www.youtube.com/@hellomayuko'],
-  ['.NET / Tech','https://www.youtube.com/@ThePrimeTimeagen'],
-  ['.NET / Tech','https://www.youtube.com/@fknight/videos'],
-  ['.NET / Tech','https://www.youtube.com/@nickchapsas/videos'],
-  ['.NET / Tech','https://www.youtube.com/@vsyrakis'],
-  ['Better Life','https://www.youtube.com/@clarkkegley'],
-  ['Better Life','https://www.youtube.com/@quamobiz'],
-  ['Better Life','https://www.youtube.com/@DanZakaria'],
-  ['Training','https://www.youtube.com/@just-merk'],
-  ['Training','https://www.youtube.com/@finlayedwards6877'],
-  ['Audiobooks','https://www.youtube.com/@eeaudiobooks/'],
-  ['Aleatórios','https://www.youtube.com/@30MinEnglishPod'],
-];
-let chRows=[];
-function chEscape(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function chHandle(url){
-  try{ const m=String(url).match(/@([^/?#]+)/); if(m)return '@'+m[1];
-    const h=new URL(url).hostname.replace(/^www\./,''); return h; }
-  catch(e){ return url||'link'; }
-}
-function chLabel(r){ return (r.label&&r.label.trim())||chHandle(r.url); }
-function chCatOrder(cat){ const i=CH_CATS.indexOf(cat); return i<0?999:i; }
-function chMsg(t,k){ const el=document.getElementById('chSaveMsg'); if(el){el.textContent=t||'';el.className='pj-msg'+(k?' '+k:'');} }
-function chRenderModalList(){
-  const box=document.getElementById('chModalList'); if(!box)return;
-  if(chRows.length===0){ box.innerHTML='<div class="pj-empty">Nenhum canal ainda. Adicione o primeiro acima.</div>'; return; }
-  const cats=[...new Set(chRows.map(r=>r.category))].sort((a,b)=>{
-    const oa=chCatOrder(a),ob=chCatOrder(b); return oa!==ob?oa-ob:a.localeCompare(b);
-  });
-  box.innerHTML=cats.map(cat=>{
-    const items=chRows.filter(r=>r.category===cat);
-    return `<div class="ch-group"><span>${CH_EMOJI[cat]||'📺'}</span><span>${chEscape(cat)}</span><span class="n">${items.length}</span></div>`+
-      items.map(r=>`
-        <div class="ch-item">
-          <i class="fa-brands fa-youtube"></i>
-          <a href="${chEscape(r.url)}" target="_blank" rel="noopener" title="${chEscape(r.url)}">${chEscape(chLabel(r))}</a>
-          <button onclick="chCopy('${r.id}')" title="Copiar link"><i class="fa-solid fa-copy"></i></button>
-          <button class="ch-del" onclick="chDelete('${r.id}')" title="Excluir"><i class="fa-solid fa-trash"></i></button>
-        </div>`).join('');
-  }).join('');
-}
-function chCopy(id){
-  const r=chRows.find(x=>String(x.id)===String(id)); if(!r)return;
-  try{ navigator.clipboard.writeText(r.url); chMsg('Link copiado ✓','ok'); }catch(e){}
-}
 async function chUpdateCount(){
   const el=document.getElementById('chCountBadge'); if(!el)return;
   if(!sb){ el.textContent='cloud off'; return; }
@@ -1449,76 +1372,6 @@ async function chUpdateCount(){
     if(res.error)throw res.error;
     el.textContent=(res.count??0)+' canais';
   }catch(e){ el.textContent='–'; }
-}
-async function chSeedIfEmpty(){
-  if(!sb) return;
-  if(localStorage.getItem('ch_seeded')==='1') return;
-  try{
-    const payload=CH_DEFAULTS.map(([category,url])=>({category,url,label:''}));
-    const res=await sb.from(CH_TABLE).insert(payload);
-    if(res.error)throw res.error;
-    localStorage.setItem('ch_seeded','1');
-  }catch(e){ console.warn('channel seed failed',e); }
-}
-async function chLoadModal(){
-  const box=document.getElementById('chModalList'); if(!box)return;
-  if(!sb){ box.innerHTML='<div class="pj-empty">Cloud desconectado — conecte o Supabase para ver os canais.</div>'; return; }
-  box.innerHTML='<div class="pj-empty">Carregando…</div>';
-  try{
-    let res=await sb.from(CH_TABLE).select('id,category,url,label,created_at').order('created_at',{ascending:true});
-    if(res.error)throw res.error;
-    if((res.data||[]).length===0 && localStorage.getItem('ch_seeded')!=='1'){
-      await chSeedIfEmpty();
-      res=await sb.from(CH_TABLE).select('id,category,url,label,created_at').order('created_at',{ascending:true});
-      if(res.error)throw res.error;
-    }
-    chRows=res.data||[];
-    chRenderModalList();
-    chRenderCatList();
-    chUpdateCount();
-  }catch(e){
-    console.warn('channel load failed',e);
-    box.innerHTML='<div class="pj-empty">Erro ao carregar — a tabela "channels" existe no Supabase? (veja o SQL fornecido)</div>';
-  }
-}
-async function chAdd(){
-  chMsg('');
-  if(!sb){ chMsg('Cloud desconectado — não é possível salvar agora.','err'); return; }
-  const cat=(document.getElementById('chCat').value||'').trim();
-  const url=(document.getElementById('chUrl').value||'').trim();
-  const label=(document.getElementById('chLabelInput').value||'').trim();
-  if(!cat){ chMsg('Escolha ou digite um tema (coluna).','err'); return; }
-  if(!url){ chMsg('Cole a URL do canal.','err'); return; }
-  const btn=document.getElementById('chAddBtn');
-  if(btn){ btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Salvando…'; }
-  try{
-    const res=await sb.from(CH_TABLE).insert([{category:cat,url,label}]);
-    if(res.error)throw res.error;
-    document.getElementById('chUrl').value='';
-    document.getElementById('chLabelInput').value='';
-    await chLoadModal();
-    chMsg('Canal adicionado ✓','ok');
-  }catch(e){
-    console.warn('channel add failed',e);
-    chMsg('Erro ao salvar no Supabase. A tabela "channels" existe?','err');
-  }finally{
-    if(btn){ btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-plus"></i> Adicionar'; }
-  }
-}
-async function chDelete(id){
-  if(!sb)return;
-  const r=chRows.find(x=>String(x.id)===String(id));
-  if(r && !confirm('Excluir "'+chLabel(r)+'"?')) return;
-  try{
-    const res=await sb.from(CH_TABLE).delete().eq('id',id);
-    if(res.error)throw res.error;
-    await chLoadModal();
-  }catch(e){ console.warn('channel delete failed',e); }
-}
-function chRenderCatList(){
-  const dl=document.getElementById('chCatOptions'); if(!dl)return;
-  const cats=[...new Set([...CH_CATS, ...chRows.map(r=>r.category)])];
-  dl.innerHTML=cats.map(c=>`<option value="${chEscape(c)}">`).join('');
 }
 chUpdateCount();
 
@@ -1904,24 +1757,6 @@ function openModal(type,extra){
       <li><i class="fa-solid fa-dollar-sign"></i><div><b><a href="https://www.levels.fyi/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">levels.fyi</a></b><small>Real compensation data — prep your salary negotiation</small></div></li>
       <li><i class="fa-solid fa-globe"></i><div><b><a href="https://remoteok.com/" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">RemoteOK</a></b><small>Remote-only board — filter for .NET / C# / backend</small></div></li>
     </ul>`;
-  }else if(type==='channels'){
-    html=`<button class="x" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-    <div class="m-ic">📺</div><h2>Adicionar canal</h2>
-    <p>Cole o link de um canal (YouTube, podcast, etc.) e escolha um tema. Digite um tema novo para criar uma coluna nova. Salva no Supabase.</p>
-    <div class="pj-form">
-      <label for="chCat">Tema (coluna)</label>
-      <input type="text" id="chCat" list="chCatOptions" placeholder="Ex: .NET / Tech — ou digite um tema novo" autocomplete="off">
-      <datalist id="chCatOptions"></datalist>
-      <label for="chUrl" style="margin-top:.6rem">URL do canal</label>
-      <input type="text" id="chUrl" placeholder="https://www.youtube.com/@canal">
-      <label for="chLabelInput" style="margin-top:.6rem">Nome (opcional — se vazio, uso o @handle)</label>
-      <input type="text" id="chLabelInput" placeholder="Ex: Nick Chapsas">
-      <div style="display:flex;align-items:center;gap:10px;margin-top:.8rem">
-        <button class="btn primary" id="chAddBtn" onclick="chAdd()"><i class="fa-solid fa-plus"></i> Adicionar</button>
-        <span class="pj-msg" id="chSaveMsg"></span>
-      </div>
-    </div>
-    <div id="chModalList"><div class="pj-empty">Carregando…</div></div>`;
   }else if(type==='progress'){
     const daysDone=DAYS.filter((d,i)=>dayComplete(i)).length;
     const P=PHASES[WEEKS[weekOfDay(Math.max(1,studyDay))].ph-1];
@@ -2002,12 +1837,11 @@ function openModal(type,extra){
     <p>This prompt was copied to your clipboard. Paste it into Claude's chat to begin:</p>
     <ul class="m-list"><li><i class="fa-solid fa-quote-left"></i><div><b>${extra}</b></div></li></ul>`;
   }
-  modalBox.className='modal'+(type==='phrases'||type==='channels'?' wide':type==='apps'?' kanban':'');
+  modalBox.className='modal'+(type==='phrases'?' wide':type==='apps'?' kanban':'');
   modalBox.innerHTML=html;
   modalBg.classList.add('show');
   if(type==='phrases'){ pjRows=[]; pjRenderPreview(); pjLoadSaved(); }
   if(type==='apps'){ axLoad(); }
-  if(type==='channels'){ chRenderCatList(); chLoadModal(); }
 }
 function closeModal(){modalBg.classList.remove('show')}
 function resetProgress(){
