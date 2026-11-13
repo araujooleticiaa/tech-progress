@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Prep .NET · Backend Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --bg:#0b0f1a;--bg-2:#121826;--card:#161d2e;--card-2:#1c2436;
+  --border:#252d40;--border-glow:#2f3b57;--text:#f1f4fa;--text-2:#9aa4bd;--text-3:#5e6884;
+  --accent:#5b8cff;--accent-2:#7c5bff;--teal:#28d9b0;--amber:#ffb43d;--pink:#ff5b9c;--green:#3ee08a;
+  --radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',-apple-system,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(124,91,255,.18), transparent 55%),
+    radial-gradient(1000px 500px at 0% 10%, rgba(91,140,255,.14), transparent 50%),
+    var(--bg);
+  color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:2.2rem 1.5rem 4rem}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 28px rgba(91,140,255,.4)}
+.brand h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.brand p{font-size:13px;color:var(--text-2);margin-top:2px}
+.streak{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,rgba(40,217,176,.15),rgba(91,140,255,.12));border:1px solid rgba(40,217,176,.3);padding:10px 16px;border-radius:13px}
+.streak i{color:var(--teal);font-size:18px}
+.streak b{font-size:17px;font-weight:700}
+.streak span{font-size:12px;color:var(--text-2);display:block;line-height:1.2}
+.back{font-size:12.5px;color:var(--text-2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin:-.6rem 0 1rem}
+.back:hover{color:var(--text)}
+#syncStatus{font-size:12px;color:var(--text-3);margin:-.2rem 0 1.2rem;display:flex;align-items:center;gap:7px}
+
+.btn{padding:.6rem 1rem;border-radius:11px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{border-color:var(--border-glow)}
+.btn.on{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;box-shadow:0 8px 26px rgba(91,140,255,.35);color:#fff}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:1rem}
+.stat{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.2rem}
+.stat b{font-size:26px;font-weight:800;letter-spacing:-.02em;display:block}
+.stat span{font-size:12px;color:var(--text-2)}
+.stat.s1 b{color:var(--green)} .stat.s2 b{color:var(--amber)} .stat.s3 b{color:var(--accent)}
+.overall{height:8px;background:var(--bg-2);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:1.4rem}
+.overall div{height:100%;background:linear-gradient(90deg,var(--teal),var(--accent));width:0;transition:width .4s}
+
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:1.2rem}
+.search{flex:1;min-width:220px;position:relative}
+.search i{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:13px}
+.search input{width:100%;height:40px;padding:0 12px 0 36px;border-radius:11px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:13px}
+.search input:focus{outline:none;border-color:var(--accent)}
+.search input::placeholder{color:var(--text-3)}
+
+.module{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+.module.complete{border-color:rgba(62,224,138,.35)}
+.module summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:1rem 1.2rem;user-select:none}
+.module summary::-webkit-details-marker{display:none}
+.m-title{flex:1;min-width:0;font-size:14.5px;font-weight:600}
+.m-meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-2);font-family:'JetBrains Mono',monospace}
+.mini{width:90px;height:6px;background:var(--bg-2);border-radius:10px;overflow:hidden}
+.mini div{height:100%;background:linear-gradient(90deg,var(--teal),var(--accent));transition:width .3s}
+.module.complete .mini div{background:var(--green)}
+.arrow{color:var(--text-3);transition:transform .2s;font-size:12px}
+.module[open] .arrow{transform:rotate(180deg)}
+.items{padding:0 .8rem .8rem;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.item{display:flex;align-items:flex-start;gap:10px;padding:.55rem .7rem;border-radius:10px;background:var(--bg-2);border:1px solid var(--border);cursor:pointer;font-size:13px;line-height:1.4;transition:border-color .15s}
+.item:hover{border-color:var(--border-glow)}
+.item input{appearance:none;flex-shrink:0;width:17px;height:17px;margin-top:1px;border-radius:5px;border:1.5px solid var(--text-3);background:transparent;cursor:pointer;display:grid;place-items:center}
+.item input:checked{background:var(--green);border-color:var(--green)}
+.item input:checked::after{content:'';width:5px;height:9px;border:solid #06140d;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.item.done span{color:var(--text-3);text-decoration:line-through}
+.empty{font-size:13px;color:var(--text-3);padding:1.2rem 0;text-align:center}
+.footer{font-size:12px;color:var(--text-3);text-align:center;margin-top:2rem;line-height:1.6}
+.footer a{color:var(--text-2)}
+
+@media(max-width:700px){.items{grid-template-columns:1fr}.mini{width:56px}.stats{gap:8px}.stat{padding:.9rem}.stat b{font-size:21px}}
+
+.lock-screen{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:1.5rem}
+.lock-box{max-width:360px;width:100%;background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border-glow);border-radius:22px;padding:2.2rem 2rem;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.lock-box .lock-ic{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 1.2rem;color:#04140f}
+.lock-box h2{font-size:19px;font-weight:700;margin-bottom:.5rem}
+.lock-box p{font-size:13px;color:var(--text-2);margin-bottom:1.4rem;line-height:1.5}
+.lock-box input{width:100%;padding:.9rem 1rem;border-radius:12px;background:var(--bg-2);border:1px solid var(--border);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:18px;text-align:center;letter-spacing:.3em;margin-bottom:.6rem}
+.lock-box input:focus{outline:none;border-color:var(--accent)}
+.lock-box .lock-err{font-size:12.5px;color:var(--pink);min-height:16px;margin-bottom:.8rem}
+.lock-box .btn{width:100%;padding:.9rem}
+</style>
+</head>
+<body>
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-ic"><i class="fa-solid fa-lock"></i></div>
+    <h2>Backend Global</h2>
+    <p>Enter the access code to open your tracker.</p>
+    <input type="password" id="lockInput" inputmode="numeric" maxlength="12" placeholder="••••••" autocomplete="off">
+    <div class="lock-err" id="lockErr"></div>
+    <button class="btn primary" onclick="tryUnlock()"><i class="fa-solid fa-unlock"></i> Unlock</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">🎯</div>
+      <div><h1>Interview Prep · .NET</h1><p>Backend interview checklist · 15 modules · Leticia</p></div>
+    </div>
+    <div class="streak">
+      <i class="fa-solid fa-circle-check"></i>
+      <div><b id="ivHeadPct">0%</b><span>prepared</span></div>
+    </div>
+  </div>
+
+  <a href="index.html" class="back"><i class="fa-solid fa-arrow-left"></i> Voltar ao Backend Global</a>
+  <div id="syncStatus"><i class="fa-solid fa-cloud"></i><span>Connecting…</span></div>
+
+  <div class="stats">
+    <div class="stat s1"><b id="stDone">0</b><span>Topics completed</span></div>
+    <div class="stat s2"><b id="stLeft">0</b><span>Topics remaining</span></div>
+    <div class="stat s3"><b id="stPct">0%</b><span>Overall progress</span></div>
+  </div>
+  <div class="overall"><div id="overallBar"></div></div>
+
+  <div class="toolbar">
+    <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="ivSearch" placeholder="Search topics (e.g. JWT, deadlock, Saga)…" autocomplete="off"></div>
+    <button class="btn" id="btnPending" onclick="togglePending()"><i class="fa-solid fa-filter"></i> Só pendentes</button>
+    <button class="btn" onclick="setAllOpen(true)"><i class="fa-solid fa-angles-down"></i> Expandir</button>
+    <button class="btn" onclick="setAllOpen(false)"><i class="fa-solid fa-angles-up"></i> Recolher</button>
+  </div>
+
+  <div id="modules"></div>
+
+  <div class="footer">Topic list adapted from the <a href="https://ranjith-dotnet-interview-prep.netlify.app/" target="_blank" rel="noopener">.NET Backend Interview Tracker</a> by Ranjith Kumar Kolisetty.</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ===== Access gate (same as the other pages) =====
+const LOCK_KEY='bg_unlocked_v1', PASSCODE='020300';
+function checkLock(){ if(localStorage.getItem(LOCK_KEY)==='1'){document.getElementById('lockScreen').style.display='none';}else{document.getElementById('lockInput')?.focus();} }
+function tryUnlock(){ const i=document.getElementById('lockInput'); if(i.value.trim()===PASSCODE){localStorage.setItem(LOCK_KEY,'1');document.getElementById('lockScreen').style.display='none';}else{document.getElementById('lockErr').textContent='Código incorreto.';i.value='';} }
+document.getElementById('lockInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')tryUnlock();});
+checkLock();
+
+// ===== Topics =====
+const IV_MODULES=[
+['C# Fundamentals',['C# vs .NET: language, platform, SDK and runtime','Compilation: source code → IL → CLR → JIT','Managed vs unmanaged code','Namespaces, assemblies and DLLs','Variables, constants and data types','Value types vs reference types','Stack vs heap (and why this is a simplified model)','Boxing and unboxing','var vs dynamic vs object','const vs readonly vs static readonly','ref vs out vs in parameters','Nullable value types and nullable reference types','String immutability and string pool/interning','string vs StringBuilder','Operators, type conversion and casting','if, switch, loops, break and continue','Methods, optional parameters and params','Method overloading','Extension methods','Static vs instance members','Arrays and multidimensional arrays','List, Dictionary, HashSet, Queue and Stack','Array vs ArrayList vs List','Exception handling: try, catch, finally','throw vs throw ex','Custom exceptions','Write code to reverse a string without Reverse()','Write code to check palindrome, prime number and Fibonacci series']],
+['OOP, SOLID and Design Patterns',['Class and object','Encapsulation','Inheritance','Polymorphism: compile-time and runtime','Abstraction','Abstract class vs interface','virtual, override and new keywords','sealed class and sealed override','Static classes and static constructors','Constructors: default, parameterized, private and copy-style patterns','Destructor/finalizer','Access modifiers: public, private, protected, internal, protected internal and private protected','Fields vs properties','Auto-properties and init-only properties','Class vs struct','Record types and record struct','Composition vs inheritance','SOLID: Single Responsibility Principle','SOLID: Open/Closed Principle','SOLID: Liskov Substitution Principle','SOLID: Interface Segregation Principle','SOLID: Dependency Inversion Principle','Singleton pattern','Factory pattern','Repository pattern','Unit of Work pattern','Strategy pattern','Observer pattern','Decorator pattern','Adapter pattern','Identify suitable patterns in real projects']],
+['Advanced C# and Collections',['Generics and generic classes/methods','Generic constraints','Covariance and contravariance','Delegates','Action, Func and Predicate','Lambda expressions','Events and event handlers','Anonymous methods','LINQ query syntax vs method syntax','Where and Select','First vs FirstOrDefault','Single vs SingleOrDefault','Any vs All','Count vs LongCount vs Any','GroupBy and ToLookup','OrderBy, ThenBy and reverse ordering','Join and GroupJoin','SelectMany','Distinct and DistinctBy','Aggregate, Sum, Min, Max and Average','Deferred vs immediate execution','IEnumerable vs IQueryable','ICollection vs IList vs IReadOnlyCollection','Dictionary lookup and hashing basics','ConcurrentDictionary and thread-safe collections','Garbage Collector and managed memory','GC generations 0, 1 and 2','Large Object Heap (LOH)','IDisposable and IAsyncDisposable','using statement and using declaration','Finalizers and Dispose pattern','Weak references','Memory leaks and object lifetime','Task vs Thread','async and await','Task.WhenAll vs Task.WhenAny','CancellationToken','ConfigureAwait','Task.Run and when not to use it','Parallel programming vs asynchronous I/O','Race conditions and deadlocks','Thread safety and synchronization','lock, Monitor and SemaphoreSlim','ValueTask and when to use it']],
+['.NET Platform, Runtime and Dependency Injection',['.NET Framework vs .NET Core vs modern .NET','.NET SDK vs runtime','CLR, CTS and CLS','JIT compilation and AOT','Garbage collection overview','Assemblies, NuGet packages and package references','ASP.NET Core hosting model','Kestrel web server','IIS integration and reverse proxy','Generic Host vs Web Host','Program.cs and application startup','Middleware pipeline overview','Dependency Injection (DI) fundamentals','Service lifetimes: Transient, Scoped and Singleton','Captive dependency and lifetime mismatch','Constructor injection and other injection approaches','Registering services with AddTransient/AddScoped/AddSingleton','Configuration providers and precedence','appsettings.json and environment-specific settings','Environment variables and command-line configuration','IOptions vs IOptionsSnapshot vs IOptionsMonitor','Logging abstractions and log levels','IHostedService and BackgroundService','Health checks and readiness/liveness concepts']],
+['ASP.NET Core Web API',['HTTP vs HTTPS','REST principles and RESTful resource design','HTTP methods: GET, POST, PUT, PATCH and DELETE','Safe methods and idempotency','HTTP status codes: 2xx, 3xx, 4xx and 5xx','Controllers vs Minimal APIs','Routing and route constraints','Model binding','Model validation and Data Annotations','DTOs and entity separation','IActionResult vs ActionResult<T>','Content negotiation','JSON serialization and System.Text.Json','API versioning','Pagination, filtering, sorting and searching','Swagger and OpenAPI','Middleware and custom middleware','Middleware execution order','Exception-handling middleware','Authentication vs authorization','JWT structure and validation','Claims, roles and policies','ASP.NET Core Identity basics','OAuth 2.0 and OpenID Connect basics','Access tokens and refresh tokens','CORS','CSRF and XSS','SQL injection prevention','HTTPS enforcement and secure headers','Secrets management','Global exception handling and ProblemDetails','Response caching, output caching and distributed caching','Rate limiting and throttling','Health-check endpoints','Correlation IDs and structured logging','Resilience: timeout, retry and circuit breaker','OpenTelemetry: logs, metrics and traces','API performance and payload optimization']],
+['Entity Framework Core',['What is an ORM?','EF Core architecture and DbContext','Code First vs Database First','DbContext and DbSet','Entity configuration and Fluent API','Data Annotations','EF Core migrations','One-to-one, one-to-many and many-to-many relationships','Navigation properties and foreign keys','Eager loading','Lazy loading','Explicit loading','Include and ThenInclude','Tracking vs AsNoTracking','Change Tracker and entity states','SaveChanges vs SaveChangesAsync','First, FirstOrDefault, Single and Find','LINQ queries in EF Core','Raw SQL and stored procedure calls','Transactions and transaction boundaries','Optimistic concurrency and row versioning','N+1 query problem','Split queries','Compiled queries','Bulk operations and their trade-offs','Repository and Unit of Work with EF Core','DbContext lifetime and thread-safety','EF Core query performance and SQL inspection']],
+['SQL and PostgreSQL',['Database, schema, table, row and column','Primary keys and foreign keys','Unique, check, not-null and default constraints','Normalization: 1NF, 2NF and 3NF','Denormalization and trade-offs','DDL, DML, DCL and TCL','SELECT, INSERT, UPDATE and DELETE','WHERE, ORDER BY, GROUP BY and HAVING','DISTINCT and CASE','Aggregate functions','INNER, LEFT, RIGHT and FULL joins','Self joins and cross joins','Subqueries and correlated subqueries','Common Table Expressions (CTEs)','Recursive CTEs','Window functions: ROW_NUMBER, RANK and DENSE_RANK','LEAD and LAG','Views, stored procedures and functions','Triggers','Indexes and why they improve reads','Clustered vs nonclustered indexes (SQL Server concept)','PostgreSQL B-tree indexes','Composite, unique and partial indexes in PostgreSQL','Index selectivity and column order','EXPLAIN and EXPLAIN ANALYZE','Query-plan interpretation and slow-query troubleshooting','ACID properties','Transactions and isolation levels','Locks and deadlocks','MVCC in PostgreSQL','Connection pooling','Replication','Partitioning','PostgreSQL-specific data types and JSONB basics']],
+['Microservices Architecture',['Monolith vs microservices','Advantages, disadvantages and trade-offs','Service boundaries and bounded contexts','API Gateway','Service discovery','Synchronous vs asynchronous communication','REST vs gRPC','Event-driven architecture','Database per service','Data consistency across services','Distributed transactions','Saga pattern: orchestration vs choreography','CQRS','Event sourcing','Transactional outbox pattern','Idempotency and duplicate requests','Distributed locks','Centralized configuration','Retry, timeout, circuit breaker and bulkhead','Service-to-service authentication and authorization','Distributed tracing, centralized logs and metrics','Eventual consistency','Microservice deployment and versioning','Design a simple order-management microservice system']],
+['RabbitMQ and Kafka',['Producer and consumer','RabbitMQ exchanges, queues and bindings','Routing keys','Direct exchange','Fanout exchange','Topic exchange','Headers exchange','Message acknowledgements: auto and manual','Durable queues and persistent messages','Dead Letter Exchange (DLX) and Dead Letter Queue (DLQ)','Retry strategies and poison messages','Prefetch and consumer concurrency','Competing consumers','Publisher confirms','Message ordering','Duplicate message handling and idempotent consumers','Message serialization and schema compatibility','RabbitMQ failure handling and monitoring','Kafka: broker, topic and partition','Kafka producers and consumers','Consumer groups and offsets','Replication and retention','Kafka vs RabbitMQ: use cases and trade-offs']],
+['Dapr',['What Dapr is and why it is used','Sidecar architecture','Dapr service invocation','Dapr Pub/Sub','Dapr state management','Dapr secrets management','Dapr configuration building block','Dapr bindings','Dapr actors','Dapr components and component configuration','Retries and resiliency policies','Dapr integration with ASP.NET Core','Dapr vs direct HTTP/gRPC communication','How Dapr fits into a microservices architecture','Explain a practical Dapr workflow from your project']],
+['System Design and Distributed Systems',['Functional and non-functional requirements','Load balancing','Horizontal vs vertical scaling','Caching strategies','Redis fundamentals and cache invalidation','CDN basics','Database indexing and query optimization','Read replicas and replication','Sharding and partitioning','Rate limiting','API Gateway design','Message queues and asynchronous processing','High availability and fault tolerance','Retry, timeout, circuit breaker and bulkhead','Distributed locking','CAP theorem','Consistency vs availability trade-offs','Reliability, security and observability','Design an employee-management system','Design an e-commerce system','Design a URL shortener','Design a notification service','Design an order-management system','Explain bottlenecks, scaling choices and failure scenarios']],
+['Docker, Kubernetes, Helm and Azure',['Docker images vs containers','Dockerfile instructions','Build and run Docker images','Docker Compose','Volumes and bind mounts','Docker networking','Environment variables and configuration','Container logs and troubleshooting','Multi-stage Docker builds','Container health checks','Kubernetes architecture: control plane and worker nodes','Pods','Deployments and ReplicaSets','Services: ClusterIP, NodePort and LoadBalancer','ConfigMaps and Secrets','Ingress','Persistent Volumes and Persistent Volume Claims','Namespaces','Liveness, readiness and startup probes','Horizontal Pod Autoscaler','Rolling updates and rollbacks','Helm charts, values.yaml and templates','Helm dependencies and releases','AKS basics','kubectl get, describe, logs, exec and rollout commands','Troubleshoot CrashLoopBackOff, ImagePullBackOff and service connectivity','Azure Virtual Machines','Azure App Service','Azure Functions','Azure SQL and managed databases','Azure Storage','Azure Key Vault','Azure Monitor and Application Insights','Azure Kubernetes Service','CI/CD deployment to Azure or AKS']],
+['Testing and Code Quality',['Unit vs integration vs functional vs end-to-end testing','xUnit or NUnit fundamentals','Arrange-Act-Assert pattern','Assertions and test naming','Mocking with Moq','Mocks vs stubs vs fakes','Test service-layer logic','Test controllers and API endpoints','Test middleware and exception handling','Test EF Core code','Test database integration','Testcontainers basics','Code coverage and its limitations','Test edge cases and failure paths','Code reviews and maintainability']],
+['Git, CI/CD and Production Support',['Git add, commit, push, pull and fetch','Branches and branching strategies','Merge vs rebase','Resolve merge conflicts','Pull requests and code reviews','GitLab CI/CD pipeline concepts','Build, test, package and deploy stages','Pipeline variables and secrets','NuGet package creation and consumption','Package versioning and semantic versioning','Dependency management and transitive dependencies','Logging and monitoring in production','Distributed tracing and profiling','Diagnose memory leaks','Diagnose high CPU usage','Troubleshoot slow APIs','Troubleshoot slow database queries','Handle database connection failures','Diagnose DI registration and lifetime errors','Troubleshoot application startup failures','Handle production incidents and root-cause analysis']],
+['Project Explanation and Interview Readiness',['Prepare a 60–90 second self-introduction','Explain your current project and business purpose','Explain your role and responsibilities','Draw and explain your project architecture','Explain the request flow through your ASP.NET Core API','Explain database design and EF Core usage','Explain microservice-to-microservice communication','Explain RabbitMQ usage and message flow','Explain Dapr usage and sidecar interaction','Explain a difficult production issue and its resolution','Explain how you improved API performance','Explain how you resolved a database performance issue','Explain exception handling and logging in your project','Explain how you handle service failures and retries','Explain Docker, Kubernetes and deployment in your project','Prepare strengths and weaknesses','Prepare reason for job change','Prepare notice period, availability and salary discussion','Practice a technical mock interview','Practice a project deep-dive mock interview','Practice a coding round','Practice an SQL round','Practice a system-design round','Prepare questions to ask the interviewer']],
+];
+// Stable ids: module number + slug of the topic text (survives reordering inside a module).
+const ivSlug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70);
+const IV=IV_MODULES.map(([title,items],mi)=>({title,n:mi+1,items:items.map(t=>({id:(mi+1)+':'+ivSlug(t),t}))}));
+const IV_TOTAL=IV.reduce((a,m)=>a+m.items.length,0);
+const VALID_IDS=new Set(IV.flatMap(m=>m.items.map(i=>i.id)));
+
+const DONE_KEY='iv_done_v1', STAMP_KEY='iv_updated', OPEN_KEY='iv_open';
+const ivRead=(k,f)=>{ try{ const v=localStorage.getItem(k); return v==null?f:JSON.parse(v); }catch(e){ return f; } };
+const ivWrite=(k,v)=>{ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} };
+let done=new Set(ivRead(DONE_KEY,[]));
+let openSet=new Set(ivRead(OPEN_KEY,[1]));
+let onlyPending=false, query='';
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function render(){
+  const box=document.getElementById('modules');
+  const q=query.toLowerCase();
+  let shown=0;
+  box.innerHTML=IV.map(m=>{
+    const cnt=m.items.filter(i=>done.has(i.id)).length;
+    const pct=Math.round(cnt/m.items.length*100);
+    const vis=m.items.filter(i=>(!onlyPending||!done.has(i.id)) && (!q||i.t.toLowerCase().includes(q)));
+    if((q||onlyPending) && vis.length===0) return '';
+    shown+=vis.length;
+    const isOpen=q?true:openSet.has(m.n);
+    return `<details class="module${cnt===m.items.length?' complete':''}" data-n="${m.n}"${isOpen?' open':''}>
+      <summary><span class="m-title">${m.n}. ${esc(m.title)}</span>
+        <span class="m-meta"><span>${cnt}/${m.items.length}</span><span class="mini"><div style="width:${pct}%"></div></span></span>
+        <i class="fa-solid fa-chevron-down arrow"></i></summary>
+      <div class="items">${vis.map(i=>`<label class="item${done.has(i.id)?' done':''}"><input type="checkbox" data-id="${i.id}"${done.has(i.id)?' checked':''}><span>${esc(i.t)}</span></label>`).join('')}</div>
+    </details>`;
+  }).join('') || '<div class="empty">Nenhum tópico encontrado.</div>';
+  if(!shown && (q||onlyPending)) box.innerHTML='<div class="empty">'+(onlyPending&&!q?'Tudo concluído 🎉':'Nenhum tópico encontrado.')+'</div>';
+  renderStats();
+}
+function renderStats(){
+  const d=[...done].filter(id=>VALID_IDS.has(id)).length;
+  const pct=Math.round(d/IV_TOTAL*100);
+  document.getElementById('stDone').textContent=d;
+  document.getElementById('stLeft').textContent=IV_TOTAL-d;
+  document.getElementById('stPct').textContent=pct+'%';
+  document.getElementById('ivHeadPct').textContent=pct+'%';
+  document.getElementById('overallBar').style.width=pct+'%';
+}
+document.getElementById('modules').addEventListener('change',e=>{
+  const id=e.target.dataset?.id; if(!id)return;
+  if(e.target.checked) done.add(id); else done.delete(id);
+  ivWrite(DONE_KEY,[...done]); ivWrite(STAMP_KEY,new Date().toISOString());
+  const scrollY=window.scrollY; render(); window.scrollTo(0,scrollY);
+  saveToCloud();
+});
+document.getElementById('modules').addEventListener('toggle',e=>{
+  const el=e.target; if(!el.matches||!el.matches('details.module')||query)return;
+  const n=+el.dataset.n; if(el.open) openSet.add(n); else openSet.delete(n);
+  ivWrite(OPEN_KEY,[...openSet]);
+},true);
+function setAllOpen(open){ openSet=new Set(open?IV.map(m=>m.n):[]); ivWrite(OPEN_KEY,[...openSet]); render(); }
+function togglePending(){ onlyPending=!onlyPending; document.getElementById('btnPending').classList.toggle('on',onlyPending); render(); }
+document.getElementById('ivSearch').addEventListener('input',e=>{ query=e.target.value.trim(); render(); });
+
+// ===== Supabase sync (table "progress", own row) =====
+const SB_URL='https://ysnwsrndphmgdtynwxtu.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlzbndzcm5kcGhtZ2R0eW53eHR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MTIxODEsImV4cCI6MjEwMDQ4ODE4MX0.HzO38CqXLw0JIa0B2uDEzA5CWRSYsuMdbCjRCJgICag';
+const ROW_ID='leticia_interview';
+let sb=null; try{ if(window.supabase) sb=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ console.warn('supabase init failed',e); }
+function setStatus(msg,icon,color){ const el=document.getElementById('syncStatus'); if(!el)return; el.innerHTML='<i class="fa-solid '+icon+'"></i><span>'+msg+'</span>'; el.style.color=color||'var(--text-3)'; }
+if(!sb) setStatus('Cloud off — this device only','fa-cloud-slash','var(--amber)');
+
+let saveT=null;
+function saveToCloud(){
+  if(!sb)return;
+  clearTimeout(saveT);
+  saveT=setTimeout(async()=>{
+    try{
+      const stamp=localStorage.getItem(STAMP_KEY) ? JSON.parse(localStorage.getItem(STAMP_KEY)) : new Date().toISOString();
+      const res=await sb.from('progress').upsert({id:ROW_ID,done:[...done],updated_at:stamp});
+      if(res.error)throw res.error;
+      setStatus('Saved · '+new Date().toLocaleTimeString(),'fa-cloud-arrow-up','var(--green)');
+    }catch(e){ console.warn('cloud save failed',e); setStatus('Save failed — check table & policies','fa-triangle-exclamation','var(--amber)'); }
+  },500);
+}
+// Last write wins: whichever side (this device or cloud) was changed more recently.
+async function syncFromCloud(){
+  if(!sb)return;
+  setStatus('Syncing…','fa-cloud','var(--text-3)');
+  try{
+    const q=await sb.from('progress').select('done,updated_at').eq('id',ROW_ID).maybeSingle();
+    if(q.error)throw q.error;
+    const data=q.data, local=ivRead(STAMP_KEY,null);
+    if(data && Array.isArray(data.done) && (!local || (data.updated_at && new Date(data.updated_at)>=new Date(local)))){
+      done=new Set(data.done);
+      ivWrite(DONE_KEY,[...done]); if(data.updated_at) ivWrite(STAMP_KEY,data.updated_at);
+      render();
+      setStatus('Synced · '+new Date().toLocaleTimeString(),'fa-cloud-check','var(--green)');
+    }else{
+      saveToCloud();
+      setStatus(data?'Uploading local changes…':'Cloud ready (new record created)','fa-cloud-arrow-up','var(--green)');
+    }
+  }catch(e){ console.warn('cloud sync failed',e); setStatus('Cloud error — check table & policies','fa-triangle-exclamation','var(--amber)'); }
+}
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) syncFromCloud(); });
+
+render();
+syncFromCloud();
+</script>
+</body>
+</html>

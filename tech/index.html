@@ -499,6 +499,11 @@ body{
     <a class="btn primary" href="channels.html"><i class="fa-brands fa-youtube"></i> Ver canais &amp; adicionar</a>
   </div>
 
+  <div class="sec-title"><i class="fa-solid fa-bullseye"></i> Interview Prep · .NET<span class="day-badge" id="ivCountBadge">–</span></div>
+  <div class="tasks" style="margin-bottom:1.6rem;padding:1rem 1.2rem">
+    <a class="btn primary" href="interview.html"><i class="fa-solid fa-list-check"></i> Open the interview checklist</a>
+  </div>
+
   <div class="sec-title"><i class="fa-solid fa-briefcase"></i> Application tracker<span class="day-badge" id="axCountBadge">–</span></div>
   <div class="tasks" style="margin-bottom:1.6rem;padding:1rem 1.2rem">
     <a class="btn primary" href="applications.html"><i class="fa-solid fa-table-columns"></i> Open the Kanban board</a>
@@ -1374,6 +1379,21 @@ async function chUpdateCount(){
   }catch(e){ el.textContent='–'; }
 }
 chUpdateCount();
+
+// ===== Interview Prep (checklist lives in interview.html; here only the count badge) =====
+const IV_TOTAL=408;
+async function ivUpdateCount(){
+  const el=document.getElementById('ivCountBadge'); if(!el)return;
+  let n=0; try{ n=JSON.parse(localStorage.getItem('iv_done_v1')||'[]').length; }catch(e){}
+  el.textContent=n+'/'+IV_TOTAL;
+  if(!sb) return;
+  try{
+    const res=await sb.from('progress').select('done').eq('id','leticia_interview').maybeSingle();
+    if(res.error)throw res.error;
+    if(res.data && Array.isArray(res.data.done)) el.textContent=res.data.done.length+'/'+IV_TOTAL;
+  }catch(e){}
+}
+ivUpdateCount();
 
 // ===== Application tracker (Supabase table: applications) =====
 const AX_TABLE='applications';
